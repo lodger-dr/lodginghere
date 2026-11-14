@@ -1,9 +1,22 @@
+'use client';
+
 import React from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { ShieldCheck } from 'lucide-react';
 import { Logo } from './logo';
 
 export function Footer() {
+  const pathname = usePathname();
+  const isDashboard =
+    pathname?.startsWith('/student') ||
+    pathname?.startsWith('/landlord') ||
+    pathname?.startsWith('/admin');
+
+  if (isDashboard) {
+    return null;
+  }
+
   return (
     <footer className="border-t border-slate-800 bg-slate-950 text-slate-300">
       <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
@@ -59,50 +72,68 @@ export function Footer() {
             <ul className="mt-4 space-y-2.5 text-xs text-slate-400">
               <li>
                 <Link href="/how-it-works#verification" className="hover:text-emerald-400 transition-colors">
-                  Verification Standards
+                  Landlord Verification Process
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works#inspection-rules" className="hover:text-emerald-400 transition-colors">
+                <Link href="/how-it-works#pricing" className="hover:text-emerald-400 transition-colors">
+                  Transparent Pricing Rules
+                </Link>
+              </li>
+              <li>
+                <Link href="/how-it-works#inspection" className="hover:text-emerald-400 transition-colors">
                   Inspection Protocols
                 </Link>
               </li>
               <li>
                 <Link href="/report" className="hover:text-emerald-400 transition-colors">
-                  Report a Problem
+                  Report a Listing or Provider
                 </Link>
-              </li>
-              <li>
-                <span className="text-[11px] text-slate-500 block pt-1 leading-relaxed">
-                  3-tier checks: Landlord Identity, Property Authority, Live Vacancy Status.
-                </span>
               </li>
             </ul>
           </div>
 
-          {/* Column 4: Legal & Notice */}
+          {/* Column 4: Quick Portals */}
           <div>
-            <h4 className="text-xs font-bold text-white tracking-widest uppercase">Legal</h4>
+            <h4 className="text-xs font-bold text-white tracking-widest uppercase">Quick Portals</h4>
             <ul className="mt-4 space-y-2.5 text-xs text-slate-400">
               <li>
-                <Link href="/how-it-works#terms" className="hover:text-emerald-400 transition-colors">
-                  Terms of Service
+                <Link href="/student/overview" className="hover:text-emerald-400 transition-colors">
+                  Student Dashboard
                 </Link>
               </li>
               <li>
-                <Link href="/how-it-works#privacy" className="hover:text-emerald-400 transition-colors">
-                  Privacy Policy
+                <Link href="/landlord/overview" className="hover:text-emerald-400 transition-colors">
+                  Landlord Portal
+                </Link>
+              </li>
+              <li>
+                <Link href="/landlord/verification" className="hover:text-emerald-400 transition-colors">
+                  Provider ID Verification
+                </Link>
+              </li>
+              <li>
+                <Link href="/admin/dashboard" className="hover:text-emerald-400 transition-colors">
+                  Platform Moderation
                 </Link>
               </li>
             </ul>
-            <div className="mt-4 text-[11px] text-slate-500 leading-relaxed">
-              LodgeHere operates as a verified discovery and inspection coordination platform.
-            </div>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-slate-900 pt-6 text-center text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} LodgeHere Inc. Built for Nigerian University Campuses.</p>
+        <div className="mt-12 border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+          <p>© {new Date().getFullYear()} LodgeHere. Built for genuine Nigerian students & verified property owners.</p>
+          <div className="flex items-center gap-6">
+            <Link href="/how-it-works" className="hover:text-slate-400 transition-colors">
+              Terms & Safety
+            </Link>
+            <Link href="/how-it-works" className="hover:text-slate-400 transition-colors">
+              Privacy Notice
+            </Link>
+            <Link href="/report" className="hover:text-slate-400 transition-colors">
+              Resolution Center
+            </Link>
+          </div>
         </div>
       </div>
     </footer>

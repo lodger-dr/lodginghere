@@ -7,16 +7,34 @@ export type Theme = 'light' | 'dark';
 export const THEME_STORAGE_KEY = 'lodgehere_theme';
 export const THEME_CHANGE_EVENT = 'lodgehere-theme-change';
 
+let memoryTheme: Theme | null = null;
+
 export function getClientTheme(): Theme {
   if (typeof document === 'undefined') return 'light';
 
   try {
-    const stored = localStorage.getItem(THEME_STORAGE_KEY);
-    if (stored === 'dark' || stored === 'light') {
-      return stored as Theme;
+    if (typeof localStorage !== 'undefined' && typeof localStorage.getItem === 'function') {
+      const stored = localStorage.getItem(THEME_STORAGE_KEY);
+      if (stored === 'dark' || stored === 'light') {
+        return stored as Theme;
+      }
     }
   } catch {
     // Ignore storage errors
+  }
+
+  if (memoryTheme) {
+    return memoryTheme;
+  }
+
+  // Check document cookie
+  try {
+    if (document.cookie) {
+      const match = document.cookie.match(/theme=(dark|light)/);
+      if (match) return match[1] as Theme;
+    }
+  } catch {
+    // Ignore
   }
 
   // Check system preference fallback
@@ -30,8 +48,12 @@ export function getClientTheme(): Theme {
 export function setClientTheme(theme: Theme): void {
   if (typeof document === 'undefined') return;
 
+  memoryTheme = theme;
+
   try {
-    localStorage.setItem(THEME_STORAGE_KEY, theme);
+    if (typeof localStorage !== 'undefined' && typeof localStorage.setItem === 'function') {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    }
     document.cookie = `theme=${theme}; path=/; max-age=31536000; SameSite=Lax`;
   } catch {
     // Ignore storage errors
@@ -44,7 +66,13 @@ export function setClientTheme(theme: Theme): void {
     root.classList.remove('dark');
   }
 
-  window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, { detail: { theme } }));
+  try {
+    if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
+      window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, { detail: { theme } }));
+    }
+  } catch {
+    // Ignore
+  }
 }
 
 export function useTheme() {
