@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import {
   ShieldCheck,
@@ -9,6 +9,7 @@ import {
   ArrowRight,
   Heart,
   CalendarCheck,
+  CheckCircle2,
 } from 'lucide-react';
 import { Lodge } from '@/types/database';
 import { formatNaira } from '@/lib/utils';
@@ -29,6 +30,8 @@ const TYPE_LABELS: Record<string, string> = {
 };
 
 export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
+  const [isFavorited, setIsFavorited] = useState(false);
+
   const primaryImage =
     lodge.images[0] ||
     'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80';
@@ -43,25 +46,25 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
   const reviewCount = lodge.review_count || 18;
 
   return (
-    <div className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700">
-      {/* Property Cover Image (Matching Template rounded-2xl) */}
-      <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800">
+    <div className="group flex flex-col overflow-hidden rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800/80 p-3.5 shadow-sm transition-all duration-200 hover:-translate-y-1 hover:shadow-xl hover:border-slate-300 dark:hover:border-slate-700">
+      {/* Property Cover Image (With neutral inset outline to prevent edge bleeding) */}
+      <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800 ring-1 ring-black/5 dark:ring-white/10">
         <img
           src={primaryImage}
           alt={lodge.title}
-          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
           loading="lazy"
         />
 
         {/* Top Badges */}
-        <div className="absolute top-3 left-3 flex flex-wrap items-center gap-1.5">
+        <div className="absolute top-3 left-3 flex flex-wrap items-center gap-1.5 z-10">
           {lodge.landlord_verified && (
-            <span className="inline-flex items-center gap-1 rounded-full bg-white/95 px-3 py-1 text-[11px] font-bold text-slate-900 shadow-xs backdrop-blur-md dark:bg-slate-900/95 dark:text-white">
+            <span className="inline-flex items-center gap-1 rounded-full bg-white/95 dark:bg-slate-900/95 px-3 py-1 text-[11px] font-bold text-slate-900 dark:text-white shadow-xs backdrop-blur-md">
               <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
               <span>Verified</span>
             </span>
           )}
-          <span className="inline-flex items-center rounded-full bg-slate-900/85 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md dark:bg-black/80">
+          <span className="inline-flex items-center rounded-full bg-slate-900/85 dark:bg-black/85 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md">
             {TYPE_LABELS[lodge.accommodation_type] || lodge.accommodation_type}
           </span>
         </div>
@@ -69,26 +72,30 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
         {/* Top-Right Favorite Button */}
         <button
           type="button"
-          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-xs backdrop-blur-md transition-colors hover:text-rose-600 hover:bg-white dark:bg-slate-900/90 dark:text-slate-200 dark:hover:text-rose-400 dark:hover:bg-slate-900 cursor-pointer"
-          aria-label="Save to favourites"
           onClick={(e) => {
             e.preventDefault();
             e.stopPropagation();
+            setIsFavorited(!isFavorited);
           }}
+          className={`absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full backdrop-blur-md transition-all duration-150 z-10 active:scale-90 cursor-pointer ${isFavorited
+              ? 'bg-rose-50 text-rose-600 shadow-sm'
+              : 'bg-white/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-200 hover:text-rose-600 hover:bg-white'
+            }`}
+          aria-label="Save to favourites"
         >
-          <Heart className="h-4 w-4" />
+          <Heart className={`h-4 w-4 ${isFavorited ? 'fill-rose-600' : ''}`} />
         </button>
 
         {/* Bottom Availability Pill */}
-        <div className="absolute bottom-3 left-3">
+        <div className="absolute bottom-3 left-3 z-10">
           {lodge.available_rooms > 0 ? (
             <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-600/90 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs backdrop-blur-md">
               <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" />
-              <span>{lodge.available_rooms} room{lodge.available_rooms > 1 ? 's' : ''} available</span>
+              <span>{lodge.available_rooms} room{lodge.available_rooms > 1 ? 's' : ''} vacant</span>
             </span>
           ) : (
             <span className="inline-flex items-center rounded-full bg-slate-900/85 px-2.5 py-1 text-[11px] font-medium text-slate-200 backdrop-blur-md">
-              Occupied
+              Fully Occupied
             </span>
           )}
         </div>
@@ -104,10 +111,10 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
             </h3>
           </Link>
           <div className="text-right shrink-0">
-            <span className="text-base font-extrabold text-slate-900 dark:text-white tracking-tight">
+            <span className="text-base font-extrabold text-slate-900 dark:text-white tracking-tight tabular-nums">
               {formatNaira(lodge.pricing.min_price)}
             </span>
-            <span className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">/yr</span>
+            <span className="text-[11px] text-slate-400 dark:text-slate-500 font-medium"> / yr</span>
           </div>
         </div>
 
@@ -119,13 +126,13 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
           </div>
           <div className="text-right shrink-0">
             <span className="text-[11px] text-slate-400 dark:text-slate-500">
-              Total: <span className="font-semibold text-slate-700 dark:text-slate-300">{formatNaira(totalUpfront)}</span>
+              Total: <span className="font-semibold text-slate-700 dark:text-slate-300 tabular-nums">{formatNaira(totalUpfront)}</span>
             </span>
           </div>
         </div>
 
         {/* Row 3: 5 Amber Stars & Actions (Matching template star rating display) */}
-        <div className="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-800">
+        <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800">
           <div className="flex items-center gap-1">
             <div className="flex items-center text-amber-400">
               {[...Array(5)].map((_, i) => (
@@ -135,10 +142,10 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
                 />
               ))}
             </div>
-            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 ml-1">
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 ml-1 tabular-nums">
               {rating.toFixed(1)}
             </span>
-            <span className="text-[11px] text-slate-400 dark:text-slate-500">
+            <span className="text-[11px] text-slate-400 dark:text-slate-500 tabular-nums">
               ({reviewCount})
             </span>
           </div>
@@ -147,7 +154,7 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
             <button
               type="button"
               onClick={() => onBookInspection?.(lodge)}
-              className="inline-flex items-center gap-1 rounded-full bg-slate-900 hover:bg-black dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white dark:text-slate-950 px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all active:scale-95 cursor-pointer"
+              className="inline-flex items-center gap-1 rounded-full bg-slate-900 hover:bg-black dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white dark:text-slate-950 px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all active:scale-[0.96] cursor-pointer"
             >
               <CalendarCheck className="h-3 w-3" />
               <span>Inspect</span>
