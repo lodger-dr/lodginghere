@@ -30,7 +30,7 @@ export const studentSignUpSchema = z.object({
     .regex(/^(\+234|0)[789][01]\d{8}$/, 'Please enter a valid Nigerian phone number')
     .optional()
     .or(z.literal('')),
-  universityId: z.string().uuid('Please select a valid university').optional().or(z.literal('')),
+  universityId: z.string().min(1, 'Please select a valid university').optional().or(z.literal('')),
   department: z.string().max(100).optional().or(z.literal('')),
 });
 

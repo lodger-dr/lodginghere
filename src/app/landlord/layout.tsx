@@ -79,3 +79,4 @@ export default function LandlordLayout({ children }: LandlordLayoutProps) {
     </div>
   );
 }
+

@@ -134,7 +134,14 @@ BEGIN
   -- Insert subprofile based on role
   IF v_role = 'student' THEN
     IF (NEW.raw_user_meta_data->>'university_id') IS NOT NULL AND (NEW.raw_user_meta_data->>'university_id') <> '' THEN
-      v_university_id := (NEW.raw_user_meta_data->>'university_id')::UUID;
+      BEGIN
+        v_university_id := (NEW.raw_user_meta_data->>'university_id')::UUID;
+      EXCEPTION WHEN invalid_text_representation THEN
+        SELECT id INTO v_university_id
+        FROM public.universities
+        WHERE slug = (NEW.raw_user_meta_data->>'university_id')
+        LIMIT 1;
+      END;
     ELSE
       v_university_id := NULL;
     END IF;

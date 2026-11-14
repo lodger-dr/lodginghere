@@ -92,6 +92,35 @@ describe('Auth Validation Schemas', () => {
       const result = studentSignUpSchema.safeParse(invalidPhone);
       expect(result.success).toBe(false);
     });
+
+    it('should accept universityId as a slug or a UUID or empty', () => {
+      const studentWithSlug = {
+        role: 'student' as const,
+        fullName: 'Test Student',
+        email: 'test@example.com',
+        password: 'SecurePassword1',
+        universityId: 'university-of-lagos',
+      };
+      expect(studentSignUpSchema.safeParse(studentWithSlug).success).toBe(true);
+
+      const studentWithUUID = {
+        role: 'student' as const,
+        fullName: 'Test Student',
+        email: 'test@example.com',
+        password: 'SecurePassword1',
+        universityId: '123e4567-e89b-12d3-a456-426614174000',
+      };
+      expect(studentSignUpSchema.safeParse(studentWithUUID).success).toBe(true);
+
+      const studentWithEmpty = {
+        role: 'student' as const,
+        fullName: 'Test Student',
+        email: 'test@example.com',
+        password: 'SecurePassword1',
+        universityId: '',
+      };
+      expect(studentSignUpSchema.safeParse(studentWithEmpty).success).toBe(true);
+    });
   });
 
   describe('landlordSignUpSchema', () => {
@@ -154,3 +183,4 @@ describe('Auth Validation Schemas', () => {
     });
   });
 });
+
