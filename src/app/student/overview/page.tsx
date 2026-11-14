@@ -15,7 +15,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { getInspections } from '@/lib/data/lodges-data';
+import { getInspections, fetchInspections } from '@/lib/data/lodges-data';
 import { Inspection } from '@/types/database';
 
 export default function StudentOverviewPage() {
@@ -24,10 +24,13 @@ export default function StudentOverviewPage() {
   useEffect(() => {
     const load = () => {
       setInspections(getInspections());
+      fetchInspections().then((data) => setInspections(data));
     };
     load();
 
-    const handleDataChange = () => load();
+    const handleDataChange = () => {
+      setInspections(getInspections());
+    };
     window.addEventListener('lodgehere-data-change', handleDataChange);
     return () => window.removeEventListener('lodgehere-data-change', handleDataChange);
   }, []);

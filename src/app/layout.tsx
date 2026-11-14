@@ -7,9 +7,9 @@ import { Footer } from '@/components/shared/footer';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Student Accommodation Marketplace — Verified Campus Lodges',
+  title: 'LodgeHere — Verified Student Accommodation Across Nigerian Campuses',
   description:
-    'Find genuine student accommodation across universities in Nigeria. Verified landlords, transparent pricing, physical inspection before booking, and mutual terms confirmation.',
+    'Find genuine student accommodation near your university. Verified landlords, 100% transparent upfront pricing, and direct physical inspections.',
 };
 
 export default function RootLayout({

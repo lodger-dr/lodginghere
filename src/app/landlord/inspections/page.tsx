@@ -18,7 +18,7 @@ import {
   AlertCircle,
   X,
 } from 'lucide-react';
-import { getInspections, updateInspectionStatus } from '@/lib/data/lodges-data';
+import { getInspections, fetchInspections, updateInspectionStatus } from '@/lib/data/lodges-data';
 import { Inspection, InspectionStatus, InspectionTimeSlot } from '@/types/database';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -40,13 +40,15 @@ export default function LandlordInspectionsPage() {
   const [acceptNote, setAcceptNote] = useState('Confirmed. Caretaker will be on-site to guide you.');
 
   const loadData = () => {
-    // In landlord view, load all inspection requests
     setInspections(getInspections());
+    fetchInspections().then((data) => setInspections(data));
   };
 
   useEffect(() => {
     loadData();
-    const handleDataChange = () => loadData();
+    const handleDataChange = () => {
+      setInspections(getInspections());
+    };
     window.addEventListener('lodgehere-data-change', handleDataChange);
     return () => window.removeEventListener('lodgehere-data-change', handleDataChange);
   }, []);

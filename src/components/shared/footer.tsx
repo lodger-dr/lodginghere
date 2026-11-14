@@ -1,39 +1,35 @@
 import React from 'react';
 import Link from 'next/link';
-import { Building2, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
+import { Logo } from './logo';
 
 export function Footer() {
   return (
-    <footer className="border-t border-slate-200 bg-slate-900 text-slate-300">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
-          {/* Column 1: Descriptor & Trust Note */}
+    <footer className="border-t border-slate-800 bg-slate-950 text-slate-300">
+      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
+          {/* Column 1: Brand & Mission */}
           <div className="space-y-4 md:col-span-1">
-            <div className="flex items-center gap-2">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-500 text-white">
-                <Building2 className="h-5 w-5" />
-              </div>
-              <span className="text-base font-bold text-white">Student Accommodation</span>
-            </div>
+            <Logo inverted />
             <p className="text-xs text-slate-400 leading-relaxed">
-              Find verified lodges around universities across Nigeria without the stress. Discovery, physical
-              inspection scheduling, and mutual booking confirmation.
+              Next-generation verified student accommodation across Nigerian universities. Upfront pricing,
+              direct landlord contact, and physical room inspections.
             </p>
-            <div className="rounded-lg border border-slate-800 bg-slate-800/60 p-3 text-xs text-slate-400 space-y-1">
-              <div className="flex items-center gap-1.5 font-medium text-emerald-400">
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-3.5 text-xs text-slate-400 space-y-1">
+              <div className="flex items-center gap-1.5 font-semibold text-emerald-400">
                 <ShieldCheck className="h-4 w-4" />
-                <span>Inspection Before Booking</span>
+                <span>Physical Inspection Guarantee</span>
               </div>
-              <p className="text-[11px] text-slate-400">
-                The platform does not process rental payments. Physical inspections must occur before a booking request.
+              <p className="text-[11px] text-slate-400 leading-relaxed">
+                Room inspections must occur in person with the landlord before booking confirmations are created.
               </p>
             </div>
           </div>
 
-          {/* Column 2: Marketplace */}
+          {/* Column 2: Discover */}
           <div>
-            <h4 className="text-sm font-semibold text-white tracking-wider uppercase">Marketplace</h4>
-            <ul className="mt-4 space-y-2 text-sm">
+            <h4 className="text-xs font-bold text-white tracking-widest uppercase">Explore</h4>
+            <ul className="mt-4 space-y-2.5 text-xs text-slate-400">
               <li>
                 <Link href="/explore" className="hover:text-emerald-400 transition-colors">
                   Explore Lodges
@@ -41,7 +37,7 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/universities" className="hover:text-emerald-400 transition-colors">
-                  University Directory
+                  Universities Directory
                 </Link>
               </li>
               <li>
@@ -50,7 +46,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/landlord/overview" className="hover:text-emerald-400 transition-colors">
+                <Link href="/landlord/properties" className="hover:text-emerald-400 transition-colors">
                   List Your Property
                 </Link>
               </li>
@@ -59,16 +55,16 @@ export function Footer() {
 
           {/* Column 3: Trust & Safety */}
           <div>
-            <h4 className="text-sm font-semibold text-white tracking-wider uppercase">Trust & Safety</h4>
-            <ul className="mt-4 space-y-2 text-sm">
+            <h4 className="text-xs font-bold text-white tracking-widest uppercase">Trust & Safety</h4>
+            <ul className="mt-4 space-y-2.5 text-xs text-slate-400">
               <li>
                 <Link href="/how-it-works#verification" className="hover:text-emerald-400 transition-colors">
-                  Verification Model
+                  Verification Standards
                 </Link>
               </li>
               <li>
                 <Link href="/how-it-works#inspection-rules" className="hover:text-emerald-400 transition-colors">
-                  Inspection Rules
+                  Inspection Protocols
                 </Link>
               </li>
               <li>
@@ -77,8 +73,8 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <span className="text-xs text-slate-500 block pt-1">
-                  Three-tier checks: Landlord Identity, Property Authority, Room Availability.
+                <span className="text-[11px] text-slate-500 block pt-1 leading-relaxed">
+                  3-tier checks: Landlord Identity, Property Authority, Live Vacancy Status.
                 </span>
               </li>
             </ul>
@@ -86,11 +82,11 @@ export function Footer() {
 
           {/* Column 4: Legal & Notice */}
           <div>
-            <h4 className="text-sm font-semibold text-white tracking-wider uppercase">Legal & Compliance</h4>
-            <ul className="mt-4 space-y-2 text-sm">
+            <h4 className="text-xs font-bold text-white tracking-widest uppercase">Legal</h4>
+            <ul className="mt-4 space-y-2.5 text-xs text-slate-400">
               <li>
                 <Link href="/how-it-works#terms" className="hover:text-emerald-400 transition-colors">
-                  Platform Terms
+                  Terms of Service
                 </Link>
               </li>
               <li>
@@ -99,17 +95,16 @@ export function Footer() {
                 </Link>
               </li>
             </ul>
-            <div className="mt-4 text-xs text-slate-500">
-              Booking confirmation is a mutual record of agreed terms, not a legal tenancy agreement or proof of payment.
+            <div className="mt-4 text-[11px] text-slate-500 leading-relaxed">
+              LodgeHere operates as a verified discovery and inspection coordination platform.
             </div>
           </div>
         </div>
 
-        <div className="mt-12 border-t border-slate-800 pt-6 text-center text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} Student Accommodation Marketplace. Built for Nigerian Universities.</p>
+        <div className="mt-12 border-t border-slate-900 pt-6 text-center text-xs text-slate-500">
+          <p>© {new Date().getFullYear()} LodgeHere Inc. Built for Nigerian University Campuses.</p>
         </div>
       </div>
     </footer>
   );
 }
-

@@ -17,7 +17,7 @@ import {
   AlertCircle,
   Clock,
 } from 'lucide-react';
-import { getLodges, saveLodge, deleteLodge, AMENITIES_CATALOG } from '@/lib/data/lodges-data';
+import { getLodges, fetchLodges, saveLodge, deleteLodge, AMENITIES_CATALOG, DEFAULT_LANDLORD_ID } from '@/lib/data/lodges-data';
 import { Lodge, AmenityKey, AccommodationType, ListingStatus } from '@/types/database';
 import { NIGERIAN_UNIVERSITIES } from '@/lib/data/nigerian-universities';
 import { formatNaira } from '@/lib/utils';
@@ -25,6 +25,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { ImageUploader } from '@/components/ui/image-uploader';
 
 export default function LandlordPropertiesPage() {
   const [lodges, setLodges] = useState<Lodge[]>([]);
@@ -47,22 +48,22 @@ export default function LandlordPropertiesPage() {
     'security_guard',
     'gated_compound',
   ]);
-  const [imageUrl, setImageUrl] = useState(
-    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80'
-  );
+  const [images, setImages] = useState<string[]>([]);
   const [description, setDescription] = useState(
     'Modern, secure student accommodation with continuous water supply, backup solar power, and close proximity to campus gate.'
   );
   const [formError, setFormError] = useState<string | null>(null);
 
   const loadLodges = () => {
-    // In demo/production, filter by current landlord or show all landlord managed listings
     setLodges(getLodges());
+    fetchLodges().then((data) => setLodges(data));
   };
 
   useEffect(() => {
     loadLodges();
-    const handleDataChange = () => loadLodges();
+    const handleDataChange = () => {
+      setLodges(getLodges());
+    };
     window.addEventListener('lodgehere-data-change', handleDataChange);
     return () => window.removeEventListener('lodgehere-data-change', handleDataChange);
   }, []);
@@ -107,18 +108,21 @@ export default function LandlordPropertiesPage() {
         legal_agency_fee: 0,
       },
       amenities: selectedAmenities,
-      images: [imageUrl],
+      images: images.length > 0 ? images : [
+        'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+      ],
       status: 'approved',
       rating: 5.0,
       review_count: 1,
-      total_rooms: 4,
-      available_rooms: 4,
+      total_rooms: 0,
+      available_rooms: 0,
       created_at: new Date().toISOString(),
     };
 
     saveLodge(newLodge);
     setIsAddModalOpen(false);
     setFormError(null);
+    setImages([]);
     // Reset basic fields
     setTitle('');
     setAddress('');
@@ -479,14 +483,15 @@ export default function LandlordPropertiesPage() {
                 </div>
               </div>
 
-              {/* Image URL */}
+              {/* Real Property Images Upload via Supabase Storage */}
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Cover Photo URL</label>
-                <Input
-                  value={imageUrl}
-                  onChange={(e) => setImageUrl(e.target.value)}
-                  placeholder="https://images.unsplash.com/photo-..."
-                  className="text-xs"
+                <label className="text-xs font-semibold text-slate-700">
+                  Property Photos (Real Upload to Storage)
+                </label>
+                <ImageUploader
+                  value={images}
+                  onChange={setImages}
+                  maxFiles={6}
                 />
               </div>
 

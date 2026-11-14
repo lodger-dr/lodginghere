@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { getLodges, getInspections } from '@/lib/data/lodges-data';
+import { getLodges, fetchLodges, getInspections, fetchInspections } from '@/lib/data/lodges-data';
 import { Lodge, Inspection } from '@/types/database';
 
 export default function LandlordOverviewPage() {
@@ -25,10 +25,15 @@ export default function LandlordOverviewPage() {
     const load = () => {
       setLodges(getLodges());
       setInspections(getInspections());
+      fetchLodges().then((l) => setLodges(l));
+      fetchInspections().then((i) => setInspections(i));
     };
     load();
 
-    const handleDataChange = () => load();
+    const handleDataChange = () => {
+      setLodges(getLodges());
+      setInspections(getInspections());
+    };
     window.addEventListener('lodgehere-data-change', handleDataChange);
     return () => window.removeEventListener('lodgehere-data-change', handleDataChange);
   }, []);

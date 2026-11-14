@@ -17,7 +17,9 @@ import {
 } from 'lucide-react';
 import {
   getLodges,
+  fetchLodges,
   getRooms,
+  fetchRooms,
   saveRoom,
   updateRoomStatus,
   deleteRoom,
@@ -48,14 +50,18 @@ function RoomsContent() {
   const [formError, setFormError] = useState<string | null>(null);
 
   const loadData = () => {
-    const allLodges = getLodges();
-    setLodges(allLodges);
+    setLodges(getLodges());
     setRooms(getRooms(selectedPropertyId || undefined));
+    fetchLodges().then((l) => setLodges(l));
+    fetchRooms(selectedPropertyId || undefined).then((r) => setRooms(r));
   };
 
   useEffect(() => {
     loadData();
-    const handleDataChange = () => loadData();
+    const handleDataChange = () => {
+      setLodges(getLodges());
+      setRooms(getRooms(selectedPropertyId || undefined));
+    };
     window.addEventListener('lodgehere-data-change', handleDataChange);
     return () => window.removeEventListener('lodgehere-data-change', handleDataChange);
   }, [selectedPropertyId]);

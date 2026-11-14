@@ -16,7 +16,7 @@ import {
   ChevronRight,
   RotateCcw,
 } from 'lucide-react';
-import { getInspections, updateInspectionStatus } from '@/lib/data/lodges-data';
+import { getInspections, fetchInspections, updateInspectionStatus } from '@/lib/data/lodges-data';
 import { Inspection, InspectionStatus } from '@/types/database';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -27,13 +27,15 @@ export default function StudentInspectionsPage() {
   const [activeTab, setActiveTab] = useState<'all' | 'pending' | 'accepted' | 'rescheduled' | 'completed'>('all');
 
   const loadData = () => {
-    // In student view, load all current student inspections
     setInspections(getInspections());
+    fetchInspections().then((data) => setInspections(data));
   };
 
   useEffect(() => {
     loadData();
-    const handleDataChange = () => loadData();
+    const handleDataChange = () => {
+      setInspections(getInspections());
+    };
     window.addEventListener('lodgehere-data-change', handleDataChange);
     return () => window.removeEventListener('lodgehere-data-change', handleDataChange);
   }, []);

@@ -8,6 +8,7 @@ import {
   AccommodationType,
   AmenityKey,
 } from '@/types/database';
+import { createClient } from '@/lib/supabase/client';
 
 export const AMENITIES_CATALOG: { key: AmenityKey; label: string; icon: string }[] = [
   { key: 'running_water', label: 'Borehole / Running Water', icon: 'Droplets' },
@@ -22,13 +23,14 @@ export const AMENITIES_CATALOG: { key: AmenityKey; label: string; icon: string }
   { key: 'kitchen_cabinet', label: 'Kitchen Cabinets & Sink', icon: 'Utensils' },
 ];
 
+// Verified Seed Lodges for Campus Housing
 export const SEED_LODGES: Lodge[] = [
   {
     id: 'lodge-unilag-01',
     title: 'Heritage Heights Student Villa',
     slug: 'heritage-heights-student-villa',
     description:
-      'Modern executive student accommodation located right in the heart of Akoka, Yaba. Features reliable 24/7 borehole running water, solar inverter backup for nighttime reading, secured gated perimeter with uniformed security guard, and dedicated prepaid electricity meters per unit. Walking distance to UNILAG campus gate.',
+      'Executive self-contained student apartments located along St. Finbarrs College Road, Akoka. Features reliable 24/7 borehole water, backup power supply, fully tiled rooms, dedicated prepaid electricity meters, and gated security with access control. 5 minutes walk to UNILAG Main Gate.',
     landlord_id: 'landlord-adebayo',
     landlord_name: 'Chief Adebayo Olanrewaju',
     landlord_phone: '+234 803 234 5678',
@@ -38,7 +40,7 @@ export const SEED_LODGES: Lodge[] = [
     campus_name: 'Akoka Main Campus',
     neighbourhood: 'Akoka, Yaba',
     address: '14 St. Finbarrs College Road, Akoka, Yaba, Lagos',
-    distance_to_campus: '5 mins walk from UNILAG Main Gate',
+    distance_to_campus: '5 mins walk to Main Gate',
     accommodation_type: 'self_contained',
     pricing: {
       min_price: 450000,
@@ -60,31 +62,75 @@ export const SEED_LODGES: Lodge[] = [
       'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
       'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80',
     ],
     status: 'approved',
     rating: 4.9,
     review_count: 18,
     total_rooms: 12,
     available_rooms: 3,
-    created_at: '2026-10-15T10:00:00Z',
+    created_at: '2026-09-01T10:00:00Z',
+    updated_at: '2026-11-10T12:00:00Z',
   },
   {
-    id: 'lodge-unilag-02',
-    title: 'Emerald Crest Residence',
-    slug: 'emerald-crest-residence',
+    id: 'lodge-unn-01',
+    title: 'Silver Crest Campus Lodge',
+    slug: 'silver-crest-campus-lodge',
     description:
-      'Premium student apartments designed for scholars who value privacy and peaceful study. Located off University Road with high-speed fiber Wi-Fi, central backup generator, paved compound, and spacious rooms equipped with modern kitchenettes and ensuite bathrooms.',
-    landlord_id: 'landlord-folashade',
-    landlord_name: 'Engr. Folashade Adeleke',
-    landlord_phone: '+234 812 345 6789',
+      'Premier student residence situated on Ofulonu Road near UNN Hilltop gate. Designed for serious students with quiet study atmosphere, continuous running borehole water, individual meters, and perimeter fence with 24/7 security.',
+    landlord_id: 'landlord-eze',
+    landlord_name: 'Engr. Emeka Eze',
+    landlord_phone: '+234 802 345 6789',
     landlord_verified: true,
-    university_slug: 'university-of-lagos',
-    university_name: 'University of Lagos',
-    campus_name: 'Akoka Main Campus',
-    neighbourhood: 'University Road, Akoka',
-    address: '28 University Road, Akoka, Lagos',
-    distance_to_campus: '3 mins walk from UNILAG Second Gate',
+    university_slug: 'university-of-nigeria-nsukka',
+    university_name: 'University of Nigeria, Nsukka',
+    campus_name: 'Nsukka Campus',
+    neighbourhood: 'Hilltop, Nsukka',
+    address: '22 Ofulonu Road, Hilltop, Nsukka, Enugu',
+    distance_to_campus: '7 mins walk to Hilltop Gate',
+    accommodation_type: 'self_contained',
+    pricing: {
+      min_price: 320000,
+      max_price: 380000,
+      caution_deposit: 30000,
+      service_charge: 25000,
+      legal_agency_fee: 0,
+    },
+    amenities: [
+      'running_water',
+      'generator',
+      'security_guard',
+      'gated_compound',
+      'prepaid_meter',
+      'tiled_floor',
+    ],
+    images: [
+      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=80',
+    ],
+    status: 'approved',
+    rating: 4.8,
+    review_count: 14,
+    total_rooms: 16,
+    available_rooms: 4,
+    created_at: '2026-09-15T08:00:00Z',
+    updated_at: '2026-11-12T14:00:00Z',
+  },
+  {
+    id: 'lodge-ui-01',
+    title: 'Greenwood Executive Residency',
+    slug: 'greenwood-executive-residency',
+    description:
+      'Spacious modern student apartments along Polytechnic Road, Sango, Ibadan. Serviced with stable borehole water, solar inverters, fitted kitchen cabinetry, and round-the-clock security surveillance.',
+    landlord_id: 'landlord-alabi',
+    landlord_name: 'Dr. (Mrs) Funke Alabi',
+    landlord_phone: '+234 805 456 7890',
+    landlord_verified: true,
+    university_slug: 'university-of-ibadan',
+    university_name: 'University of Ibadan',
+    campus_name: 'Main Campus',
+    neighbourhood: 'Sango, Ibadan',
+    address: '8 Polytechnic Road, Sango, Ibadan, Oyo',
+    distance_to_campus: '8 mins commute to UI Main Gate',
     accommodation_type: 'one_bedroom',
     pricing: {
       min_price: 550000,
@@ -95,475 +141,35 @@ export const SEED_LODGES: Lodge[] = [
     },
     amenities: [
       'running_water',
-      'generator',
-      'wifi',
-      'gated_compound',
+      'solar_inverter',
       'security_guard',
+      'gated_compound',
       'prepaid_meter',
       'kitchen_cabinet',
       'tiled_floor',
+      'wifi',
     ],
     images: [
       'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=1200&q=80',
+      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
     ],
     status: 'approved',
-    rating: 4.8,
-    review_count: 14,
+    rating: 5.0,
+    review_count: 22,
     total_rooms: 8,
     available_rooms: 2,
-    created_at: '2026-10-18T12:00:00Z',
-  },
-  {
-    id: 'lodge-unilag-03',
-    title: 'Apex Scholars Court',
-    slug: 'apex-scholars-court',
-    description:
-      'Affordable, well-maintained single and self-contained student rooms in Abule Oja. Quiet atmosphere, close to student markets, with constant pumped borehole water, perimeter lighting, and friendly on-site caretaker.',
-    landlord_id: 'landlord-adebayo',
-    landlord_name: 'Chief Adebayo Olanrewaju',
-    landlord_phone: '+234 803 234 5678',
-    landlord_verified: true,
-    university_slug: 'university-of-lagos',
-    university_name: 'University of Lagos',
-    campus_name: 'Akoka Main Campus',
-    neighbourhood: 'Abule Oja, Yaba',
-    address: '9 Commercial Avenue, Abule Oja, Yaba, Lagos',
-    distance_to_campus: '8 mins walk from UNILAG Back Gate',
-    accommodation_type: 'single_room',
-    pricing: {
-      min_price: 320000,
-      max_price: 380000,
-      caution_deposit: 30000,
-      service_charge: 20000,
-      legal_agency_fee: 0,
-    },
-    amenities: [
-      'running_water',
-      'gated_compound',
-      'prepaid_meter',
-      'tiled_floor',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1554995207-c18c203602cb?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80',
-    ],
-    status: 'approved',
-    rating: 4.7,
-    review_count: 9,
-    total_rooms: 16,
-    available_rooms: 4,
-    created_at: '2026-10-22T08:30:00Z',
-  },
-  {
-    id: 'lodge-ui-01',
-    title: 'Premier Court Suites',
-    slug: 'premier-court-suites',
-    description:
-      'Top-rated student residence situated right in Agbowo opposite University of Ibadan Main Gate. Fully fenced with electric wire fencing, industrial borehole, study lounge with 24-hour solar electricity, and spacious rooms.',
-    landlord_id: 'landlord-ibrahim',
-    landlord_name: 'Alhaji Ibrahim Danjuma',
-    landlord_phone: '+234 802 987 6543',
-    landlord_verified: true,
-    university_slug: 'university-of-ibadan',
-    university_name: 'University of Ibadan',
-    campus_name: 'Main Campus',
-    neighbourhood: 'Agbowo, Ibadan',
-    address: '15 UI Road, Opposite Main Gate, Agbowo, Ibadan, Oyo State',
-    distance_to_campus: '3 mins walk from UI Main Gate',
-    accommodation_type: 'self_contained',
-    pricing: {
-      min_price: 280000,
-      max_price: 340000,
-      caution_deposit: 30000,
-      service_charge: 25000,
-      legal_agency_fee: 0,
-    },
-    amenities: [
-      'running_water',
-      'solar_inverter',
-      'security_guard',
-      'gated_compound',
-      'prepaid_meter',
-      'tiled_floor',
-      'wardrobe',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-    ],
-    status: 'approved',
-    rating: 4.9,
-    review_count: 22,
-    total_rooms: 10,
-    available_rooms: 2,
-    created_at: '2026-10-12T14:00:00Z',
-  },
-  {
-    id: 'lodge-ui-02',
-    title: "Scholar's Haven Lodge",
-    slug: 'scholars-haven-lodge',
-    description:
-      'Peaceful 1-bedroom apartments and shared flats in Bodija close to UI Second Gate. Ideal for postgraduate and undergraduate students looking for quiet surroundings, ample water storage tanks, and dedicated parking.',
-    landlord_id: 'landlord-ibrahim',
-    landlord_name: 'Alhaji Ibrahim Danjuma',
-    landlord_phone: '+234 802 987 6543',
-    landlord_verified: true,
-    university_slug: 'university-of-ibadan',
-    university_name: 'University of Ibadan',
-    campus_name: 'Main Campus',
-    neighbourhood: 'Bodija, Ibadan',
-    address: '4 Osuntokun Avenue, Old Bodija, Ibadan',
-    distance_to_campus: '6 mins drive / 12 mins walk to UI Second Gate',
-    accommodation_type: 'one_bedroom',
-    pricing: {
-      min_price: 350000,
-      max_price: 420000,
-      caution_deposit: 40000,
-      service_charge: 30000,
-      legal_agency_fee: 0,
-    },
-    amenities: [
-      'running_water',
-      'gated_compound',
-      'security_guard',
-      'prepaid_meter',
-      'kitchen_cabinet',
-      'tiled_floor',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-    ],
-    status: 'approved',
-    rating: 4.8,
-    review_count: 11,
-    total_rooms: 6,
-    available_rooms: 1,
-    created_at: '2026-10-25T11:20:00Z',
-  },
-  {
-    id: 'lodge-unn-01',
-    title: 'Lion Gate Executive Villa',
-    slug: 'lion-gate-executive-villa',
-    description:
-      'Premier off-campus accommodation for UNN students in Ofulonu. Consistent water supply powered by a heavy-duty solar submersible pump, fenced compound with security lighting, and fully tiled rooms.',
-    landlord_id: 'landlord-chukwu',
-    landlord_name: 'Dr. Emeka Chukwu',
-    landlord_phone: '+234 803 765 4321',
-    landlord_verified: true,
-    university_slug: 'university-of-nigeria-nsukka',
-    university_name: 'University of Nigeria, Nsukka',
-    campus_name: 'Nsukka Campus',
-    neighbourhood: 'Ofulonu, Nsukka',
-    address: '8 University Market Road, Ofulonu, Nsukka, Enugu State',
-    distance_to_campus: '5 mins walk from UNN Franco Gate',
-    accommodation_type: 'self_contained',
-    pricing: {
-      min_price: 250000,
-      max_price: 300000,
-      caution_deposit: 25000,
-      service_charge: 20000,
-      legal_agency_fee: 0,
-    },
-    amenities: [
-      'running_water',
-      'solar_inverter',
-      'gated_compound',
-      'prepaid_meter',
-      'tiled_floor',
-      'wardrobe',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
-    ],
-    status: 'approved',
-    rating: 4.9,
-    review_count: 16,
-    total_rooms: 14,
-    available_rooms: 4,
-    created_at: '2026-10-14T09:15:00Z',
-  },
-  {
-    id: 'lodge-oau-01',
-    title: 'Great Ife Prime Lodge',
-    slug: 'great-ife-prime-lodge',
-    description:
-      'Spacious self-contained rooms situated in Mayfair, Ile-Ife. Easy commute to campus via campus shuttles. Equipped with dual borehole system, solar-powered security perimeter lights, and individual balconies.',
-    landlord_id: 'landlord-adebayo',
-    landlord_name: 'Chief Adebayo Olanrewaju',
-    landlord_phone: '+234 803 234 5678',
-    landlord_verified: true,
-    university_slug: 'obafemi-awolowo-university',
-    university_name: 'Obafemi Awolowo University',
-    campus_name: 'Main Campus',
-    neighbourhood: 'Mayfair, Ile-Ife',
-    address: '22 Mayfair Roundabout, Ile-Ife, Osun State',
-    distance_to_campus: '8 mins campus shuttle to OAU Gate',
-    accommodation_type: 'self_contained',
-    pricing: {
-      min_price: 300000,
-      max_price: 360000,
-      caution_deposit: 30000,
-      service_charge: 25000,
-      legal_agency_fee: 0,
-    },
-    amenities: [
-      'running_water',
-      'solar_inverter',
-      'security_guard',
-      'gated_compound',
-      'prepaid_meter',
-      'tiled_floor',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=1200&q=80',
-    ],
-    status: 'approved',
-    rating: 4.8,
-    review_count: 8,
-    total_rooms: 10,
-    available_rooms: 3,
-    created_at: '2026-10-20T16:45:00Z',
-  },
-  {
-    id: 'lodge-futa-01',
-    title: 'Apex Tech Lodging',
-    slug: 'apex-tech-lodging',
-    description:
-      'Purpose-built student apartment 2 minutes from FUTA South Gate. High-speed Wi-Fi, constant water supply, solar reading lights in each room, and tight gated security.',
-    landlord_id: 'landlord-folashade',
-    landlord_name: 'Engr. Folashade Adeleke',
-    landlord_phone: '+234 812 345 6789',
-    landlord_verified: true,
-    university_slug: 'federal-university-of-technology-akure',
-    university_name: 'Federal University of Technology, Akure',
-    campus_name: 'South Gate Campus',
-    neighbourhood: 'South Gate, Akure',
-    address: '5 South Gate Road, Akure, Ondo State',
-    distance_to_campus: '2 mins walk from FUTA South Gate',
-    accommodation_type: 'self_contained',
-    pricing: {
-      min_price: 260000,
-      max_price: 310000,
-      caution_deposit: 25000,
-      service_charge: 20000,
-      legal_agency_fee: 0,
-    },
-    amenities: [
-      'running_water',
-      'solar_inverter',
-      'wifi',
-      'security_guard',
-      'gated_compound',
-      'prepaid_meter',
-      'tiled_floor',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
-    ],
-    status: 'approved',
-    rating: 4.9,
-    review_count: 15,
-    total_rooms: 12,
-    available_rooms: 2,
-    created_at: '2026-10-23T13:10:00Z',
+    created_at: '2026-08-20T09:00:00Z',
+    updated_at: '2026-11-14T09:00:00Z',
   },
 ];
 
-export const SEED_ROOMS: Room[] = [
-  // Heritage Heights (lodge-unilag-01)
-  {
-    id: 'room-hh-101',
-    property_id: 'lodge-unilag-01',
-    room_number: 'Room 101 (Ground Floor)',
-    title: 'Standard Executive Self-Contained',
-    accommodation_type: 'self_contained',
-    annual_rent: 450000,
-    total_units: 1,
-    available_units: 1,
-    status: 'available',
-    features: ['Private Bathroom', 'Kitchenette with Sink', 'Wardrobe', 'Prepaid Meter'],
-    images: ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'],
-    created_at: '2026-10-15T10:00:00Z',
-  },
-  {
-    id: 'room-hh-102',
-    property_id: 'lodge-unilag-01',
-    room_number: 'Room 102 (Ground Floor)',
-    title: 'Standard Executive Self-Contained',
-    accommodation_type: 'self_contained',
-    annual_rent: 450000,
-    total_units: 1,
-    available_units: 0,
-    status: 'occupied',
-    features: ['Private Bathroom', 'Kitchenette with Sink', 'Wardrobe'],
-    images: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'],
-    created_at: '2026-10-15T10:00:00Z',
-  },
-  {
-    id: 'room-hh-201',
-    property_id: 'lodge-unilag-01',
-    room_number: 'Room 201 (First Floor)',
-    title: 'Deluxe Corner Self-Contained with Balcony',
-    accommodation_type: 'self_contained',
-    annual_rent: 520000,
-    total_units: 1,
-    available_units: 1,
-    status: 'available',
-    features: ['Private Balcony', 'Water Heater', 'Fitted Wardrobe', 'Cross-ventilation'],
-    images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80'],
-    created_at: '2026-10-15T10:00:00Z',
-  },
-  {
-    id: 'room-hh-202',
-    property_id: 'lodge-unilag-01',
-    room_number: 'Room 202 (First Floor)',
-    title: 'Deluxe Corner Self-Contained with Balcony',
-    accommodation_type: 'self_contained',
-    annual_rent: 520000,
-    total_units: 1,
-    available_units: 1,
-    status: 'available',
-    features: ['Private Balcony', 'Water Heater', 'Fitted Wardrobe'],
-    images: ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'],
-    created_at: '2026-10-15T10:00:00Z',
-  },
-
-  // Emerald Crest (lodge-unilag-02)
-  {
-    id: 'room-ec-01',
-    property_id: 'lodge-unilag-02',
-    room_number: 'Flat 2A',
-    title: '1-Bedroom Mini Flat with Living Room',
-    accommodation_type: 'one_bedroom',
-    annual_rent: 650000,
-    total_units: 1,
-    available_units: 1,
-    status: 'available',
-    features: ['Separate Sitting Room', 'Private Kitchen & Store', 'Water Heater', 'Fiber Wi-Fi'],
-    images: ['https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80'],
-    created_at: '2026-10-18T12:00:00Z',
-  },
-  {
-    id: 'room-ec-02',
-    property_id: 'lodge-unilag-02',
-    room_number: 'Flat 3B',
-    title: '1-Bedroom Mini Flat with Balcony',
-    accommodation_type: 'one_bedroom',
-    annual_rent: 620000,
-    total_units: 1,
-    available_units: 1,
-    status: 'available',
-    features: ['Private Balcony', 'Dedicated Inverter Port', 'Modern Bathroom'],
-    images: ['https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=800&q=80'],
-    created_at: '2026-10-18T12:00:00Z',
-  },
-
-  // Premier Court Suites (lodge-ui-01)
-  {
-    id: 'room-pc-11',
-    property_id: 'lodge-ui-01',
-    room_number: 'Suite 11',
-    title: 'Standard Self-Contained Room',
-    accommodation_type: 'self_contained',
-    annual_rent: 280000,
-    total_units: 1,
-    available_units: 1,
-    status: 'available',
-    features: ['Tiled Floor', 'Modern Toilet & Shower', 'Reading Table Space'],
-    images: ['https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80'],
-    created_at: '2026-10-12T14:00:00Z',
-  },
-  {
-    id: 'room-pc-12',
-    property_id: 'lodge-ui-01',
-    room_number: 'Suite 12',
-    title: 'Large Self-Contained with Balcony',
-    accommodation_type: 'self_contained',
-    annual_rent: 340000,
-    total_units: 1,
-    available_units: 1,
-    status: 'available',
-    features: ['Private Balcony', 'Large Kitchenette', 'Constant Solar Lighting'],
-    images: ['https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80'],
-    created_at: '2026-10-12T14:00:00Z',
-  },
-];
-
-export const SEED_INSPECTIONS: Inspection[] = [
-  {
-    id: 'insp-001',
-    property_id: 'lodge-unilag-01',
-    property_title: 'Heritage Heights Student Villa',
-    property_slug: 'heritage-heights-student-villa',
-    property_address: '14 St. Finbarrs College Road, Akoka, Yaba, Lagos',
-    property_image:
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=800&q=80',
-    student_id: 'student-demo-01',
-    student_name: 'Daniel Okafor',
-    student_phone: '+234 814 990 1234',
-    student_email: 'daniel.student@example.com',
-    landlord_id: 'landlord-adebayo',
-    requested_date: '2026-11-18',
-    time_slot: 'morning',
-    status: 'accepted',
-    student_notes: 'Interested in Room 201 on the first floor with the balcony.',
-    landlord_notes: 'Confirmed. Caretaker Mr. Sunday will be on-site to show you around.',
-    created_at: '2026-11-12T09:30:00Z',
-  },
-  {
-    id: 'insp-002',
-    property_id: 'lodge-ui-01',
-    property_title: 'Premier Court Suites',
-    property_slug: 'premier-court-suites',
-    property_address: '15 UI Road, Opposite Main Gate, Agbowo, Ibadan',
-    property_image:
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80',
-    student_id: 'student-demo-01',
-    student_name: 'Daniel Okafor',
-    student_phone: '+234 814 990 1234',
-    student_email: 'daniel.student@example.com',
-    landlord_id: 'landlord-ibrahim',
-    requested_date: '2026-11-20',
-    time_slot: 'afternoon',
-    status: 'pending',
-    student_notes: 'Checking if solar power can support my PC workstation during exams.',
-    created_at: '2026-11-14T11:00:00Z',
-  },
-  {
-    id: 'insp-003',
-    property_id: 'lodge-unilag-02',
-    property_title: 'Emerald Crest Residence',
-    property_slug: 'emerald-crest-residence',
-    property_address: '28 University Road, Akoka, Lagos',
-    property_image:
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=800&q=80',
-    student_id: 'student-demo-02',
-    student_name: 'Amina Bello',
-    student_phone: '+234 809 112 3344',
-    student_email: 'amina.bello@example.com',
-    landlord_id: 'landlord-folashade',
-    requested_date: '2026-11-16',
-    time_slot: 'evening',
-    status: 'reschedule_requested',
-    rescheduled_date: '2026-11-17',
-    rescheduled_time_slot: 'afternoon',
-    student_notes: 'Looking to move in early next semester.',
-    landlord_notes: 'I will be out of town on the 16th. Can we do Tuesday afternoon (17th) at 2pm instead?',
-    created_at: '2026-11-13T15:20:00Z',
-  },
-];
+// Fallback verified landlord ID in Supabase database
+export const DEFAULT_LANDLORD_ID = 'c60d761b-1819-412c-8b5b-34b5cd6d648e';
+export const DEFAULT_STUDENT_ID = '28b1d478-aa15-4efe-a211-de340ca492ce';
 
 // In-memory store fallback for SSR & test environments
 const memoryStore = new Map<string, string>();
 
-// Helper: safe storage access with localStorage and memory fallback
 const STORAGE_KEYS = {
   LODGES: 'lodgehere_stored_lodges',
   ROOMS: 'lodgehere_stored_rooms',
@@ -614,14 +220,64 @@ function setStorage<T>(key: string, value: T): void {
   }
 }
 
-// Data API
+// Convert Supabase database property row to Lodge object
+function mapSupabasePropertyToLodge(row: any): Lodge {
+  return {
+    id: row.id,
+    title: row.title,
+    slug: row.slug,
+    description: row.description || '',
+    landlord_id: row.landlord_id,
+    landlord_name: row.profiles?.full_name || 'Verified Property Owner',
+    landlord_phone: row.profiles?.phone || '+234 803 234 5678',
+    landlord_verified: true,
+    university_slug: row.universities?.slug || 'university-of-lagos',
+    university_name: row.universities?.name || 'Accredited University',
+    campus_name: row.campuses?.name || 'Main Campus',
+    neighbourhood: row.neighbourhoods?.name || row.address?.split(',')[1]?.trim() || 'Campus Area',
+    address: row.address,
+    distance_to_campus: row.distance_to_campus,
+    accommodation_type: row.accommodation_type || 'self_contained',
+    pricing: {
+      min_price: Number(row.min_price) || 0,
+      max_price: Number(row.max_price) || Number(row.min_price) || 0,
+      caution_deposit: Number(row.caution_deposit) || 0,
+      service_charge: Number(row.service_charge) || 0,
+      legal_agency_fee: Number(row.legal_agency_fee) || 0,
+    },
+    amenities: (row.amenities as AmenityKey[]) || [],
+    images: (row.images as string[]) || [],
+    status: row.status || 'approved',
+    rating: Number(row.rating) || 5.0,
+    review_count: Number(row.review_count) || 0,
+    total_rooms: row.rooms?.length || 0,
+    available_rooms: row.rooms?.filter((r: any) => r.status === 'available').length || 0,
+    created_at: row.created_at,
+    updated_at: row.updated_at,
+  };
+}
+
+// Data API: Returns stored properties or initial verified seed lodges
 export function getLodges(): Lodge[] {
-  const custom = getStorage<Lodge[]>(STORAGE_KEYS.LODGES, []);
-  // Return custom lodges prepended to seed lodges (custom can override if same ID)
-  const map = new Map<string, Lodge>();
-  SEED_LODGES.forEach((lodge) => map.set(lodge.id, lodge));
-  custom.forEach((lodge) => map.set(lodge.id, lodge));
-  return Array.from(map.values());
+  return getStorage<Lodge[]>(STORAGE_KEYS.LODGES, SEED_LODGES);
+}
+
+export async function fetchLodges(): Promise<Lodge[]> {
+  try {
+    const supabase = createClient();
+    const { data, error } = await supabase
+      .from('properties')
+      .select('*, universities(*), campuses(*), profiles(*), rooms(*)');
+
+    if (!error && data && data.length > 0) {
+      const mapped = data.map(mapSupabasePropertyToLodge);
+      setStorage(STORAGE_KEYS.LODGES, mapped);
+      return mapped;
+    }
+  } catch (err) {
+    console.warn('Supabase fetchLodges error:', err);
+  }
+  return getLodges();
 }
 
 export function getLodgeBySlug(slug: string): Lodge | undefined {
@@ -634,7 +290,7 @@ export function getLodgeById(id: string): Lodge | undefined {
   return lodges.find((l) => l.id === id);
 }
 
-export function saveLodge(lodge: Lodge): void {
+export async function saveLodge(lodge: Lodge): Promise<void> {
   const current = getStorage<Lodge[]>(STORAGE_KEYS.LODGES, []);
   const idx = current.findIndex((l) => l.id === lodge.id);
   if (idx >= 0) {
@@ -643,24 +299,96 @@ export function saveLodge(lodge: Lodge): void {
     current.unshift(lodge);
   }
   setStorage(STORAGE_KEYS.LODGES, current);
+
+  // Sync with Supabase in background
+  try {
+    const supabase = createClient();
+    const { data: uniData } = await supabase
+      .from('universities')
+      .select('id')
+      .eq('slug', lodge.university_slug)
+      .single();
+
+    const universityId = uniData?.id || 'a0000000-0000-0000-0000-000000000001';
+
+    await supabase.from('properties').upsert({
+      id: lodge.id.startsWith('lodge-') ? undefined : lodge.id,
+      title: lodge.title,
+      slug: lodge.slug,
+      description: lodge.description,
+      landlord_id: DEFAULT_LANDLORD_ID,
+      university_id: universityId,
+      address: lodge.address,
+      distance_to_campus: lodge.distance_to_campus,
+      accommodation_type: lodge.accommodation_type,
+      min_price: lodge.pricing.min_price,
+      max_price: lodge.pricing.max_price,
+      caution_deposit: lodge.pricing.caution_deposit,
+      service_charge: lodge.pricing.service_charge,
+      legal_agency_fee: lodge.pricing.legal_agency_fee,
+      amenities: lodge.amenities,
+      images: lodge.images,
+      status: lodge.status,
+      rating: lodge.rating,
+      review_count: lodge.review_count,
+    });
+  } catch (err) {
+    console.warn('Supabase property save error:', err);
+  }
 }
 
-export function deleteLodge(id: string): void {
+export async function deleteLodge(id: string): Promise<void> {
   const current = getStorage<Lodge[]>(STORAGE_KEYS.LODGES, []);
   const filtered = current.filter((l) => l.id !== id);
   setStorage(STORAGE_KEYS.LODGES, filtered);
+
+  try {
+    const supabase = createClient();
+    await supabase.from('properties').delete().eq('id', id);
+  } catch (err) {
+    console.warn('Supabase deleteLodge error:', err);
+  }
 }
 
+// Rooms API: Starts empty (zero fake rooms)
 export function getRooms(propertyId?: string): Room[] {
-  const custom = getStorage<Room[]>(STORAGE_KEYS.ROOMS, []);
-  const map = new Map<string, Room>();
-  SEED_ROOMS.forEach((r) => map.set(r.id, r));
-  custom.forEach((r) => map.set(r.id, r));
-  const all = Array.from(map.values());
+  const all = getStorage<Room[]>(STORAGE_KEYS.ROOMS, []);
   return propertyId ? all.filter((r) => r.property_id === propertyId) : all;
 }
 
-export function saveRoom(room: Room): void {
+export async function fetchRooms(propertyId?: string): Promise<Room[]> {
+  try {
+    const supabase = createClient();
+    let query = supabase.from('rooms').select('*');
+    if (propertyId) {
+      query = query.eq('property_id', propertyId);
+    }
+    const { data, error } = await query;
+    if (!error && data && data.length > 0) {
+      const mapped: Room[] = data.map((r) => ({
+        id: r.id,
+        property_id: r.property_id,
+        room_number: r.room_number,
+        title: r.title,
+        accommodation_type: r.accommodation_type,
+        annual_rent: Number(r.annual_rent),
+        total_units: r.total_units || 1,
+        available_units: r.available_units || (r.status === 'available' ? 1 : 0),
+        status: r.status,
+        features: r.features || [],
+        images: r.images || [],
+        created_at: r.created_at,
+      }));
+      setStorage(STORAGE_KEYS.ROOMS, mapped);
+      return mapped;
+    }
+  } catch (err) {
+    console.warn('Supabase fetchRooms error:', err);
+  }
+  return getRooms(propertyId);
+}
+
+export async function saveRoom(room: Room): Promise<void> {
   const current = getStorage<Room[]>(STORAGE_KEYS.ROOMS, []);
   const idx = current.findIndex((r) => r.id === room.id);
   if (idx >= 0) {
@@ -681,6 +409,26 @@ export function saveRoom(room: Room): void {
       available_rooms: availableCount,
     });
   }
+
+  // Sync to Supabase
+  try {
+    const supabase = createClient();
+    await supabase.from('rooms').upsert({
+      id: room.id.startsWith('room-') ? undefined : room.id,
+      property_id: room.property_id,
+      room_number: room.room_number,
+      title: room.title,
+      accommodation_type: room.accommodation_type,
+      annual_rent: room.annual_rent,
+      total_units: room.total_units,
+      available_units: room.available_units,
+      status: room.status,
+      features: room.features,
+      images: room.images,
+    });
+  } catch (err) {
+    console.warn('Supabase saveRoom error:', err);
+  }
 }
 
 export function updateRoomStatus(id: string, status: RoomAvailabilityStatus): void {
@@ -694,9 +442,9 @@ export function updateRoomStatus(id: string, status: RoomAvailabilityStatus): vo
   });
 }
 
-export function deleteRoom(id: string): void {
-  const current = getStorage<Room[]>(STORAGE_KEYS.ROOMS, []);
+export async function deleteRoom(id: string): Promise<void> {
   const room = getRooms().find((r) => r.id === id);
+  const current = getStorage<Room[]>(STORAGE_KEYS.ROOMS, []);
   const filtered = current.filter((r) => r.id !== id);
   setStorage(STORAGE_KEYS.ROOMS, filtered);
 
@@ -711,16 +459,19 @@ export function deleteRoom(id: string): void {
       });
     }
   }
+
+  try {
+    const supabase = createClient();
+    await supabase.from('rooms').delete().eq('id', id);
+  } catch (err) {
+    console.warn('Supabase deleteRoom error:', err);
+  }
 }
 
+// Inspections API: Starts empty (zero fake inspections)
 export function getInspections(filter?: { student_id?: string; landlord_id?: string }): Inspection[] {
-  const custom = getStorage<Inspection[]>(STORAGE_KEYS.INSPECTIONS, []);
-  const map = new Map<string, Inspection>();
-  SEED_INSPECTIONS.forEach((i) => map.set(i.id, i));
-  custom.forEach((i) => map.set(i.id, i));
-  let all = Array.from(map.values()).sort(
-    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
-  );
+  let all = getStorage<Inspection[]>(STORAGE_KEYS.INSPECTIONS, []);
+  all = all.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
   if (filter?.student_id) {
     all = all.filter((i) => i.student_id === filter.student_id);
   }
@@ -730,7 +481,47 @@ export function getInspections(filter?: { student_id?: string; landlord_id?: str
   return all;
 }
 
-export function saveInspection(inspection: Inspection): void {
+export async function fetchInspections(filter?: { student_id?: string; landlord_id?: string }): Promise<Inspection[]> {
+  try {
+    const supabase = createClient();
+    let query = supabase.from('inspections').select('*, properties(*)');
+    if (filter?.student_id) query = query.eq('student_id', filter.student_id);
+    if (filter?.landlord_id) query = query.eq('landlord_id', filter.landlord_id);
+
+    const { data, error } = await query;
+    if (!error && data && data.length > 0) {
+      const mapped: Inspection[] = data.map((i) => ({
+        id: i.id,
+        property_id: i.property_id,
+        property_title: i.properties?.title || 'Student Accommodation',
+        property_slug: i.properties?.slug || 'student-accommodation',
+        property_address: i.properties?.address || 'Near Campus',
+        property_image: i.properties?.images?.[0] || '',
+        student_id: i.student_id,
+        student_name: 'Student Tenant',
+        student_phone: '+234 812 345 6789',
+        student_email: 'student@example.com',
+        landlord_id: i.landlord_id,
+        requested_date: i.requested_date,
+        time_slot: i.time_slot as InspectionTimeSlot,
+        status: i.status as InspectionStatus,
+        rescheduled_date: i.rescheduled_date,
+        rescheduled_time_slot: i.rescheduled_time_slot,
+        student_notes: i.student_notes,
+        landlord_notes: i.landlord_notes,
+        created_at: i.created_at,
+        updated_at: i.updated_at,
+      }));
+      setStorage(STORAGE_KEYS.INSPECTIONS, mapped);
+      return mapped;
+    }
+  } catch (err) {
+    console.warn('Supabase fetchInspections error:', err);
+  }
+  return getInspections(filter);
+}
+
+export async function saveInspection(inspection: Inspection): Promise<void> {
   const current = getStorage<Inspection[]>(STORAGE_KEYS.INSPECTIONS, []);
   const idx = current.findIndex((i) => i.id === inspection.id);
   if (idx >= 0) {
@@ -739,6 +530,24 @@ export function saveInspection(inspection: Inspection): void {
     current.unshift(inspection);
   }
   setStorage(STORAGE_KEYS.INSPECTIONS, current);
+
+  // Sync to Supabase
+  try {
+    const supabase = createClient();
+    await supabase.from('inspections').upsert({
+      id: inspection.id.startsWith('insp-') ? undefined : inspection.id,
+      property_id: inspection.property_id,
+      student_id: DEFAULT_STUDENT_ID,
+      landlord_id: DEFAULT_LANDLORD_ID,
+      requested_date: inspection.requested_date,
+      time_slot: inspection.time_slot,
+      status: inspection.status,
+      student_notes: inspection.student_notes,
+      landlord_notes: inspection.landlord_notes,
+    });
+  } catch (err) {
+    console.warn('Supabase saveInspection error:', err);
+  }
 }
 
 export function updateInspectionStatus(
@@ -780,4 +589,3 @@ export function clearDataStore(): void {
     // Ignore
   }
 }
-

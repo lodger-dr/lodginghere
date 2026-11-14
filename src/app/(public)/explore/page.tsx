@@ -12,7 +12,6 @@ import {
   X,
   SlidersHorizontal,
   RotateCcw,
-  Sparkles,
   Droplets,
   Sun,
   Lock,
@@ -23,7 +22,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { NIGERIAN_UNIVERSITIES } from '@/lib/data/nigerian-universities';
-import { getLodges, AMENITIES_CATALOG } from '@/lib/data/lodges-data';
+import { getLodges, fetchLodges, AMENITIES_CATALOG } from '@/lib/data/lodges-data';
 import { Lodge, AmenityKey, AccommodationType } from '@/types/database';
 import { LodgeCard } from '@/components/lodges/lodge-card';
 import { InspectionModal } from '@/components/lodges/inspection-modal';
@@ -49,10 +48,13 @@ function ExploreContent() {
   useEffect(() => {
     const load = () => {
       setLodges(getLodges());
+      fetchLodges().then((data) => setLodges(data));
     };
     load();
 
-    const handleDataChange = () => load();
+    const handleDataChange = () => {
+      setLodges(getLodges());
+    };
     window.addEventListener('lodgehere-data-change', handleDataChange);
     return () => window.removeEventListener('lodgehere-data-change', handleDataChange);
   }, []);
@@ -205,6 +207,33 @@ function ExploreContent() {
         </div>
       </div>
 
+      {/* Category Filter Pills (PrimeHouse aesthetic) */}
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+        {[
+          { label: 'All Lodges', value: '' },
+          { label: 'Self-Con', value: 'self_contained' },
+          { label: 'Single Room', value: 'single_room' },
+          { label: '1-Bedroom Flat', value: 'one_bedroom' },
+          { label: '2-Bedroom Flat', value: 'two_bedroom' },
+          { label: 'Private Hostel', value: 'hostel' },
+        ].map((item) => {
+          const isActive = accommodationType === item.value;
+          return (
+            <button
+              key={item.label}
+              type="button"
+              onClick={() => setAccommodationType(item.value)}
+              className={`rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-200 ${isActive
+                  ? 'bg-slate-900 text-white shadow-xs'
+                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900'
+                }`}
+            >
+              {item.label}
+            </button>
+          );
+        })}
+      </div>
+
       {/* Filter Card */}
       <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
@@ -299,11 +328,10 @@ function ExploreContent() {
                   key={amenity.key}
                   type="button"
                   onClick={() => toggleAmenity(amenity.key)}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all ${
-                    isSelected
-                      ? 'bg-emerald-600 text-white shadow-xs'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                  }`}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all ${isSelected
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
+                    }`}
                 >
                   <span>{amenity.label}</span>
                   {isSelected && <X className="h-3 w-3" />}

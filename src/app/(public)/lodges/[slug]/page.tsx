@@ -28,7 +28,7 @@ import {
   Grid,
   Utensils,
 } from 'lucide-react';
-import { getLodgeBySlug, getRooms, AMENITIES_CATALOG } from '@/lib/data/lodges-data';
+import { getLodgeBySlug, getRooms, fetchLodges, fetchRooms, AMENITIES_CATALOG } from '@/lib/data/lodges-data';
 import { Lodge, Room, AmenityKey } from '@/types/database';
 import { formatNaira } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
@@ -68,6 +68,15 @@ export default function LodgeDetailPage() {
       if (found) {
         setLodge(found);
         setRooms(getRooms(found.id));
+      } else {
+        // Try fetching from Supabase if not in memory
+        fetchLodges().then((all) => {
+          const matched = all.find((l) => l.slug.toLowerCase() === slug.toLowerCase());
+          if (matched) {
+            setLodge(matched);
+            fetchRooms(matched.id).then((r) => setRooms(r));
+          }
+        });
       }
     };
     load();
@@ -498,14 +507,15 @@ export default function LodgeDetailPage() {
 
               {/* Action Button */}
               <div className="space-y-3">
-                <Button
+                <button
+                  type="button"
                   onClick={() => setIsInspectionModalOpen(true)}
-                  size="lg"
-                  className="w-full bg-emerald-600 hover:bg-emerald-700 font-bold gap-2 shadow-md h-12 text-sm"
+                  className="w-full flex items-center justify-center gap-2 rounded-full bg-slate-900 hover:bg-black font-semibold text-white shadow-md h-12 text-sm transition-all active:scale-95"
                 >
                   <CalendarCheck className="h-5 w-5" />
-                  <span>Book Free Physical Inspection</span>
-                </Button>
+                  <span>Schedule Physical Inspection</span>
+                  <ArrowRight className="h-4 w-4 ml-1" />
+                </button>
 
                 <p className="text-[11px] text-center text-slate-400">
                   Free of charge • Zero advance commitment required
