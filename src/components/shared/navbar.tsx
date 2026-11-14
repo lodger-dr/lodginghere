@@ -57,31 +57,28 @@ export function Navbar() {
               <nav className="hidden md:flex items-center gap-6 ml-4">
                 <Link
                   href="/explore"
-                  className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
-                    isLinkActive('/explore')
+                  className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/explore')
                       ? 'text-blue-600 dark:text-blue-400 font-bold'
                       : 'text-slate-600 dark:text-slate-400'
-                  }`}
+                    }`}
                 >
                   Explore Lodges
                 </Link>
                 <Link
                   href="/universities"
-                  className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
-                    isLinkActive('/universities')
+                  className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/universities')
                       ? 'text-blue-600 dark:text-blue-400 font-bold'
                       : 'text-slate-600 dark:text-slate-400'
-                  }`}
+                    }`}
                 >
                   Universities
                 </Link>
                 <Link
                   href="/how-it-works"
-                  className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
-                    isLinkActive('/how-it-works')
+                  className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/how-it-works')
                       ? 'text-blue-600 dark:text-blue-400 font-bold'
                       : 'text-slate-600 dark:text-slate-400'
-                  }`}
+                    }`}
                 >
                   How It Works
                 </Link>

@@ -21,6 +21,7 @@ import { Inspection, InspectionStatus } from '@/types/database';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { WinningCTA } from '@/components/ui/winning-cta';
 
 export default function StudentInspectionsPage() {
   const [inspections, setInspections] = useState<Inspection[]>([]);
@@ -80,10 +81,11 @@ export default function StudentInspectionsPage() {
           </p>
         </div>
         <Link href="/explore">
-          <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 gap-1.5 shadow-xs">
-            <Search className="h-4 w-4" />
-            <span>Find Another Lodge</span>
-          </Button>
+          <WinningCTA
+            idleText="Find Another Lodge"
+            winText="Lock In Your Next Spot — Win!"
+            size="sm"
+          />
         </Link>
       </div>
 
@@ -166,7 +168,7 @@ export default function StudentInspectionsPage() {
               return (
                 <div
                   key={insp.id}
-                  className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-5 transition-all hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700"
+                  className="glass-card rounded-2xl p-5 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-5 transition-all hover:border-slate-300 dark:hover:border-slate-700"
                 >
                   {/* Left: Thumbnail & Lodge Details */}
                   <div className="flex items-start gap-4 min-w-0">

@@ -103,7 +103,7 @@ export function HeroSearch() {
     <div ref={containerRef} className="w-full max-w-5xl mx-auto relative z-30">
       {/* Floating Capsule Bar (Elevated architectural luxury aesthetic) */}
       <div className="rounded-3xl lg:rounded-full bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border border-slate-200/90 dark:border-slate-800 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.35)] p-2 sm:p-2.5 transition-all duration-300">
-        <div className="flex flex-col lg:flex-row items-stretch lg:items-center gap-1.5 lg:gap-0 lg:divide-x lg:divide-slate-200/80 dark:lg:divide-slate-800">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:flex lg:flex-row items-stretch lg:items-center gap-1.5 lg:gap-0 lg:divide-x lg:divide-slate-200/80 dark:lg:divide-slate-800">
 
           {/* Segment 1: Campus / Location */}
           <div className="relative flex-1">
@@ -369,7 +369,7 @@ export function HeroSearch() {
           </div>
 
           {/* Action: Search Pill Button */}
-          <div className="p-1 lg:pl-2">
+          <div className="sm:col-span-2 lg:col-span-1 p-1 lg:pl-2">
             <button
               type="button"
               onClick={handleSearch}

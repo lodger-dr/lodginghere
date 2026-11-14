@@ -148,41 +148,37 @@ export default function LandlordInspectionsPage() {
       <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 overflow-x-auto pb-1 text-xs">
         <button
           onClick={() => setActiveTab('all')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
-            activeTab === 'all'
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'all'
               ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
               : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-          }`}
+            }`}
         >
           All Requests ({inspections.length})
         </button>
         <button
           onClick={() => setActiveTab('pending')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
-            activeTab === 'pending'
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'pending'
               ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
               : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-          }`}
+            }`}
         >
           Pending Review ({pendingCount})
         </button>
         <button
           onClick={() => setActiveTab('accepted')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
-            activeTab === 'accepted'
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'accepted'
               ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
               : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-          }`}
+            }`}
         >
           Confirmed Appointments ({acceptedCount})
         </button>
         <button
           onClick={() => setActiveTab('completed')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
-            activeTab === 'completed'
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'completed'
               ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
               : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-          }`}
+            }`}
         >
           Completed ({completedCount})
         </button>
@@ -201,7 +197,7 @@ export default function LandlordInspectionsPage() {
               return (
                 <div
                   key={insp.id}
-                  className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-5 transition-all dark:border-slate-800 dark:bg-slate-900"
+                  className="glass-card rounded-2xl p-5 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-5 transition-all"
                 >
                   {/* Left: Student & Lodge Info */}
                   <div className="flex items-start gap-4 min-w-0">
@@ -401,8 +397,8 @@ export default function LandlordInspectionsPage() {
 
       {/* Reschedule Modal */}
       {rescheduleTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-          <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200 dark:border-slate-800 dark:bg-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-3 sm:p-4 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-md max-h-[92vh] overflow-y-auto rounded-2xl bg-white p-5 sm:p-6 shadow-2xl space-y-4 border border-slate-200 dark:border-slate-800 dark:bg-slate-900 my-auto">
             <button
               onClick={() => setRescheduleTarget(null)}
               className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"

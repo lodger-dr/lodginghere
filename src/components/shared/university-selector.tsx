@@ -123,7 +123,7 @@ export function UniversitySelector({
                 }`}
               >
                 <div className="space-y-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                     <span className="font-semibold text-sm text-slate-900 dark:text-white">{uni.name}</span>
                     <span className="rounded bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-700 uppercase dark:bg-slate-700 dark:text-slate-200">
                       {uni.acronym}

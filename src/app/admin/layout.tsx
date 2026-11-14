@@ -30,15 +30,22 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <div className="flex min-h-[calc(100vh-4rem)] flex-col md:flex-row bg-slate-900 text-slate-100">
-      <aside className="w-full md:w-64 border-r border-slate-800 bg-slate-950 p-4 shrink-0 space-y-6">
-        <div className="space-y-1">
+      <aside className="w-full md:w-64 border-b md:border-b-0 md:border-r border-slate-800 bg-slate-950 p-3 sm:p-4 shrink-0 space-y-3 md:space-y-6">
+        <div className="flex items-center justify-between md:block space-y-0 md:space-y-1">
           <span className="text-[10px] font-bold tracking-wider uppercase text-emerald-400 bg-emerald-950/80 border border-emerald-800 px-2.5 py-1 rounded-full">
             Admin Console
           </span>
-          <h2 className="text-base font-bold text-white pt-1">Platform Moderation</h2>
+          <h2 className="hidden md:block text-base font-bold text-white pt-1">Platform Moderation</h2>
+          <Link
+            href="/"
+            className="md:hidden flex items-center gap-1.5 text-xs text-slate-400 hover:text-white"
+          >
+            <Building2 className="h-3.5 w-3.5 text-emerald-400" />
+            <span>Marketplace</span>
+          </Link>
         </div>
 
-        <nav className="space-y-1">
+        <nav className="flex md:flex-col gap-1.5 overflow-x-auto pb-1 md:pb-0 scrollbar-none">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = pathname === item.href;
@@ -46,20 +53,19 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium transition-colors ${
-                  isActive
+                className={`flex items-center gap-2 md:gap-3 rounded-lg px-2.5 md:px-3 py-1.5 md:py-2 text-xs font-medium transition-colors shrink-0 whitespace-nowrap ${isActive
                     ? 'bg-emerald-900/40 text-emerald-300 border border-emerald-700/50 font-semibold'
                     : 'text-slate-400 hover:bg-slate-900 hover:text-white'
-                }`}
+                  }`}
               >
-                <Icon className={`h-4 w-4 ${isActive ? 'text-emerald-400' : 'text-slate-500'}`} />
+                <Icon className={`h-4 w-4 shrink-0 ${isActive ? 'text-emerald-400' : 'text-slate-500'}`} />
                 <span>{item.name}</span>
               </Link>
             );
           })}
         </nav>
 
-        <div className="border-t border-slate-800 pt-4">
+        <div className="hidden md:block border-t border-slate-800 pt-4">
           <Link
             href="/"
             className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition-colors"
@@ -70,7 +76,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
       </aside>
 
-      <main className="flex-1 p-6 md:p-8 max-w-5xl">{children}</main>
+      <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-5xl">{children}</main>
     </div>
   );
 }

@@ -231,11 +231,10 @@ function RoomsContent() {
               return (
                 <div
                   key={room.id}
-                  className={`rounded-2xl border p-5 transition-all shadow-xs flex flex-col justify-between space-y-4 ${
-                    isAvailable
+                  className={`rounded-2xl border p-5 transition-all shadow-xs flex flex-col justify-between space-y-4 ${isAvailable
                       ? 'border-emerald-200 bg-white hover:border-emerald-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-500/50'
                       : 'border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-850/60'
-                  }`}
+                    }`}
                 >
                   <div className="space-y-2">
                     <div className="flex items-start justify-between gap-2">
@@ -250,11 +249,10 @@ function RoomsContent() {
                       </div>
 
                       <span
-                        className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${
-                          isAvailable
+                        className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${isAvailable
                             ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400'
                             : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
-                        }`}
+                          }`}
                       >
                         {isAvailable ? 'Vacant / Available' : 'Occupied'}
                       </span>
@@ -290,11 +288,10 @@ function RoomsContent() {
                         size="sm"
                         variant={isAvailable ? 'outline' : 'secondary'}
                         onClick={() => handleToggleStatus(room)}
-                        className={`text-xs h-8 px-2.5 ${
-                          isAvailable
+                        className={`text-xs h-8 px-2.5 ${isAvailable
                             ? 'hover:border-amber-500 hover:text-amber-700'
                             : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-400'
-                        }`}
+                          }`}
                       >
                         {isAvailable ? 'Mark Occupied' : 'Mark Available'}
                       </Button>
@@ -348,8 +345,8 @@ function RoomsContent() {
 
       {/* Add Room Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-          <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl space-y-5 border border-slate-200 dark:border-slate-800 dark:bg-slate-900">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-3 sm:p-4 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl bg-white p-5 sm:p-6 shadow-2xl space-y-5 border border-slate-200 dark:border-slate-800 dark:bg-slate-900 my-auto">
             <button
               onClick={() => setIsAddModalOpen(false)}
               className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"

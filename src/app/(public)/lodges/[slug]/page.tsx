@@ -34,6 +34,8 @@ import { formatNaira } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { InspectionModal } from '@/components/lodges/inspection-modal';
+import { WinningCTA } from '@/components/ui/winning-cta';
+import { Accordion, AccordionItem } from '@/components/ui/accordion';
 
 const AMENITY_ICONS: Record<AmenityKey, React.ComponentType<{ className?: string }>> = {
   running_water: Droplets,
@@ -123,7 +125,7 @@ export default function LodgeDetailPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-20 dark:bg-slate-950">
+    <div className="min-h-screen bg-slate-50/50 pb-28 lg:pb-20 dark:bg-slate-950">
       {/* Breadcrumb Navigation */}
       <div className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
@@ -418,80 +420,100 @@ export default function LodgeDetailPage() {
               )}
             </div>
 
-            {/* Amenities Grid */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-4 dark:border-slate-800 dark:bg-slate-900">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Amenities & Facility Features</h2>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
-                {AMENITIES_CATALOG.map((cat) => {
-                  const Icon = AMENITY_ICONS[cat.key] || CheckCircle2;
-                  const isIncluded = lodge.amenities.includes(cat.key);
-                  return (
-                    <div
-                      key={cat.key}
-                      className={`flex items-center gap-3 rounded-xl border p-3 ${
-                        isIncluded
-                          ? 'border-emerald-200 bg-emerald-50/30 text-slate-900 font-medium dark:border-emerald-900/50 dark:bg-emerald-950/20 dark:text-slate-200'
-                          : 'border-slate-100 bg-slate-50/50 text-slate-400 dark:border-slate-800 dark:bg-slate-850/30 dark:text-slate-500'
-                      }`}
-                    >
-                      <div
-                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                          isIncluded ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400' : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
-                        }`}
-                      >
-                        <Icon className="h-4 w-4" />
+            {/* Secondary Details Folded into Accordions (Order of Operation Hierarchy) */}
+            <div className="space-y-4">
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                Property Specifications & Safe Housing Protocols
+              </h2>
+
+              <Accordion>
+                {/* Accordion 1: Amenities & Facility Features */}
+                <AccordionItem
+                  title="Full Amenities & Utilities Catalog"
+                  subtitle={`${lodge.amenities.length} amenities verified on-premises`}
+                  badge="Verified"
+                  icon={<Droplets className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />}
+                  defaultOpen={true}
+                >
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-2">
+                    {AMENITIES_CATALOG.map((cat) => {
+                      const Icon = AMENITY_ICONS[cat.key] || CheckCircle2;
+                      const isIncluded = lodge.amenities.includes(cat.key);
+                      return (
+                        <div
+                          key={cat.key}
+                          className={`flex items-center gap-3 rounded-xl border p-3 ${
+                            isIncluded
+                              ? 'border-emerald-200 bg-emerald-50/30 text-slate-900 font-medium dark:border-emerald-900/50 dark:bg-emerald-950/20 dark:text-slate-200'
+                              : 'border-slate-100 bg-slate-50/50 text-slate-400 dark:border-slate-800 dark:bg-slate-850/30 dark:text-slate-500'
+                          }`}
+                        >
+                          <div
+                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                              isIncluded
+                                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400'
+                                : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
+                            }`}
+                          >
+                            <Icon className="h-4 w-4" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <span className="block truncate">{cat.label}</span>
+                            <span className="text-[10px] text-slate-400 dark:text-slate-500">
+                              {isIncluded ? 'Provided on-premises' : 'Not available'}
+                            </span>
+                          </div>
+                          {isIncluded ? (
+                            <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          ) : (
+                            <XCircle className="h-4 w-4 text-slate-300 dark:text-slate-600 shrink-0" />
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </AccordionItem>
+
+                {/* Accordion 2: Safety Guidelines */}
+                <AccordionItem
+                  title="Safety & Student Protection Guidelines"
+                  subtitle="Strict zero-advance-fee protocol and landlord authority"
+                  badge="Anti-Scam"
+                  icon={<ShieldCheck className="h-4 w-4 text-amber-600 dark:text-amber-400" />}
+                >
+                  <div className="space-y-3 text-xs text-slate-600 dark:text-slate-300 pt-2">
+                    <div className="flex items-start gap-2.5 rounded-xl bg-amber-50/80 border border-amber-200 p-3.5 text-amber-950 dark:bg-amber-950/30 dark:border-amber-900/50 dark:text-amber-200">
+                      <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                      <div className="space-y-1">
+                        <span className="font-bold">Golden Rule: Never pay before physical inspection</span>
+                        <p className="text-[11px] text-amber-900 dark:text-amber-300 leading-relaxed">
+                          LodgeHere never asks students to pay rent or deposit into personal accounts before physical
+                          verification. Always schedule an inspection, verify the room locks, water flow, and speak with the verified caretaker.
+                        </p>
                       </div>
-                      <div className="flex-1 min-w-0">
-                        <span className="block truncate">{cat.label}</span>
-                        <span className="text-[10px] text-slate-400 dark:text-slate-500">
-                          {isIncluded ? 'Provided on-premises' : 'Not available'}
-                        </span>
-                      </div>
-                      {isIncluded ? (
-                        <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
-                      ) : (
-                        <XCircle className="h-4 w-4 text-slate-300 dark:text-slate-600 shrink-0" />
-                      )}
                     </div>
-                  );
-                })}
-              </div>
-            </div>
 
-            {/* House Rules & Trust Disclaimers */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-4 dark:border-slate-800 dark:bg-slate-900">
-              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Safety & Student Protection Guidelines</h2>
-              <div className="space-y-3 text-xs text-slate-600 dark:text-slate-300">
-                <div className="flex items-start gap-2.5 rounded-xl bg-amber-50/80 border border-amber-200 p-3.5 text-amber-950 dark:bg-amber-950/30 dark:border-amber-900/50 dark:text-amber-200">
-                  <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
-                  <div className="space-y-1">
-                    <span className="font-bold">Golden Rule: Never pay before physical inspection</span>
-                    <p className="text-[11px] text-amber-900 dark:text-amber-300 leading-relaxed">
-                      LodgeHere never asks students to pay rent or deposit into personal accounts before physical
-                      verification. Always schedule an inspection, verify the room locks, water flow, and speak with the verified caretaker.
-                    </p>
+                    <div className="flex items-start gap-2.5 rounded-xl bg-slate-50 border border-slate-200 p-3.5 text-slate-700 dark:bg-slate-800/50 dark:border-slate-800 dark:text-slate-300">
+                      <Info className="h-4 w-4 text-slate-500 dark:text-slate-400 shrink-0 mt-0.5" />
+                      <div className="space-y-0.5">
+                        <span className="font-bold text-slate-900 dark:text-white">Verified Landlord Authority</span>
+                        <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                          The landlord profile for this lodge has undergone identity and ownership verification by LodgeHere moderators.
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                </div>
-
-                <div className="flex items-start gap-2.5 rounded-xl bg-slate-50 border border-slate-200 p-3.5 text-slate-700 dark:bg-slate-800/50 dark:border-slate-800 dark:text-slate-300">
-                  <Info className="h-4 w-4 text-slate-500 dark:text-slate-400 shrink-0 mt-0.5" />
-                  <div className="space-y-0.5">
-                    <span className="font-bold text-slate-900 dark:text-white">Verified Landlord Authority</span>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                      The landlord profile for this lodge has undergone identity and ownership verification by LodgeHere moderators.
-                    </p>
-                  </div>
-                </div>
-              </div>
+                </AccordionItem>
+              </Accordion>
             </div>
           </div>
 
-          {/* Right Column: Sticky Booking & Landlord Profile Card (matching PrimeHouse "Schedule Visit ->") */}
+          {/* Right Column: Sticky Booking & Landlord Profile Card (Frosted Glass) */}
           <div className="space-y-6">
-            <div className="sticky top-20 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg space-y-5 dark:border-slate-800 dark:bg-slate-900">
+            <div className="sticky top-20 rounded-3xl border border-slate-200/70 bg-white/80 p-6 shadow-xl space-y-5 dark:border-slate-800/70 dark:bg-slate-900/80 backdrop-blur-xl">
               <div className="space-y-1 border-b border-slate-100 dark:border-slate-800 pb-4">
                 <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
-                  Transparent Pricing
+                  Transparent Upfront Pricing
                 </span>
                 <div className="flex items-baseline gap-1">
                   <span className="text-3xl font-extrabold text-slate-900 dark:text-white">
@@ -505,17 +527,15 @@ export default function LodgeDetailPage() {
                 </div>
               </div>
 
-              {/* Action Button */}
+              {/* Action Button: Winning CTA with Animated Flying Plane Loop */}
               <div className="space-y-3">
-                <button
-                  type="button"
+                <WinningCTA
                   onClick={() => setIsInspectionModalOpen(true)}
-                  className="w-full flex items-center justify-center gap-2 rounded-full bg-slate-900 hover:bg-black font-semibold text-white shadow-md h-12 text-sm transition-all active:scale-95 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400 cursor-pointer"
-                >
-                  <CalendarCheck className="h-5 w-5" />
-                  <span>Schedule Physical Inspection</span>
-                  <ArrowRight className="h-4 w-4 ml-1" />
-                </button>
+                  idleText="Schedule Physical Inspection"
+                  winText="Claim Your Room Spot — Win!"
+                  size="lg"
+                  className="w-full"
+                />
 
                 <p className="text-[11px] text-center text-slate-400 dark:text-slate-500">
                   Free of charge • Zero advance commitment required
@@ -560,6 +580,30 @@ export default function LodgeDetailPage() {
         isOpen={isInspectionModalOpen}
         onClose={() => setIsInspectionModalOpen(false)}
       />
+
+      {/* Mobile Fixed Bottom Action Bar */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 backdrop-blur-md px-4 py-3 shadow-xl flex items-center justify-between gap-3">
+        <div>
+          <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
+            Annual Rent
+          </span>
+          <div className="flex items-baseline gap-1">
+            <span className="text-xl font-black text-slate-900 dark:text-white">
+              {formatNaira(lodge.pricing.min_price)}
+            </span>
+            <span className="text-[11px] text-slate-500 dark:text-slate-400">/ yr</span>
+          </div>
+        </div>
+
+        <Button
+          size="sm"
+          onClick={() => setIsInspectionModalOpen(true)}
+          className="bg-slate-900 hover:bg-black dark:bg-emerald-500 dark:hover:bg-emerald-400 dark:text-slate-950 font-bold text-xs h-10 px-5 gap-1.5 shadow-sm rounded-full"
+        >
+          <CalendarCheck className="h-4 w-4" />
+          <span>Schedule Inspection</span>
+        </Button>
+      </div>
     </div>
   );
 }

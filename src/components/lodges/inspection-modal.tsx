@@ -18,6 +18,7 @@ import { Lodge, InspectionTimeSlot } from '@/types/database';
 import { saveInspection } from '@/lib/data/lodges-data';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { WinningCTA } from '@/components/ui/winning-cta';
 
 interface InspectionModalProps {
   lodge: Lodge | null;
@@ -83,8 +84,8 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl space-y-5 border border-slate-200 dark:border-slate-800 dark:bg-slate-900 dark:text-white">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-3 sm:p-4 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto">
+      <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-3xl bg-white/95 p-5 sm:p-7 shadow-2xl space-y-5 border border-slate-200/80 dark:border-slate-800/80 dark:bg-slate-900/95 backdrop-blur-2xl dark:text-white my-auto">
         {/* Close Button */}
         <button
           onClick={handleReset}
@@ -228,14 +229,16 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
             </div>
 
             {/* Actions */}
-            <div className="flex items-center justify-end gap-2 pt-2">
-              <Button type="button" variant="outline" size="sm" onClick={handleReset}>
+            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-slate-800">
+              <Button type="button" variant="outline" size="sm" onClick={handleReset} className="rounded-full">
                 Cancel
               </Button>
-              <Button type="submit" size="sm" className="bg-emerald-600 hover:bg-emerald-700 gap-1.5">
-                <CalendarCheck className="h-4 w-4" />
-                <span>Confirm Inspection Request</span>
-              </Button>
+              <WinningCTA
+                type="submit"
+                size="sm"
+                idleText="Confirm Inspection Request"
+                winText="Lock In Your Spot — Win!"
+              />
             </div>
           </form>
         ) : (

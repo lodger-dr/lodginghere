@@ -14,9 +14,14 @@ import {
   FileText,
   Clock,
   Eye,
+  AlertCircle,
+  HelpCircle,
+  Phone,
 } from 'lucide-react';
 import { getLodges, fetchLodges, getInspections, fetchInspections } from '@/lib/data/lodges-data';
 import { Lodge, Inspection } from '@/types/database';
+import { Accordion, AccordionItem } from '@/components/ui/accordion';
+import { WinningCTA } from '@/components/ui/winning-cta';
 
 export default function LandlordOverviewPage() {
   const [lodges, setLodges] = useState<Lodge[]>([]);
@@ -79,19 +84,17 @@ export default function LandlordOverviewPage() {
             </button>
           </Link>
           <Link href="/landlord/properties">
-            <button
-              type="button"
-              className="flex items-center gap-1.5 rounded-lg bg-blue-600 hover:bg-blue-700 px-3 py-1.5 text-xs font-semibold text-white shadow-2xs transition-colors"
-            >
-              <Plus className="h-3.5 w-3.5" />
-              <span>Add Property</span>
-            </button>
+            <WinningCTA
+              idleText="Add Property"
+              winText="List & Fill Vacancies — Win!"
+              size="sm"
+            />
           </Link>
         </div>
       </div>
 
-      {/* Onboarding Checklist Card (Directly following Dojah reference screenshot) */}
-      <div className="rounded-2xl border border-slate-200/80 bg-white p-6 dark:border-slate-800 dark:bg-slate-900 shadow-xs space-y-6">
+      {/* STAGE 1: Onboarding Lifecycle Checklist Card (Directly following Dojah reference screenshot with Frosted Glass) */}
+      <div className="glass-card rounded-2xl p-6 shadow-xs space-y-6">
         <div>
           <h2 className="text-base font-bold text-slate-900 dark:text-white">
             Welcome to LodgeHere, Chief Adebayo
@@ -135,7 +138,7 @@ export default function LandlordOverviewPage() {
             <Link href="/landlord/properties">
               <button
                 type="button"
-                className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs"
               >
                 Start
               </button>
@@ -156,7 +159,7 @@ export default function LandlordOverviewPage() {
             <Link href="/landlord/rooms">
               <button
                 type="button"
-                className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs"
               >
                 Add
               </button>
@@ -177,7 +180,7 @@ export default function LandlordOverviewPage() {
             <Link href="/landlord/inspections">
               <button
                 type="button"
-                className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs"
               >
                 Inspect
               </button>
@@ -196,7 +199,7 @@ export default function LandlordOverviewPage() {
         </div>
       </div>
 
-      {/* Quick Actions (matching Dojah cards row) */}
+      {/* STAGE 2: Quick Actions & Key Portfolio Metrics */}
       <div className="space-y-3">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Quick Actions
@@ -204,9 +207,9 @@ export default function LandlordOverviewPage() {
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
           <Link
             href="/landlord/properties"
-            className="group rounded-xl border border-slate-200/80 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-xs transition-all flex items-center gap-3"
+            className="group glass-card rounded-2xl p-4 hover:border-blue-500/50 dark:hover:border-blue-500/50 hover:shadow-xs transition-all flex items-center gap-3"
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400 group-hover:scale-105 transition-transform">
               <Building2 className="h-4 w-4" />
             </div>
             <div>
@@ -217,9 +220,9 @@ export default function LandlordOverviewPage() {
 
           <Link
             href="/landlord/rooms"
-            className="group rounded-xl border border-slate-200/80 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:shadow-xs transition-all flex items-center gap-3"
+            className="group glass-card rounded-2xl p-4 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:shadow-xs transition-all flex items-center gap-3"
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 group-hover:scale-105 transition-transform">
               <BedDouble className="h-4 w-4" />
             </div>
             <div>
@@ -230,9 +233,9 @@ export default function LandlordOverviewPage() {
 
           <Link
             href="/landlord/inspections"
-            className="group rounded-xl border border-slate-200/80 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 hover:border-amber-500/50 dark:hover:border-amber-500/50 hover:shadow-xs transition-all flex items-center gap-3"
+            className="group glass-card rounded-2xl p-4 hover:border-amber-500/50 dark:hover:border-amber-500/50 hover:shadow-xs transition-all flex items-center gap-3"
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400 group-hover:scale-105 transition-transform">
               <CalendarCheck className="h-4 w-4" />
             </div>
             <div>
@@ -243,9 +246,9 @@ export default function LandlordOverviewPage() {
 
           <Link
             href="/landlord/verification"
-            className="group rounded-xl border border-slate-200/80 bg-white p-4 dark:border-slate-800 dark:bg-slate-900 hover:border-purple-500/50 dark:hover:border-purple-500/50 hover:shadow-xs transition-all flex items-center gap-3"
+            className="group glass-card rounded-2xl p-4 hover:border-purple-500/50 dark:hover:border-purple-500/50 hover:shadow-xs transition-all flex items-center gap-3"
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400 group-hover:scale-105 transition-transform">
               <ShieldCheck className="h-4 w-4" />
             </div>
             <div>
@@ -258,7 +261,7 @@ export default function LandlordOverviewPage() {
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 shadow-xs flex items-center justify-between">
+        <div className="glass-card rounded-2xl p-5 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Total Properties</span>
             <p className="text-2xl font-black text-slate-900 dark:text-white">{lodges.length}</p>
@@ -268,7 +271,7 @@ export default function LandlordOverviewPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 shadow-xs flex items-center justify-between">
+        <div className="glass-card rounded-2xl p-5 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Available Vacancies</span>
             <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{totalAvailable}</p>
@@ -278,7 +281,7 @@ export default function LandlordOverviewPage() {
           </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 shadow-xs flex items-center justify-between">
+        <div className="glass-card rounded-2xl p-5 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-xs font-semibold text-amber-600 dark:text-amber-400">Pending Inspections</span>
             <p className="text-2xl font-black text-amber-600 dark:text-amber-400">{pendingInspections.length}</p>
@@ -289,34 +292,9 @@ export default function LandlordOverviewPage() {
         </div>
       </div>
 
-      {/* Verification Notice Banner */}
-      <div className="rounded-xl border border-blue-200/80 bg-blue-50/60 dark:border-blue-900/60 dark:bg-blue-950/20 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-start gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300 mt-0.5">
-            <ShieldCheck className="h-5 w-5" />
-          </div>
-          <div className="space-y-1">
-            <h4 className="text-sm font-bold text-blue-950 dark:text-blue-200">
-              Provider Verification Active
-            </h4>
-            <p className="text-xs text-blue-900/80 dark:text-blue-300/80 leading-relaxed max-w-xl">
-              Your provider profile is marked verified. Your lodges and rooms are publicly discoverable on the explore page and ready for student inspection booking.
-            </p>
-          </div>
-        </div>
-        <Link href="/landlord/verification">
-          <button
-            type="button"
-            className="rounded-lg border border-blue-300 bg-white px-3.5 py-1.5 text-xs font-semibold text-blue-900 hover:bg-blue-50 dark:border-blue-800 dark:bg-slate-900 dark:text-blue-200 dark:hover:bg-slate-800 transition-colors shrink-0"
-          >
-            View Documents
-          </button>
-        </Link>
-      </div>
-
-      {/* Property & Room Quick Management */}
+      {/* STAGE 3: Property & Room Portfolio Management */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 shadow-xs flex flex-col justify-between space-y-4">
+        <div className="glass-card rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4">
           <div className="space-y-1">
             <h3 className="font-bold text-sm text-slate-900 dark:text-white">Lodge Listings</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -326,7 +304,7 @@ export default function LandlordOverviewPage() {
           <Link href="/landlord/properties">
             <button
               type="button"
-              className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+              className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
             >
               <span>View All Properties ({lodges.length})</span>
               <ArrowRight className="h-3.5 w-3.5" />
@@ -334,7 +312,7 @@ export default function LandlordOverviewPage() {
           </Link>
         </div>
 
-        <div className="rounded-2xl border border-slate-200/80 bg-white p-5 dark:border-slate-800 dark:bg-slate-900 shadow-xs flex flex-col justify-between space-y-4">
+        <div className="glass-card rounded-2xl p-5 shadow-xs flex flex-col justify-between space-y-4">
           <div className="space-y-1">
             <h3 className="font-bold text-sm text-slate-900 dark:text-white">Room Vacancy & Units</h3>
             <p className="text-xs text-slate-500 dark:text-slate-400">
@@ -344,13 +322,86 @@ export default function LandlordOverviewPage() {
           <Link href="/landlord/rooms">
             <button
               type="button"
-              className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+              className="flex items-center gap-1.5 text-xs font-semibold text-blue-600 dark:text-blue-400 hover:underline cursor-pointer"
             >
               <span>Manage Room Inventory ({totalRooms} rooms)</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </button>
           </Link>
         </div>
+      </div>
+
+      {/* STAGE 4: FOLD SECONDARY COMPLIANCE & PROTOCOLS INTO ACCORDIONS */}
+      <div className="space-y-4 pt-2">
+        <div className="space-y-0.5">
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
+            Landlord Compliance & Operating Standards
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Folded operational protocols for physical inspections, escrow releases, and caretaker SLAs.
+          </p>
+        </div>
+
+        <Accordion>
+          {/* Accordion 1: Physical Inspection Code & Landlord SLA */}
+          <AccordionItem
+            title="Physical Inspection Code & Landlord SLA"
+            subtitle="24-hour response window, zero unannounced entry, and compound access standards"
+            badge="Standard"
+            icon={<ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />}
+          >
+            <div className="py-2 space-y-3 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div className="p-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850/40 space-y-1">
+                  <span className="font-bold text-slate-900 dark:text-white">24-Hour Response SLA</span>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    Acknowledge incoming student inspection requests within 24 hours to maintain high placement ranking on search results.
+                  </p>
+                </div>
+
+                <div className="p-3 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-850/40 space-y-1">
+                  <span className="font-bold text-slate-900 dark:text-white">No Hidden Inspection Fees</span>
+                  <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                    Inspections are 100% free of charge for students. Demanding viewing fees will cause immediate listing suspension.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </AccordionItem>
+
+          {/* Accordion 2: Direct Student Escrow & Zero Agent Mandate */}
+          <AccordionItem
+            title="Direct Student Tenancy & Zero Agent Mandate"
+            subtitle="Legal compliance requiring direct contracts without intermediary markups"
+            badge="Direct Contract"
+            icon={<FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />}
+          >
+            <div className="py-2 space-y-3 text-xs text-slate-600 dark:text-slate-300">
+              <p className="text-[11px] leading-relaxed">
+                By listing on LodgeHere, you agree that students book rooms directly with you or your authorized caretaker. No unregulated third-party agents are permitted to inflate room prices on our network.
+              </p>
+            </div>
+          </AccordionItem>
+
+          {/* Accordion 3: Caretaker Helpline */}
+          <AccordionItem
+            title="Landlord Partner Support & Account Executive Line"
+            subtitle="Priority line for property listing assistance, campus zoning, and room verification"
+            badge="Support"
+            icon={<HelpCircle className="h-4 w-4 text-purple-600 dark:text-purple-400" />}
+          >
+            <div className="py-2 space-y-3 text-xs text-slate-600 dark:text-slate-300">
+              <div className="flex flex-wrap items-center gap-3">
+                <span className="inline-flex items-center gap-1.5 font-semibold text-slate-900 dark:text-white">
+                  <Phone className="h-3.5 w-3.5 text-slate-400" />
+                  <span>Landlord Priority Desk: +234 800 LODGEHERE (Ext 2)</span>
+                </span>
+                <span className="text-slate-400">•</span>
+                <span className="text-slate-500 dark:text-slate-400">Dedicated Account Manager Assigned</span>
+              </div>
+            </div>
+          </AccordionItem>
+        </Accordion>
       </div>
     </div>
   );

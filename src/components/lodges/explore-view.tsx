@@ -192,22 +192,26 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search by lodge name, area, or road..."
-            className="pl-9 text-xs h-10 rounded-xl"
+            className="pl-9 pr-14 text-xs h-10 rounded-xl glass-card border-slate-200/80 dark:border-slate-800/80 shadow-2xs"
           />
           <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-          {searchQuery && (
+          {searchQuery ? (
             <button
               onClick={() => setSearchQuery('')}
               className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer"
             >
               <X className="h-4 w-4" />
             </button>
+          ) : (
+            <kbd className="hidden sm:inline-flex absolute right-2.5 top-2.5 items-center rounded border border-slate-200/80 bg-slate-100/70 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 dark:border-slate-800 dark:bg-slate-800/80">
+              ⌘K
+            </kbd>
           )}
         </div>
       </div>
 
       {/* Category Filter Pills (PrimeHouse aesthetic) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
         {[
           { label: 'All Lodges', value: '' },
           { label: 'Self-Con', value: 'self_contained' },
@@ -225,7 +229,7 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
               className={`rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
                 isActive
                   ? 'bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-900'
-                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
+                  : 'glass-card text-slate-700 hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/80 dark:hover:text-white'
               }`}
             >
               {item.label}
@@ -235,7 +239,7 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
       </div>
 
       {/* Filter Card */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs space-y-4 dark:border-slate-800 dark:bg-slate-900">
+      <div className="glass-card rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
           {/* University Filter */}
           <div className="space-y-1.5">
