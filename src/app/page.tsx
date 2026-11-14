@@ -7,14 +7,89 @@ import {
   FileCheck2,
   GraduationCap,
   ArrowRight,
+  UserCheck,
+  LogIn,
+  LogOut,
+  UserPlus,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { HeroSearch } from '@/components/home/hero-search';
+import { auth0 } from '@/lib/auth0';
 
-export default function HomePage() {
+export default async function Home() {
+  // Check if user is authenticated with graceful fallback
+  let session = null;
+  try {
+    session = await auth0.getSession();
+  } catch (error) {
+    console.error('[Auth0] Error retrieving session:', error);
+  }
+
   return (
     <div className="space-y-16 pb-16">
+      {/* Auth0 Session Bar */}
+      <section className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+          {!session ? (
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 rounded-xl border border-emerald-200 bg-emerald-50/70 p-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-600 text-white">
+                  <UserCheck className="h-5 w-5" />
+                </div>
+                <div>
+                  <h2 className="text-sm font-bold text-slate-900">Welcome to Student Accommodation</h2>
+                  <p className="text-xs text-slate-600">
+                    Sign in with your Auth0 account to access your dashboard, bookings, and profile.
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-3 w-full sm:w-auto">
+                {/* Redirects to Auth0 to sign up */}
+                <a
+                  href="/auth/login?screen_hint=signup"
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2 text-xs font-semibold text-white shadow-xs hover:bg-emerald-700 transition-colors"
+                >
+                  <UserPlus className="h-3.5 w-3.5" />
+                  <span>Signup</span>
+                </a>
+                {/* Redirects to Auth0 to log in */}
+                <a
+                  href="/auth/login"
+                  className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 rounded-lg border border-slate-300 bg-white px-4 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition-colors"
+                >
+                  <LogIn className="h-3.5 w-3.5" />
+                  <span>Login</span>
+                </a>
+              </div>
+            </div>
+          ) : (
+            <div className="rounded-xl border border-slate-200 bg-slate-50 p-6 space-y-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 pb-4">
+                <div>
+                  <p className="text-xs font-medium text-slate-500">
+                    Logged in as <span className="font-semibold text-emerald-700">{session.user.email}</span>
+                  </p>
+                  {/* Display user info (name, email, etc.) */}
+                  <h1 className="text-xl font-bold text-slate-900">User Profile</h1>
+                </div>
+                {/* Ends the session and redirects to Auth0 to log out */}
+                <a
+                  href="/auth/logout"
+                  className="inline-flex items-center justify-center gap-1.5 rounded-lg border border-rose-200 bg-white px-4 py-2 text-xs font-semibold text-rose-700 hover:bg-rose-50 transition-colors"
+                >
+                  <LogOut className="h-3.5 w-3.5" />
+                  <span>Logout</span>
+                </a>
+              </div>
+              <pre className="rounded-lg bg-slate-950 p-4 text-xs font-mono text-emerald-400 overflow-x-auto shadow-inner">
+                {JSON.stringify(session.user, null, 2)}
+              </pre>
+            </div>
+          )}
+        </div>
+      </section>
+
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-b from-emerald-900 via-slate-900 to-slate-900 pt-16 pb-20 text-white">
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#10b981_1px,transparent_1px)] [background-size:16px_16px]" />
@@ -186,7 +261,7 @@ export default function HomePage() {
 
           <div className="rounded-2xl border border-slate-200 bg-white p-8 space-y-4 shadow-xs">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-slate-800 text-white">
-              <Building2 className="h-6 w-6" />
+              <Building2 className="h-5 w-5" />
             </div>
             <h3 className="text-xl font-bold text-slate-900">Are you a Property Owner or Manager?</h3>
             <p className="text-sm text-slate-600 leading-relaxed">

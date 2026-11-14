@@ -108,9 +108,11 @@ AS $$
 DECLARE
   v_role public.user_role;
   v_full_name TEXT;
+  v_avatar_path TEXT;
   v_provider_type public.provider_type;
   v_business_name TEXT;
   v_university_id UUID;
+  v_raw_uni TEXT;
 BEGIN
   -- Default to 'student'; only allow explicit 'landlord' if requested. Never allow 'admin' from signup metadata.
   IF (NEW.raw_user_meta_data->>'role') = 'landlord' THEN
@@ -119,27 +121,41 @@ BEGIN
     v_role := 'student'::public.user_role;
   END IF;
 
-  v_full_name := COALESCE(NEW.raw_user_meta_data->>'full_name', split_part(NEW.email, '@', 1));
+  v_full_name := COALESCE(
+    NEW.raw_user_meta_data->>'full_name',
+    NEW.raw_user_meta_data->>'name',
+    split_part(NEW.email, '@', 1)
+  );
+
+  v_avatar_path := COALESCE(
+    NEW.raw_user_meta_data->>'avatar_url',
+    NEW.raw_user_meta_data->>'picture'
+  );
 
   -- Insert profile
-  INSERT INTO public.profiles (id, role, full_name, email, phone)
+  INSERT INTO public.profiles (id, role, full_name, email, phone, avatar_path)
   VALUES (
     NEW.id,
     v_role,
     v_full_name,
     NEW.email,
-    NEW.raw_user_meta_data->>'phone'
-  );
+    NEW.raw_user_meta_data->>'phone',
+    v_avatar_path
+  )
+  ON CONFLICT (id) DO UPDATE SET
+    full_name = COALESCE(profiles.full_name, EXCLUDED.full_name),
+    avatar_path = COALESCE(profiles.avatar_path, EXCLUDED.avatar_path);
 
   -- Insert subprofile based on role
   IF v_role = 'student' THEN
-    IF (NEW.raw_user_meta_data->>'university_id') IS NOT NULL AND (NEW.raw_user_meta_data->>'university_id') <> '' THEN
+    v_raw_uni := NEW.raw_user_meta_data->>'university_id';
+    IF v_raw_uni IS NOT NULL AND v_raw_uni <> '' THEN
       BEGIN
-        v_university_id := (NEW.raw_user_meta_data->>'university_id')::UUID;
+        v_university_id := v_raw_uni::UUID;
       EXCEPTION WHEN invalid_text_representation THEN
         SELECT id INTO v_university_id
         FROM public.universities
-        WHERE slug = (NEW.raw_user_meta_data->>'university_id')
+        WHERE slug = v_raw_uni
         LIMIT 1;
       END;
     ELSE
@@ -151,7 +167,10 @@ BEGIN
       NEW.id,
       v_university_id,
       NEW.raw_user_meta_data->>'department'
-    );
+    )
+    ON CONFLICT (user_id) DO UPDATE SET
+      university_id = COALESCE(student_profiles.university_id, EXCLUDED.university_id),
+      department = COALESCE(student_profiles.department, EXCLUDED.department);
   ELSIF v_role = 'landlord' THEN
     IF (NEW.raw_user_meta_data->>'provider_type') = 'authorized_representative' THEN
       v_provider_type := 'authorized_representative'::public.provider_type;
@@ -165,7 +184,10 @@ BEGIN
       NEW.id,
       v_provider_type,
       v_business_name
-    );
+    )
+    ON CONFLICT (user_id) DO UPDATE SET
+      provider_type = COALESCE(landlord_profiles.provider_type, EXCLUDED.provider_type),
+      business_name = COALESCE(landlord_profiles.business_name, EXCLUDED.business_name);
   END IF;
 
   RETURN NEW;

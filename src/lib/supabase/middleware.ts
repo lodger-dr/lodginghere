@@ -34,11 +34,16 @@ export async function updateSession(request: NextRequest) {
       },
     });
 
+    const path = request.nextUrl.pathname;
+
+    // Fast-path OAuth callback route so exchangeCodeForSession sets cookies directly
+    if (path.startsWith('/auth/callback')) {
+      return response;
+    }
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
-
-    const path = request.nextUrl.pathname;
 
     // 1. Unauthenticated users trying to access protected portals
     const isStudentRoute = path.startsWith('/student');

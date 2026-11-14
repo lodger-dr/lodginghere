@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { NIGERIAN_UNIVERSITIES } from '@/lib/data/nigerian-universities';
+import { GoogleAuthButton } from '@/components/auth/google-auth-button';
 import { signUpAction } from '../actions';
 
 function RegisterForm() {
@@ -117,6 +118,27 @@ function RegisterForm() {
                   <span>{successMessage}</span>
                 </div>
               )}
+
+              {/* Auth0 and Google OAuth Registration */}
+              <div className="space-y-3">
+                <a href="/auth/login?screen_hint=signup" className="block w-full">
+                  <Button type="button" variant="outline" className="w-full gap-2 border-slate-300">
+                    <span>Sign up with Auth0</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </Button>
+                </a>
+                <GoogleAuthButton
+                  role={role}
+                  text={role === 'student' ? 'Continue with Google' : 'Continue as Landlord with Google'}
+                  onError={(msg) => setErrorMessage(msg)}
+                />
+                <div className="relative flex items-center justify-center">
+                  <div className="w-full border-t border-slate-200" />
+                  <span className="relative bg-white px-3 text-xs font-medium uppercase text-slate-400">
+                    Or register with email
+                  </span>
+                </div>
+              </div>
 
               <Input
                 label="Full name"
