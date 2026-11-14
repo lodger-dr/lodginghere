@@ -110,8 +110,7 @@ export default function StudentOverviewPage() {
           {/* Primary Winning CTA with Looping Flying Plane Icon */}
           <div className="shrink-0 flex flex-col items-start lg:items-end gap-2">
             <WinningCTA
-              idleText="Schedule Physical Inspection"
-              winText="Lock In Your Spot — Win!"
+              idleText="Explore Verified Accommodations"
               href="/student/explore"
               size="lg"
             />
