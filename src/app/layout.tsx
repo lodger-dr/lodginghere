@@ -21,7 +21,10 @@ export default async function RootLayout({
   let session = null;
   try {
     session = await auth0.getSession();
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.digest === 'DYNAMIC_SERVER_USAGE') {
+      throw error;
+    }
     console.error('[Auth0] Error in RootLayout getSession:', error);
   }
 
