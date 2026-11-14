@@ -8,12 +8,10 @@ import { Logo } from './logo';
 
 export function Footer() {
   const pathname = usePathname();
-  const isDashboard =
-    pathname?.startsWith('/student') ||
-    pathname?.startsWith('/landlord') ||
-    pathname?.startsWith('/admin');
 
-  if (isDashboard) {
+  // The footer only appears on the landing page ('/').
+  // It is excluded from the app's main dashboard and all other sub-pages.
+  if (pathname !== '/') {
     return null;
   }
 

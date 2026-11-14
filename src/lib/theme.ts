@@ -7,24 +7,21 @@ export type Theme = 'light' | 'dark';
 export const THEME_STORAGE_KEY = 'lodgehere_theme';
 export const THEME_CHANGE_EVENT = 'lodgehere-theme-change';
 
-let memoryTheme: Theme | null = null;
-
 export function getClientTheme(): Theme {
   if (typeof document === 'undefined') return 'light';
 
   try {
-    if (typeof localStorage !== 'undefined' && typeof localStorage.getItem === 'function') {
-      const stored = localStorage.getItem(THEME_STORAGE_KEY);
-      if (stored === 'dark' || stored === 'light') {
-        return stored as Theme;
-      }
+    const stored = localStorage.getItem(THEME_STORAGE_KEY);
+    if (stored === 'dark' || stored === 'light') {
+      return stored as Theme;
     }
   } catch {
     // Ignore storage errors
   }
 
-  if (memoryTheme) {
-    return memoryTheme;
+  // Check DOM classList state
+  if (document.documentElement && document.documentElement.classList.contains('dark')) {
+    return 'dark';
   }
 
   // Check document cookie
@@ -48,12 +45,8 @@ export function getClientTheme(): Theme {
 export function setClientTheme(theme: Theme): void {
   if (typeof document === 'undefined') return;
 
-  memoryTheme = theme;
-
   try {
-    if (typeof localStorage !== 'undefined' && typeof localStorage.setItem === 'function') {
-      localStorage.setItem(THEME_STORAGE_KEY, theme);
-    }
+    localStorage.setItem(THEME_STORAGE_KEY, theme);
     document.cookie = `theme=${theme}; path=/; max-age=31536000; SameSite=Lax`;
   } catch {
     // Ignore storage errors
@@ -66,13 +59,7 @@ export function setClientTheme(theme: Theme): void {
     root.classList.remove('dark');
   }
 
-  try {
-    if (typeof window !== 'undefined' && typeof window.dispatchEvent === 'function') {
-      window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, { detail: { theme } }));
-    }
-  } catch {
-    // Ignore
-  }
+  window.dispatchEvent(new CustomEvent(THEME_CHANGE_EVENT, { detail: { theme } }));
 }
 
 export function useTheme() {
@@ -128,3 +115,4 @@ export function useTheme() {
     mounted,
   };
 }
+
