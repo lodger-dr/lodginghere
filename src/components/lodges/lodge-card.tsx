@@ -76,8 +76,8 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
             setIsFavorited(!isFavorited);
           }}
           className={`absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full backdrop-blur-md transition-all duration-150 z-10 active:scale-90 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none ${isFavorited
-              ? 'bg-rose-50 text-rose-700 shadow-xs'
-              : 'bg-white/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-200 hover:text-rose-700 hover:bg-white'
+            ? 'bg-rose-50 text-rose-700 shadow-xs'
+            : 'bg-white/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-200 hover:text-rose-700 hover:bg-white'
             }`}
           aria-label="Save to favourites"
         >

@@ -149,8 +149,8 @@ export default function LandlordInspectionsPage() {
         <button
           onClick={() => setActiveTab('all')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'all'
-              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
-              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
           All Requests ({inspections.length})
@@ -158,8 +158,8 @@ export default function LandlordInspectionsPage() {
         <button
           onClick={() => setActiveTab('pending')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'pending'
-              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
-              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
           Pending Review ({pendingCount})
@@ -167,8 +167,8 @@ export default function LandlordInspectionsPage() {
         <button
           onClick={() => setActiveTab('accepted')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'accepted'
-              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
-              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
           Confirmed Appointments ({acceptedCount})
@@ -176,8 +176,8 @@ export default function LandlordInspectionsPage() {
         <button
           onClick={() => setActiveTab('completed')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'completed'
-              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
-              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
           Completed ({completedCount})

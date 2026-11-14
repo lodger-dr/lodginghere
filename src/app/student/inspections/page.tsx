@@ -103,51 +103,46 @@ export default function StudentInspectionsPage() {
       <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 overflow-x-auto pb-1 text-xs">
         <button
           onClick={() => setActiveTab('all')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
-            activeTab === 'all'
-              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
-              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-          }`}
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'all'
+            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+            }`}
         >
           All Requests ({inspections.length})
         </button>
         <button
           onClick={() => setActiveTab('accepted')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
-            activeTab === 'accepted'
-              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
-              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-          }`}
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'accepted'
+            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+            }`}
         >
           Confirmed / Accepted ({acceptedCount})
         </button>
         <button
           onClick={() => setActiveTab('pending')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
-            activeTab === 'pending'
-              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
-              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-          }`}
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'pending'
+            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+            }`}
         >
           Awaiting Response ({pendingCount})
         </button>
         <button
           onClick={() => setActiveTab('rescheduled')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
-            activeTab === 'rescheduled'
-              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
-              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-          }`}
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'rescheduled'
+            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+            }`}
         >
           Reschedule Proposed ({rescheduledCount})
         </button>
         <button
           onClick={() => setActiveTab('completed')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
-            activeTab === 'completed'
-              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
-              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-          }`}
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'completed'
+            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+            }`}
         >
           Completed ({completedCount})
         </button>

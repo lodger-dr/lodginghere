@@ -10,9 +10,15 @@ import { openCookiePreferencesModal } from './cookie-consent-banner';
 export function Footer() {
   const pathname = usePathname();
 
-  // The footer only appears on the landing page ('/').
-  // It is excluded from the app's main dashboard and all other sub-pages.
-  if (pathname !== '/') {
+  // The footer appears on all public views, excluded from student/landlord/admin dashboard views
+  const isDashboard = Boolean(
+    pathname &&
+      (pathname.startsWith('/student') ||
+        pathname.startsWith('/landlord') ||
+        pathname.startsWith('/admin'))
+  );
+
+  if (isDashboard) {
     return null;
   }
 

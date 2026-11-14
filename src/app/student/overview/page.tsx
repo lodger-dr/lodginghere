@@ -40,7 +40,7 @@ export default function StudentOverviewPage() {
           year: 'numeric',
         }).format(new Date())
       );
-    } catch {}
+    } catch { }
 
     const load = () => {
       setInspections(getInspections());
@@ -75,12 +75,14 @@ export default function StudentOverviewPage() {
         </div>
 
         <div className="flex items-center gap-2.5">
-          <Link
-            href="/student/explore"
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white/80 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800/80 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs backdrop-blur-md cursor-pointer"
-          >
-            <SlidersHorizontal className="h-3.5 w-3.5 text-slate-500" />
-            <span>Campus Filters</span>
+          <Link href="/student/explore">
+            <button
+              type="button"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white/80 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800/80 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs backdrop-blur-md cursor-pointer"
+            >
+              <SlidersHorizontal className="h-3.5 w-3.5 text-slate-500" />
+              <span>Campus Filters</span>
+            </button>
           </Link>
         </div>
       </div>
@@ -109,7 +111,6 @@ export default function StudentOverviewPage() {
           <div className="shrink-0 flex flex-col items-start lg:items-end gap-2">
             <WinningCTA
               idleText="Explore Verified Accommodations"
-              winText="Lock In Your Spot — Win!"
               href="/student/explore"
               size="lg"
             />
@@ -237,11 +238,13 @@ export default function StudentOverviewPage() {
                   Browse approved campus listings and click &ldquo;Schedule Physical Inspection&rdquo; to test water, power, and room security in person.
                 </p>
               </div>
-              <Link
-                href="/student/explore"
-                className="rounded-xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 px-4 py-2 text-xs font-bold hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer inline-block"
-              >
-                Browse Campus Lodges
+              <Link href="/student/explore">
+                <button
+                  type="button"
+                  className="rounded-xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 px-4 py-2 text-xs font-bold hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer"
+                >
+                  Browse Campus Lodges
+                </button>
               </Link>
             </div>
           )}

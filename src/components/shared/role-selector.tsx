@@ -35,11 +35,10 @@ export function NavbarRoleSelector() {
         <button
           type="button"
           onClick={() => handleSelectRole('student')}
-          className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 transition-all duration-200 ${
-            role === 'student'
+          className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 transition-all duration-200 ${role === 'student'
               ? 'bg-slate-900 text-white font-semibold shadow-xs'
               : 'text-slate-600 hover:text-slate-900 font-medium'
-          }`}
+            }`}
           title="Switch to Student view"
         >
           <User className="h-3.5 w-3.5" />
@@ -49,11 +48,10 @@ export function NavbarRoleSelector() {
         <button
           type="button"
           onClick={() => handleSelectRole('landlord')}
-          className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 transition-all duration-200 ${
-            role === 'landlord'
+          className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 transition-all duration-200 ${role === 'landlord'
               ? 'bg-slate-900 text-white font-semibold shadow-xs'
               : 'text-slate-600 hover:text-slate-900 font-medium'
-          }`}
+            }`}
           title="Switch to Landlord view"
         >
           <Building2 className="h-3.5 w-3.5" />
@@ -107,11 +105,10 @@ export function MobileRoleSelector({ onSelect }: { onSelect?: () => void }) {
         <button
           type="button"
           onClick={() => handleSelectRole('student')}
-          className={`flex items-center justify-center gap-2 rounded-xl p-3 text-xs font-semibold border transition-all ${
-            role === 'student'
+          className={`flex items-center justify-center gap-2 rounded-xl p-3 text-xs font-semibold border transition-all ${role === 'student'
               ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
               : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
-          }`}
+            }`}
         >
           <User className="h-4 w-4" />
           <span>Student</span>
@@ -121,11 +118,10 @@ export function MobileRoleSelector({ onSelect }: { onSelect?: () => void }) {
         <button
           type="button"
           onClick={() => handleSelectRole('landlord')}
-          className={`flex items-center justify-center gap-2 rounded-xl p-3 text-xs font-semibold border transition-all ${
-            role === 'landlord'
+          className={`flex items-center justify-center gap-2 rounded-xl p-3 text-xs font-semibold border transition-all ${role === 'landlord'
               ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
               : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
-          }`}
+            }`}
         >
           <Building2 className="h-4 w-4" />
           <span>Landlord</span>
@@ -182,9 +178,8 @@ export function RoleSelectionView({
         {/* Student Experience Card */}
         <div
           onClick={() => handleChoose('student')}
-          className={`cursor-pointer rounded-3xl border bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
-            role === 'student' ? 'border-emerald-600 ring-2 ring-emerald-600/20' : 'border-slate-200 hover:border-slate-300'
-          }`}
+          className={`cursor-pointer rounded-3xl border bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${role === 'student' ? 'border-emerald-600 ring-2 ring-emerald-600/20' : 'border-slate-200 hover:border-slate-300'
+            }`}
         >
           <div className="space-y-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700">
@@ -237,9 +232,8 @@ export function RoleSelectionView({
         {/* Landlord Experience Card */}
         <div
           onClick={() => handleChoose('landlord')}
-          className={`cursor-pointer rounded-3xl border bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${
-            role === 'landlord' ? 'border-emerald-600 ring-2 ring-emerald-600/20' : 'border-slate-200 hover:border-slate-300'
-          }`}
+          className={`cursor-pointer rounded-3xl border bg-white p-7 shadow-xs transition-all duration-200 hover:-translate-y-1 hover:shadow-lg ${role === 'landlord' ? 'border-emerald-600 ring-2 ring-emerald-600/20' : 'border-slate-200 hover:border-slate-300'
+            }`}
         >
           <div className="space-y-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-white">

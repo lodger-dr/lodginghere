@@ -163,10 +163,10 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
 
   const hasActiveFilters = Boolean(
     selectedUniSlug ||
-      accommodationType ||
-      maxBudget ||
-      selectedAmenities.length > 0 ||
-      searchQuery.trim()
+    accommodationType ||
+    maxBudget ||
+    selectedAmenities.length > 0 ||
+    searchQuery.trim()
   );
 
   return (
@@ -226,11 +226,10 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
               key={item.label}
               type="button"
               onClick={() => setAccommodationType(item.value)}
-              className={`rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
-                isActive
-                  ? 'bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-900'
-                  : 'glass-card text-slate-700 hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/80 dark:hover:text-white'
-              }`}
+              className={`rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${isActive
+                ? 'bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-900'
+                : 'glass-card text-slate-700 hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/80 dark:hover:text-white'
+                }`}
             >
               {item.label}
             </button>
@@ -332,11 +331,10 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
                   key={amenity.key}
                   type="button"
                   onClick={() => toggleAmenity(amenity.key)}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer ${
-                    isSelected
-                      ? 'bg-emerald-600 text-white shadow-xs'
-                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-                  }`}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer ${isSelected
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                    }`}
                 >
                   <span>{amenity.label}</span>
                   {isSelected && <X className="h-3 w-3" />}

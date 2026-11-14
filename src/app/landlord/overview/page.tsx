@@ -38,7 +38,7 @@ export default function LandlordOverviewPage() {
           year: 'numeric',
         }).format(new Date())
       );
-    } catch {}
+    } catch { }
 
     const load = () => {
       setLodges(getLodges());

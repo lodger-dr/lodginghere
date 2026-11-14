@@ -39,9 +39,8 @@ export function WinningCTA({
       <span className="relative flex items-center justify-center transition-all duration-200">
         <SendHorizontal
           aria-hidden="true"
-          className={`h-4 w-4 shrink-0 transition-all ${
-            isHovered ? 'animate-plane-loop text-emerald-300' : 'text-slate-300 dark:text-slate-900'
-          }`}
+          className={`h-4 w-4 shrink-0 transition-all ${isHovered ? 'animate-plane-loop text-emerald-300' : 'text-slate-300 dark:text-slate-900'
+            }`}
         />
       </span>
       <span className="font-bold tracking-tight whitespace-nowrap transition-all duration-200">
@@ -58,8 +57,6 @@ export function WinningCTA({
         href={href}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
-        onFocus={() => setIsHovered(true)}
-        onBlur={() => setIsHovered(false)}
         className={baseClasses}
       >
         {content}
@@ -74,8 +71,6 @@ export function WinningCTA({
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onFocus={() => setIsHovered(true)}
-      onBlur={() => setIsHovered(false)}
       className={`${baseClasses} ${disabled ? 'opacity-50 pointer-events-none' : ''}`}
     >
       {content}
