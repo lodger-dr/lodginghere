@@ -74,14 +74,12 @@ export default function LandlordOverviewPage() {
         </div>
 
         <div className="flex items-center gap-2">
-          <Link href="/landlord/properties">
-            <button
-              type="button"
-              className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs"
-            >
-              <SlidersHorizontal className="h-3.5 w-3.5 text-slate-500" />
-              <span>Filters</span>
-            </button>
+          <Link
+            href="/landlord/properties"
+            className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs"
+          >
+            <SlidersHorizontal className="h-3.5 w-3.5 text-slate-500" />
+            <span>Filters</span>
           </Link>
           <WinningCTA
             href="/landlord/properties"
@@ -134,13 +132,11 @@ export default function LandlordOverviewPage() {
                 </p>
               </div>
             </div>
-            <Link href="/landlord/properties">
-              <button
-                type="button"
-                className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs"
-              >
-                Start
-              </button>
+            <Link
+              href="/landlord/properties"
+              className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs inline-block"
+            >
+              Start
             </Link>
           </div>
 
@@ -155,13 +151,11 @@ export default function LandlordOverviewPage() {
                 </p>
               </div>
             </div>
-            <Link href="/landlord/rooms">
-              <button
-                type="button"
-                className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs"
-              >
-                Add
-              </button>
+            <Link
+              href="/landlord/rooms"
+              className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs inline-block"
+            >
+              Add
             </Link>
           </div>
 
@@ -176,13 +170,11 @@ export default function LandlordOverviewPage() {
                 </p>
               </div>
             </div>
-            <Link href="/landlord/inspections">
-              <button
-                type="button"
-                className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs"
-              >
-                Inspect
-              </button>
+            <Link
+              href="/landlord/inspections"
+              className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs inline-block"
+            >
+              Inspect
             </Link>
           </div>
         </div>

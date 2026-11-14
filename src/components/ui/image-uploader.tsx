@@ -189,7 +189,7 @@ export function ImageUploader({
               >
                 <img
                   src={url}
-                  alt={`Preview ${idx + 1}`}
+                  alt={`Uploaded property photo preview ${idx + 1}`}
                   className="h-full w-full object-cover"
                 />
 
@@ -205,10 +205,11 @@ export function ImageUploader({
                     e.stopPropagation();
                     handleRemove(idx);
                   }}
-                  className="absolute top-1 right-1 rounded-full bg-slate-900/80 p-1 text-white hover:bg-red-600 transition-colors opacity-90 group-hover:opacity-100"
+                  className="absolute top-1 right-1 rounded-full bg-slate-900/80 p-1 text-white hover:bg-red-600 transition-colors opacity-90 group-hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
                   title="Remove image"
+                  aria-label={`Remove photo preview ${idx + 1}`}
                 >
-                  <X className="h-3.5 w-3.5" />
+                  <X className="h-3.5 w-3.5" aria-hidden="true" />
                 </button>
               </div>
             ))}

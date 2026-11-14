@@ -108,3 +108,26 @@ html.dark body {
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(51, 65, 85, 0.6);
 }
+
+/* Accessibility Focus Rings & Contrast Standards */
+:focus-visible {
+  outline: 2px solid #059669;
+  outline-offset: 2px;
+}
+
+.dark :focus-visible {
+  outline: 2px solid #34d399;
+  outline-offset: 2px;
+}
+
+/* Ensure placeholder contrast meets WCAG AA */
+::placeholder {
+  color: #64748b;
+  opacity: 1;
+}
+
+.dark ::placeholder {
+  color: #94a3b8;
+  opacity: 1;
+}
+

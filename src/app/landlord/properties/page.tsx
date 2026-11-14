@@ -218,7 +218,7 @@ export default function LandlordPropertiesPage() {
                   <div className="relative aspect-16/9 w-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
                     <img
                       src={primaryImage}
-                      alt={lodge.title}
+                      alt={`Listing photograph for ${lodge.title}`}
                       className="h-full w-full object-cover"
                     />
                     <div className="absolute top-3 left-3 flex items-center gap-1.5">
@@ -455,8 +455,8 @@ export default function LandlordPropertiesPage() {
                     />
                   </div>
                 </div>
-                <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-medium">
-                  Zero legal/agency commission: LodgeHere direct landlord model guarantees zero agent exploitation.
+                <p className="text-[10px] text-emerald-800 dark:text-emerald-300 font-medium">
+                  Zero middleman agency commission: LodgeHere direct landlord model is designed to eliminate unauthorized agent markups.
                 </p>
               </div>
 
@@ -471,7 +471,7 @@ export default function LandlordPropertiesPage() {
                         key={a.key}
                         type="button"
                         onClick={() => toggleAmenity(a.key)}
-                        className={`rounded-full px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer ${isSelected
+                        className={`rounded-full px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none ${isSelected
                           ? 'bg-emerald-600 text-white border-emerald-600'
                           : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-750'
                           }`}
@@ -504,6 +504,22 @@ export default function LandlordPropertiesPage() {
                   rows={3}
                   className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 />
+              </div>
+
+              {/* Form Consent Checkbox */}
+              <div className="flex items-start gap-2 pt-2">
+                <input
+                  id="landlord-listing-consent"
+                  type="checkbox"
+                  required
+                  className="h-4 w-4 mt-0.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
+                />
+                <label htmlFor="landlord-listing-consent" className="text-xs text-slate-700 dark:text-slate-300 leading-snug cursor-pointer">
+                  I confirm that all stated rents and fees are transparent with zero unadvertised charges, and that I have legal authority to list this property in accordance with the{' '}
+                  <a href="/terms" target="_blank" className="text-emerald-700 underline dark:text-emerald-400 font-semibold">
+                    Terms of Service
+                  </a>.
+                </label>
               </div>
 
               {/* Actions */}

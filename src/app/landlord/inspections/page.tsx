@@ -206,7 +206,7 @@ export default function LandlordInspectionsPage() {
                         insp.property_image ||
                         'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=400&q=80'
                       }
-                      alt={insp.property_title}
+                      alt={`Accommodation photograph for ${insp.property_title}`}
                       className="h-20 w-24 rounded-xl object-cover shrink-0 bg-slate-100 dark:bg-slate-800"
                     />
 

@@ -34,12 +34,12 @@ export default function HowItWorksPage() {
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
             <CalendarCheck className="h-5 w-5" />
           </div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white">1. Physical Inspection Guarantee</h3>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">1. Physical In-Person Inspection Policy</h3>
           <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
             Students physically inspect the lodge with the landlord before confirming any room booking. You can schedule
             a viewing date and time directly through the platform.
           </p>
-          <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium pt-1 border-t border-slate-100 dark:border-slate-800">
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 font-medium pt-1 border-t border-slate-100 dark:border-slate-800">
             Verify water pressure, electricity availability, and security in person first.
           </p>
         </div>
@@ -53,7 +53,7 @@ export default function HowItWorksPage() {
             Availability is tracked at the specific room level. Each listing itemizes room codes (e.g., Room 104, Block B Room 3),
             private bathroom status, and occupancy.
           </p>
-          <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium pt-1 border-t border-slate-100 dark:border-slate-800">
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 font-medium pt-1 border-t border-slate-100 dark:border-slate-800">
             You reserve the exact room code you physically inspected.
           </p>
         </div>
@@ -62,12 +62,12 @@ export default function HowItWorksPage() {
           <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-400">
             <FileCheck2 className="h-5 w-5" />
           </div>
-          <h3 className="text-lg font-bold text-slate-900 dark:text-white">3. 100% Upfront Pricing</h3>
+          <h3 className="text-lg font-bold text-slate-900 dark:text-white">3. Itemized Upfront Pricing</h3>
           <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
             Every listing explicitly itemizes annual rent and all mandatory upfront charges: caution deposit, service charge,
             and legal agreement fee.
           </p>
-          <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium pt-1 border-t border-slate-100 dark:border-slate-800">
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 font-medium pt-1 border-t border-slate-100 dark:border-slate-800">
             Zero surprise fees when meeting the landlord.
           </p>
         </div>
@@ -81,7 +81,7 @@ export default function HowItWorksPage() {
             Once an inspection is completed, the student submits a booking request. The landlord confirms the terms snapshot,
             creating an accountable mutual record.
           </p>
-          <p className="text-[11px] text-slate-400 dark:text-slate-500 font-medium pt-1 border-t border-slate-100 dark:border-slate-800">
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 font-medium pt-1 border-t border-slate-100 dark:border-slate-800">
             Clear, transparent agreement on both sides before tenancy begins.
           </p>
         </div>

@@ -226,10 +226,10 @@ export function RoleSelectionView({
                 e.stopPropagation();
                 handleChoose('student');
               }}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-slate-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-black shadow-xs"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-slate-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-black shadow-xs focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
             >
               <span>Continue as Student</span>
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -243,7 +243,7 @@ export function RoleSelectionView({
         >
           <div className="space-y-4">
             <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-900 text-white">
-              <Building2 className="h-6 w-6" />
+              <Building2 className="h-6 w-6" aria-hidden="true" />
             </div>
 
             <div>
@@ -262,15 +262,15 @@ export function RoleSelectionView({
 
             <ul className="space-y-2 text-xs text-slate-600 pt-2 border-t border-slate-100">
               <li className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-emerald-600 shrink-0" />
+                <Check className="h-4 w-4 text-emerald-600 shrink-0" aria-hidden="true" />
                 <span>Publish verified lodge listings</span>
               </li>
               <li className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-emerald-600 shrink-0" />
+                <Check className="h-4 w-4 text-emerald-600 shrink-0" aria-hidden="true" />
                 <span>Live room vacancy management</span>
               </li>
               <li className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-emerald-600 shrink-0" />
+                <Check className="h-4 w-4 text-emerald-600 shrink-0" aria-hidden="true" />
                 <span>Direct student inspection bookings</span>
               </li>
             </ul>
@@ -281,14 +281,31 @@ export function RoleSelectionView({
                 e.stopPropagation();
                 handleChoose('landlord');
               }}
-              className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-slate-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-black shadow-xs"
+              className="mt-3 flex w-full items-center justify-center gap-2 rounded-full bg-slate-900 py-3 text-xs font-semibold text-white transition-colors hover:bg-black shadow-xs focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
             >
               <span>Continue as Landlord</span>
-              <ArrowRight className="h-4 w-4" />
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </button>
           </div>
         </div>
       </div>
+
+      {/* Explicit Form & Account Consent Notice */}
+      <p className="text-center text-xs text-slate-600 dark:text-slate-400 pt-2">
+        By continuing, you agree to LodgeHere&apos;s{' '}
+        <Link href="/terms" className="font-semibold text-emerald-700 underline dark:text-emerald-400 hover:text-emerald-800">
+          Terms of Service
+        </Link>
+        ,{' '}
+        <Link href="/privacy" className="font-semibold text-emerald-700 underline dark:text-emerald-400 hover:text-emerald-800">
+          Privacy Policy
+        </Link>
+        , and{' '}
+        <Link href="/cookies" className="font-semibold text-emerald-700 underline dark:text-emerald-400 hover:text-emerald-800">
+          Cookie Policy
+        </Link>
+        .
+      </p>
     </div>
   );
 }
