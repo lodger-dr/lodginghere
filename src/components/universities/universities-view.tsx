@@ -1,0 +1,82 @@
+'use client';
+
+import React, { useState } from 'react';
+import Link from 'next/link';
+import { GraduationCap, ExternalLink, Building2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { UniversitySelector } from '@/components/shared/university-selector';
+import { SeedUniversity } from '@/lib/data/nigerian-universities';
+
+interface UniversitiesViewProps {
+  isDashboard?: boolean;
+}
+
+export function UniversitiesView({ isDashboard = false }: UniversitiesViewProps) {
+  const [selectedUni, setSelectedUni] = useState<SeedUniversity | null>(null);
+
+  const exploreHref = isDashboard
+    ? `/student/explore?university=${selectedUni?.slug || ''}`
+    : `/explore?university=${selectedUni?.slug || ''}`;
+
+  return (
+    <div className={`space-y-8 ${isDashboard ? 'w-full' : 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10'}`}>
+      <div className="space-y-2">
+        <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border dark:border-emerald-800 px-2.5 py-1 rounded-full">
+          <GraduationCap className="h-4 w-4" />
+          <span>Accredited Institutions Directory</span>
+        </div>
+        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+          Nigerian Universities Directory
+        </h1>
+        <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 max-w-2xl">
+          Discover verified student accommodation, campus neighbourhoods, and approved lodges across federal,
+          state, and private universities in Nigeria.
+        </p>
+      </div>
+
+      <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-xs space-y-4 dark:border-slate-800 dark:bg-slate-900">
+        <UniversitySelector
+          onSelect={(uni) => setSelectedUni(uni)}
+          selectedSlug={selectedUni?.slug}
+          showFilters={true}
+        />
+
+        {selectedUni && (
+          <div className="mt-6 rounded-xl border border-emerald-200 bg-emerald-50/70 dark:border-emerald-800/80 dark:bg-emerald-950/40 p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2">
+                <h3 className="font-bold text-base text-slate-900 dark:text-white">{selectedUni.name}</h3>
+                <span className="text-xs font-semibold text-emerald-800 bg-emerald-100 dark:bg-emerald-900/60 dark:text-emerald-300 px-2 py-0.5 rounded">
+                  {selectedUni.acronym}
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-slate-300">
+                Location: {selectedUni.city}, {selectedUni.state} State • Type: {selectedUni.university_type.toUpperCase()}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-2">
+              {selectedUni.website_url && (
+                <a
+                  href={selectedUni.website_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1 text-xs text-slate-600 hover:text-slate-900 px-2.5 py-1.5 rounded-md border border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
+                >
+                  <span>Portal</span>
+                  <ExternalLink className="h-3 w-3" />
+                </a>
+              )}
+              <Link href={exploreHref}>
+                <Button size="sm" className="gap-1.5 bg-emerald-600 hover:bg-emerald-700">
+                  <Building2 className="h-4 w-4" />
+                  <span>View Lodges</span>
+                </Button>
+              </Link>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}

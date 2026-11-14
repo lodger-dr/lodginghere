@@ -36,8 +36,8 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
     {
       title: 'DISCOVERY',
       items: [
-        { name: 'Explore Lodges', href: '/explore', icon: Search },
-        { name: 'Universities', href: '/universities', icon: Building2 },
+        { name: 'Explore Lodges', href: '/student/explore', icon: Search },
+        { name: 'Universities', href: '/student/universities', icon: Building2 },
       ],
     },
     {
@@ -76,11 +76,10 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
                       <Link
                         key={item.href}
                         href={item.href}
-                        className={`flex items-center gap-3 rounded-lg px-2.5 py-2 text-xs transition-colors ${
-                          active
+                        className={`flex items-center gap-3 rounded-lg px-2.5 py-2 text-xs transition-colors ${active
                             ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-bold'
                             : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200 font-medium'
-                        }`}
+                          }`}
                       >
                         <Icon className={`h-4 w-4 ${active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
                         <span>{item.name}</span>

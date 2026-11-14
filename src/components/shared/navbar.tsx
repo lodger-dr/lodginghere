@@ -13,10 +13,12 @@ export function Navbar() {
   const { role } = useDevRole();
   const pathname = usePathname();
 
-  const isDashboard =
-    pathname.startsWith('/student') ||
-    pathname.startsWith('/landlord') ||
-    pathname.startsWith('/admin');
+  const isDashboard = Boolean(
+    pathname &&
+    (pathname.startsWith('/student') ||
+      pathname.startsWith('/landlord') ||
+      pathname.startsWith('/admin'))
+  );
 
   const isLinkActive = (path: string) => pathname === path;
 
@@ -35,36 +37,33 @@ export function Navbar() {
           </button>
           <Logo />
 
-          {/* Navigation Links: ONLY shown on public views, hidden in dashboard */}
+          {/* Navigation Links: ONLY shown on public website views, never in dashboard */}
           {!isDashboard && (
             <nav className="hidden md:flex items-center gap-6 ml-4">
               <Link
                 href="/explore"
-                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
-                  isLinkActive('/explore')
+                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/explore')
                     ? 'text-blue-600 dark:text-blue-400 font-bold'
                     : 'text-slate-600 dark:text-slate-400'
-                }`}
+                  }`}
               >
                 Explore Lodges
               </Link>
               <Link
                 href="/universities"
-                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
-                  isLinkActive('/universities')
+                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/universities')
                     ? 'text-blue-600 dark:text-blue-400 font-bold'
                     : 'text-slate-600 dark:text-slate-400'
-                }`}
+                  }`}
               >
                 Universities
               </Link>
               <Link
                 href="/how-it-works"
-                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
-                  isLinkActive('/how-it-works')
+                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/how-it-works')
                     ? 'text-blue-600 dark:text-blue-400 font-bold'
                     : 'text-slate-600 dark:text-slate-400'
-                }`}
+                  }`}
               >
                 How It Works
               </Link>
@@ -74,23 +73,14 @@ export function Navbar() {
 
         {/* Right Header Controls */}
         <div className="flex items-center gap-2.5">
-          {/* Action Button: Show Portal link on public pages; Show Explore Lodges on dashboard */}
-          {!isDashboard ? (
+          {/* Action Button: ONLY shown on public website pages */}
+          {!isDashboard && (
             <Link href={role === 'student' ? '/student/overview' : '/landlord/overview'}>
               <button
                 type="button"
                 className="hidden sm:inline-flex items-center rounded-md bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-colors"
               >
                 {role === 'student' ? 'Student Portal' : 'Landlord Portal'}
-              </button>
-            </Link>
-          ) : (
-            <Link href="/explore">
-              <button
-                type="button"
-                className="hidden sm:inline-flex items-center rounded-md border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700 px-3 py-1.5 text-xs font-semibold shadow-xs transition-colors"
-              >
-                Explore Lodges
               </button>
             </Link>
           )}
@@ -283,8 +273,8 @@ export function Navbar() {
             </div>
           )}
 
-          <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-            {!isDashboard ? (
+          {!isDashboard && (
+            <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
               <Link
                 href={role === 'student' ? '/student/overview' : '/landlord/overview'}
                 onClick={() => setMobileMenuOpen(false)}
@@ -292,16 +282,8 @@ export function Navbar() {
               >
                 Open {role === 'student' ? 'Student' : 'Landlord'} Dashboard
               </Link>
-            ) : (
-              <Link
-                href="/explore"
-                onClick={() => setMobileMenuOpen(false)}
-                className="block w-full text-center rounded-lg border border-slate-200 dark:border-slate-700 py-2.5 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50"
-              >
-                Explore Lodges (Public Site)
-              </Link>
-            )}
-          </div>
+            </div>
+          )}
         </div>
       )}
     </header>

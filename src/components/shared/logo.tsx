@@ -3,6 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
+import { useDevRole } from '@/lib/dev-role';
 
 interface LogoProps {
   className?: string;
@@ -11,6 +13,22 @@ interface LogoProps {
 }
 
 export function Logo({ className = '', inverted = false, size = 'md' }: LogoProps) {
+  const { role } = useDevRole();
+  const pathname = usePathname();
+
+  const isDashboard = Boolean(
+    pathname &&
+    (pathname.startsWith('/student') ||
+      pathname.startsWith('/landlord') ||
+      pathname.startsWith('/admin'))
+  );
+
+  const href = isDashboard
+    ? role === 'student'
+      ? '/student/overview'
+      : '/landlord/overview'
+    : '/';
+
   const heightClasses = {
     sm: 'h-6',
     md: 'h-7',
@@ -21,7 +39,7 @@ export function Logo({ className = '', inverted = false, size = 'md' }: LogoProp
 
   return (
     <Link
-      href="/"
+      href={href}
       className={`group flex items-center gap-2 transition-opacity hover:opacity-90 ${className}`}
       aria-label="LodgeHere"
     >

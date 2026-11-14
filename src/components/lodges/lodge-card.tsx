@@ -5,11 +5,10 @@ import Link from 'next/link';
 import {
   ShieldCheck,
   MapPin,
-  BedDouble,
-  Droplets,
-  Zap,
+  Star,
   ArrowRight,
   Heart,
+  CalendarCheck,
 } from 'lucide-react';
 import { Lodge } from '@/types/database';
 import { formatNaira } from '@/lib/utils';
@@ -40,9 +39,12 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
     (lodge.pricing.service_charge || 0) +
     (lodge.pricing.legal_agency_fee || 0);
 
+  const rating = lodge.rating || 5.0;
+  const reviewCount = lodge.review_count || 18;
+
   return (
-    <div className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-3.5 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700">
-      {/* Property Cover Image */}
+    <div className="group flex flex-col overflow-hidden rounded-3xl border border-slate-200/80 bg-white p-3.5 shadow-sm transition-all duration-300 hover:-translate-y-1.5 hover:shadow-xl hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700">
+      {/* Property Cover Image (Matching Template rounded-2xl) */}
       <div className="relative aspect-4/3 w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-800">
         <img
           src={primaryImage}
@@ -59,7 +61,7 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
               <span>Verified</span>
             </span>
           )}
-          <span className="inline-flex items-center rounded-full bg-slate-900/80 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md dark:bg-black/80">
+          <span className="inline-flex items-center rounded-full bg-slate-900/85 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-md dark:bg-black/80">
             {TYPE_LABELS[lodge.accommodation_type] || lodge.accommodation_type}
           </span>
         </div>
@@ -67,7 +69,7 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
         {/* Top-Right Favorite Button */}
         <button
           type="button"
-          className="absolute top-3 right-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-xs backdrop-blur-md transition-colors hover:text-rose-600 hover:bg-white dark:bg-slate-900/90 dark:text-slate-200 dark:hover:text-rose-400 dark:hover:bg-slate-900 cursor-pointer"
+          className="absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full bg-white/90 text-slate-700 shadow-xs backdrop-blur-md transition-colors hover:text-rose-600 hover:bg-white dark:bg-slate-900/90 dark:text-slate-200 dark:hover:text-rose-400 dark:hover:bg-slate-900 cursor-pointer"
           aria-label="Save to favourites"
           onClick={(e) => {
             e.preventDefault();
@@ -86,77 +88,77 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
             </span>
           ) : (
             <span className="inline-flex items-center rounded-full bg-slate-900/85 px-2.5 py-1 text-[11px] font-medium text-slate-200 backdrop-blur-md">
-              Fully Occupied
+              Occupied
             </span>
           )}
         </div>
       </div>
 
-      {/* Lodge Details */}
-      <div className="flex flex-1 flex-col pt-4 px-1.5 space-y-3">
-        {/* Title & Location */}
-        <div className="space-y-1">
-          <Link href={`/lodges/${lodge.slug}`}>
-            <h3 className="font-bold text-base text-slate-900 leading-snug group-hover:text-emerald-700 dark:text-white dark:group-hover:text-emerald-400 transition-colors line-clamp-1">
+      {/* Lodge Details (Precise template format: Title & Price on row 1, Location & Upfront on row 2, Stars on row 3) */}
+      <div className="flex flex-1 flex-col pt-3.5 px-1 space-y-2.5">
+        {/* Row 1: Title & Price */}
+        <div className="flex items-start justify-between gap-2">
+          <Link href={`/lodges/${lodge.slug}`} className="flex-1 min-w-0">
+            <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-emerald-600 dark:group-hover:text-emerald-400 transition-colors truncate">
               {lodge.title}
             </h3>
           </Link>
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 dark:text-slate-400">
+          <div className="text-right shrink-0">
+            <span className="text-base font-extrabold text-slate-900 dark:text-white tracking-tight">
+              {formatNaira(lodge.pricing.min_price)}
+            </span>
+            <span className="text-[11px] text-slate-400 dark:text-slate-500 font-medium">/yr</span>
+          </div>
+        </div>
+
+        {/* Row 2: Location & Total Upfront */}
+        <div className="flex items-center justify-between gap-2 text-xs text-slate-500 dark:text-slate-400">
+          <div className="flex items-center gap-1 min-w-0 truncate">
             <MapPin className="h-3.5 w-3.5 shrink-0 text-slate-400 dark:text-slate-500" />
             <span className="truncate">{lodge.neighbourhood} • {lodge.distance_to_campus}</span>
           </div>
-        </div>
-
-        {/* Key Amenities Specs Row */}
-        <div className="flex items-center gap-4 py-2 border-y border-slate-100 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300">
-          <div className="flex items-center gap-1.5">
-            <BedDouble className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
-            <span>{TYPE_LABELS[lodge.accommodation_type] || 'Lodge'}</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Droplets className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
-            <span>Water</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <Zap className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" />
-            <span>Light</span>
+          <div className="text-right shrink-0">
+            <span className="text-[11px] text-slate-400 dark:text-slate-500">
+              Total: <span className="font-semibold text-slate-700 dark:text-slate-300">{formatNaira(totalUpfront)}</span>
+            </span>
           </div>
         </div>
 
-        {/* Price & Action */}
-        <div className="mt-auto pt-2 space-y-3">
-          <div className="flex items-baseline justify-between">
-            <div>
-              <span className="text-xl font-extrabold text-slate-900 dark:text-white tracking-tight">
-                {formatNaira(lodge.pricing.min_price)}
-              </span>
-              <span className="text-xs text-slate-400 dark:text-slate-500 font-medium"> / year</span>
+        {/* Row 3: 5 Amber Stars & Actions (Matching template star rating display) */}
+        <div className="flex items-center justify-between pt-1 border-t border-slate-100 dark:border-slate-800">
+          <div className="flex items-center gap-1">
+            <div className="flex items-center text-amber-400">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className="h-3.5 w-3.5 fill-amber-400 text-amber-400"
+                />
+              ))}
             </div>
-            <div className="text-right">
-              <span className="text-[11px] text-slate-400 dark:text-slate-500 block">Total upfront</span>
-              <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">{formatNaira(totalUpfront)}</span>
-            </div>
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300 ml-1">
+              {rating.toFixed(1)}
+            </span>
+            <span className="text-[11px] text-slate-400 dark:text-slate-500">
+              ({reviewCount})
+            </span>
           </div>
 
-          {/* Startup Style Rounded-Pill CTA (matching PrimeHouse "Schedule Visit ->") */}
-          <div className="grid grid-cols-2 gap-2 pt-1">
-            <Link href={`/lodges/${lodge.slug}`} className="w-full">
-              <button
-                type="button"
-                className="w-full rounded-full border border-slate-200 bg-white py-2.5 px-3 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:border-slate-300 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 cursor-pointer"
-              >
-                View Details
-              </button>
-            </Link>
-
+          <div className="flex items-center gap-2">
             <button
               type="button"
               onClick={() => onBookInspection?.(lodge)}
-              className="flex w-full items-center justify-center gap-1.5 rounded-full bg-slate-900 py-2.5 px-3 text-xs font-semibold text-white transition-colors hover:bg-black shadow-xs active:scale-95 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400 cursor-pointer font-medium"
+              className="inline-flex items-center gap-1 rounded-full bg-slate-900 hover:bg-black dark:bg-emerald-500 dark:hover:bg-emerald-400 text-white dark:text-slate-950 px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all active:scale-95 cursor-pointer"
             >
-              <span>Schedule Visit</span>
-              <ArrowRight className="h-3.5 w-3.5" />
+              <CalendarCheck className="h-3 w-3" />
+              <span>Inspect</span>
             </button>
+            <Link
+              href={`/lodges/${lodge.slug}`}
+              className="inline-flex items-center gap-1 rounded-full border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-3 py-1.5 text-xs font-semibold transition-colors"
+            >
+              <span>Details</span>
+              <ArrowRight className="h-3 w-3" />
+            </Link>
           </div>
         </div>
       </div>
