@@ -25,14 +25,20 @@ function LoginForm() {
 
     const formData = new FormData(event.currentTarget);
     startTransition(async () => {
-      const result = await signInAction(formData);
-      if (!result.success) {
-        if (result.message) {
-          setErrorMessage(result.message);
+      try {
+        const result = await signInAction(formData);
+        if (!result.success) {
+          if (result.message) {
+            setErrorMessage(result.message);
+          }
+          if (result.errors) {
+            setFieldErrors(result.errors);
+          }
+        } else if (result.redirectTo) {
+          window.location.href = result.redirectTo;
         }
-        if (result.errors) {
-          setFieldErrors(result.errors);
-        }
+      } catch (err: unknown) {
+        setErrorMessage('Unable to connect to the authentication server. Please check your internet connection.');
       }
     });
   }

@@ -12,6 +12,7 @@ import {
 export interface ActionResponse {
   success: boolean;
   message?: string;
+  redirectTo?: string;
   errors?: Record<string, string[]>;
 }
 
@@ -38,13 +39,13 @@ export async function signInAction(formData: FormData): Promise<ActionResponse> 
 
     if (error) {
       const msg = error.message.toLowerCase();
-      if (msg.includes('failed to fetch')) {
+      if (msg.includes('failed to fetch') || msg.includes('networkerror') || msg.includes('fetch failed')) {
         return {
           success: false,
-          message: 'Unable to connect to the authentication server. Please check your network connection.',
+          message: 'Unable to connect to the authentication server. Please check your internet connection.',
         };
       }
-      if (msg.includes('invalid login credentials')) {
+      if (msg.includes('invalid login credentials') || msg.includes('invalid credentials')) {
         return {
           success: false,
           message: 'Invalid email or password. Please check your credentials.',
@@ -77,22 +78,23 @@ export async function signInAction(formData: FormData): Promise<ActionResponse> 
       .single();
 
     const role = profile?.role || 'student';
+    let redirectTo = '/student/overview';
 
     if (role === 'admin') {
-      redirect('/admin/dashboard');
+      redirectTo = '/admin/dashboard';
     } else if (role === 'landlord') {
-      redirect('/landlord/overview');
-    } else {
-      redirect('/student/overview');
+      redirectTo = '/landlord/overview';
     }
+
+    return {
+      success: true,
+      redirectTo,
+    };
   } catch (err: unknown) {
-    if (err && typeof err === 'object' && 'digest' in err && typeof (err as { digest: unknown }).digest === 'string') {
-      // Next.js redirect throw, rethrow
-      throw err;
-    }
+    console.error('Sign-in error:', err);
     return {
       success: false,
-      message: 'Could not connect to authentication service. Please check your network or try again.',
+      message: 'Could not connect to authentication service. Please check your internet connection and try again.',
     };
   }
 }
@@ -100,115 +102,173 @@ export async function signInAction(formData: FormData): Promise<ActionResponse> 
 export async function signUpAction(formData: FormData): Promise<ActionResponse> {
   const role = formData.get('role');
 
-  if (role === 'student') {
-    const rawData = {
-      role: 'student' as const,
-      fullName: formData.get('fullName'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-      phone: formData.get('phone') || undefined,
-      universityId: formData.get('universityId') || undefined,
-      department: formData.get('department') || undefined,
-    };
-
-    const parsed = studentSignUpSchema.safeParse(rawData);
-    if (!parsed.success) {
-      return {
-        success: false,
-        errors: parsed.error.flatten().fieldErrors,
+  try {
+    if (role === 'student') {
+      const rawData = {
+        role: 'student' as const,
+        fullName: formData.get('fullName'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+        phone: formData.get('phone') || undefined,
+        universityId: formData.get('universityId') || undefined,
+        department: formData.get('department') || undefined,
       };
-    }
 
-    const supabase = await createClient();
-    const { data, error } = await supabase.auth.signUp({
-      email: parsed.data.email,
-      password: parsed.data.password,
-      options: {
-        data: {
-          role: 'student',
-          full_name: parsed.data.fullName,
-          phone: parsed.data.phone || null,
-          university_id: parsed.data.universityId || null,
-          department: parsed.data.department || null,
-        },
-      },
-    });
-
-    if (error) {
-      const msg = error.message.toLowerCase();
-      if (msg.includes('user already registered')) {
+      const parsed = studentSignUpSchema.safeParse(rawData);
+      if (!parsed.success) {
         return {
           success: false,
-          message: 'An account with this email already exists. Please sign in instead.',
+          errors: parsed.error.flatten().fieldErrors,
         };
       }
-      return {
-        success: false,
-        message: error.message,
-      };
-    }
 
-    redirect('/login?registered=true');
-  } else if (role === 'landlord') {
-    const rawData = {
-      role: 'landlord' as const,
-      fullName: formData.get('fullName'),
-      email: formData.get('email'),
-      password: formData.get('password'),
-      phone: formData.get('phone') || undefined,
-      providerType: formData.get('providerType'),
-      businessName: formData.get('businessName') || undefined,
-    };
+      const supabase = await createClient();
 
-    const parsed = landlordSignUpSchema.safeParse(rawData);
-    if (!parsed.success) {
-      return {
-        success: false,
-        errors: parsed.error.flatten().fieldErrors,
-      };
-    }
+      let universityIdValue: string | null = null;
+      if (parsed.data.universityId) {
+        const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(parsed.data.universityId);
+        if (isUuid) {
+          universityIdValue = parsed.data.universityId;
+        } else {
+          const { data: uni } = await supabase
+            .from('universities')
+            .select('id')
+            .eq('slug', parsed.data.universityId)
+            .single();
+          universityIdValue = uni?.id || parsed.data.universityId;
+        }
+      }
 
-    const supabase = await createClient();
-    const { error } = await supabase.auth.signUp({
-      email: parsed.data.email,
-      password: parsed.data.password,
-      options: {
-        data: {
-          role: 'landlord',
-          full_name: parsed.data.fullName,
-          phone: parsed.data.phone || null,
-          provider_type: parsed.data.providerType,
-          business_name: parsed.data.businessName || null,
+      const { error } = await supabase.auth.signUp({
+        email: parsed.data.email,
+        password: parsed.data.password,
+        options: {
+          data: {
+            role: 'student',
+            full_name: parsed.data.fullName,
+            phone: parsed.data.phone || null,
+            university_id: universityIdValue,
+            department: parsed.data.department || null,
+          },
         },
-      },
-    });
+      });
 
-    if (error) {
-      const msg = error.message.toLowerCase();
-      if (msg.includes('user already registered')) {
+      if (error) {
+        const msg = error.message.toLowerCase();
+        if (msg.includes('user already registered')) {
+          return {
+            success: false,
+            message: 'An account with this email already exists. Please sign in instead.',
+          };
+        }
+        if (msg.includes('rate limit') || msg.includes('over_email_send_rate_limit')) {
+          return {
+            success: false,
+            message: 'Email rate limit reached for security. Please wait a moment before trying again or try signing in.',
+          };
+        }
+        if (msg.includes('invalid') || msg.includes('email_address_invalid')) {
+          return {
+            success: false,
+            message: 'Please provide a valid, active email address.',
+          };
+        }
         return {
           success: false,
-          message: 'An account with this email already exists. Please sign in instead.',
+          message: error.message,
         };
       }
+
       return {
-        success: false,
-        message: error.message,
+        success: true,
+        redirectTo: '/login?registered=true',
+      };
+    } else if (role === 'landlord') {
+      const rawData = {
+        role: 'landlord' as const,
+        fullName: formData.get('fullName'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+        phone: formData.get('phone') || undefined,
+        providerType: formData.get('providerType'),
+        businessName: formData.get('businessName') || undefined,
+      };
+
+      const parsed = landlordSignUpSchema.safeParse(rawData);
+      if (!parsed.success) {
+        return {
+          success: false,
+          errors: parsed.error.flatten().fieldErrors,
+        };
+      }
+
+      const supabase = await createClient();
+      const { error } = await supabase.auth.signUp({
+        email: parsed.data.email,
+        password: parsed.data.password,
+        options: {
+          data: {
+            role: 'landlord',
+            full_name: parsed.data.fullName,
+            phone: parsed.data.phone || null,
+            provider_type: parsed.data.providerType,
+            business_name: parsed.data.businessName || null,
+          },
+        },
+      });
+
+      if (error) {
+        const msg = error.message.toLowerCase();
+        if (msg.includes('user already registered')) {
+          return {
+            success: false,
+            message: 'An account with this email already exists. Please sign in instead.',
+          };
+        }
+        if (msg.includes('rate limit') || msg.includes('over_email_send_rate_limit')) {
+          return {
+            success: false,
+            message: 'Email rate limit reached for security. Please wait a moment before trying again or try signing in.',
+          };
+        }
+        if (msg.includes('invalid') || msg.includes('email_address_invalid')) {
+          return {
+            success: false,
+            message: 'Please provide a valid, active email address.',
+          };
+        }
+        return {
+          success: false,
+          message: error.message,
+        };
+      }
+
+      return {
+        success: true,
+        redirectTo: '/login?registered=true',
       };
     }
 
-    redirect('/login?registered=true');
+    return {
+      success: false,
+      message: 'Invalid registration role provided.',
+    };
+  } catch (err: unknown) {
+    console.error('Sign-up error:', err);
+    return {
+      success: false,
+      message: 'Could not connect to authentication service. Please check your internet connection and try again.',
+    };
   }
-
-  return {
-    success: false,
-    message: 'Invalid registration role provided.',
-  };
 }
 
-export async function signOutAction() {
-  const supabase = await createClient();
-  await supabase.auth.signOut();
+export async function signOutAction(): Promise<void> {
+  try {
+    const supabase = await createClient();
+    await supabase.auth.signOut();
+  } catch (err) {
+    console.error('Sign-out error:', err);
+  }
   redirect('/login');
 }
 
@@ -225,21 +285,28 @@ export async function resetPasswordAction(formData: FormData): Promise<ActionRes
     };
   }
 
-  const supabase = await createClient();
-  const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/reset-password`,
-  });
+  try {
+    const supabase = await createClient();
+    const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
+      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/reset-password`,
+    });
 
-  if (error) {
+    if (error) {
+      return {
+        success: false,
+        message: error.message,
+      };
+    }
+
+    return {
+      success: true,
+      message: 'If an account exists with that email, a password reset link has been dispatched.',
+    };
+  } catch (err) {
+    console.error('Reset password error:', err);
     return {
       success: false,
-      message: error.message,
+      message: 'Could not connect to authentication service. Please check your internet connection.',
     };
   }
-
-  return {
-    success: true,
-    message: 'If an account exists with that email, a password reset link has been dispatched.',
-  };
 }
-

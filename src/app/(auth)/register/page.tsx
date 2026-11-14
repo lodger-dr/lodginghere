@@ -31,16 +31,22 @@ function RegisterForm() {
     formData.set('role', role);
 
     startTransition(async () => {
-      const result = await signUpAction(formData);
-      if (!result.success) {
-        if (result.message) {
-          setErrorMessage(result.message);
+      try {
+        const result = await signUpAction(formData);
+        if (!result.success) {
+          if (result.message) {
+            setErrorMessage(result.message);
+          }
+          if (result.errors) {
+            setFieldErrors(result.errors);
+          }
+        } else if (result.redirectTo) {
+          window.location.href = result.redirectTo;
+        } else if (result.message) {
+          setSuccessMessage(result.message);
         }
-        if (result.errors) {
-          setFieldErrors(result.errors);
-        }
-      } else if (result.message) {
-        setSuccessMessage(result.message);
+      } catch (err: unknown) {
+        setErrorMessage('Unable to connect to the authentication server. Please check your internet connection.');
       }
     });
   }

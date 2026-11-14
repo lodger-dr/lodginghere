@@ -75,7 +75,7 @@ export function Navbar({ initialUserRole = null, initialUserEmail = null }: Navb
     } catch {
       // Graceful fallback
     }
-    window.location.href = '/auth/logout';
+    window.location.href = '/login';
   };
 
   const isLinkActive = (path: string) => pathname === path;
@@ -159,16 +159,16 @@ export function Navbar({ initialUserRole = null, initialUserEmail = null }: Navb
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <a href="/auth/login">
+              <Link href="/login">
                 <Button variant="ghost" size="sm">
                   Sign In
                 </Button>
-              </a>
-              <a href="/auth/login?screen_hint=signup">
+              </Link>
+              <Link href="/register">
                 <Button variant="primary" size="sm">
-                  Signup
+                  Register
                 </Button>
-              </a>
+              </Link>
             </div>
           )}
         </div>
@@ -250,16 +250,16 @@ export function Navbar({ initialUserRole = null, initialUserEmail = null }: Navb
               </div>
             ) : (
               <div className="flex flex-col gap-2 pt-1">
-                <a href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
+                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="outline" className="w-full justify-center">
                     Sign In
                   </Button>
-                </a>
-                <a href="/auth/login?screen_hint=signup" onClick={() => setMobileMenuOpen(false)}>
+                </Link>
+                <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="primary" className="w-full justify-center">
-                    Signup
+                    Register
                   </Button>
-                </a>
+                </Link>
               </div>
             )}
           </div>
