@@ -22,7 +22,10 @@ export default async function Home() {
   let session = null;
   try {
     session = await auth0.getSession();
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.digest === 'DYNAMIC_SERVER_USAGE') {
+      throw error;
+    }
     console.error('[Auth0] Error retrieving session:', error);
   }
 
