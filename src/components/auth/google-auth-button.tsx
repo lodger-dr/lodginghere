@@ -24,7 +24,7 @@ export function GoogleAuthButton({
     try {
       const supabase = createClient();
       const origin = window.location.origin;
-      const callbackUrl = `${origin}/api/auth/callback?role=${role}`;
+      const callbackUrl = `${origin}/auth/callback?role=${role}`;
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',

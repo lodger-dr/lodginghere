@@ -80,14 +80,8 @@ function LoginForm() {
               </div>
             )}
 
-            {/* Auth0 and Google OAuth Login */}
+            {/* Google OAuth Login */}
             <div className="space-y-3">
-              <a href="/auth/login" className="block w-full">
-                <Button type="button" variant="outline" className="w-full gap-2 border-slate-300">
-                  <span>Sign in with Auth0</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </a>
               <GoogleAuthButton
                 role="student"
                 text="Continue with Google"

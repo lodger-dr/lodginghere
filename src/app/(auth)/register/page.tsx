@@ -70,11 +70,10 @@ function RegisterForm() {
           <button
             type="button"
             onClick={() => setRole('student')}
-            className={`flex items-center justify-center gap-2 rounded-lg py-2.5 transition-all ${
-              role === 'student'
+            className={`flex items-center justify-center gap-2 rounded-lg py-2.5 transition-all ${role === 'student'
                 ? 'bg-white text-emerald-700 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
-            }`}
+              }`}
           >
             <GraduationCap className="h-4 w-4" />
             <span>I am a Student</span>
@@ -82,11 +81,10 @@ function RegisterForm() {
           <button
             type="button"
             onClick={() => setRole('landlord')}
-            className={`flex items-center justify-center gap-2 rounded-lg py-2.5 transition-all ${
-              role === 'landlord'
+            className={`flex items-center justify-center gap-2 rounded-lg py-2.5 transition-all ${role === 'landlord'
                 ? 'bg-white text-emerald-700 shadow-xs'
                 : 'text-slate-600 hover:text-slate-900'
-            }`}
+              }`}
           >
             <Building2 className="h-4 w-4" />
             <span>I am a Landlord / Owner</span>
