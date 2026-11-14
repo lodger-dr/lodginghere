@@ -36,8 +36,8 @@ export async function updateSession(request: NextRequest) {
 
     const path = request.nextUrl.pathname;
 
-    // Fast-path OAuth callback route so exchangeCodeForSession sets cookies directly
-    if (path.startsWith('/auth/callback')) {
+    // Fast-path OAuth callback routes so exchangeCodeForSession sets cookies directly
+    if (path.startsWith('/auth/callback') || path.startsWith('/api/auth/callback')) {
       return response;
     }
 
