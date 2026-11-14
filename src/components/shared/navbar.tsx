@@ -46,31 +46,28 @@ export function Navbar() {
             <nav className="hidden md:flex items-center gap-6 ml-4">
               <Link
                 href="/explore"
-                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
-                  isLinkActive('/explore')
+                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/explore')
                     ? 'text-blue-600 dark:text-blue-400 font-bold'
                     : 'text-slate-600 dark:text-slate-400'
-                }`}
+                  }`}
               >
                 Explore Lodges
               </Link>
               <Link
                 href="/universities"
-                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
-                  isLinkActive('/universities')
+                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/universities')
                     ? 'text-blue-600 dark:text-blue-400 font-bold'
                     : 'text-slate-600 dark:text-slate-400'
-                }`}
+                  }`}
               >
                 Universities
               </Link>
               <Link
                 href="/how-it-works"
-                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
-                  isLinkActive('/how-it-works')
+                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/how-it-works')
                     ? 'text-blue-600 dark:text-blue-400 font-bold'
                     : 'text-slate-600 dark:text-slate-400'
-                }`}
+                  }`}
               >
                 How It Works
               </Link>
@@ -130,11 +127,10 @@ export function Navbar() {
                 <button
                   type="button"
                   onClick={() => handleSelectRole('student')}
-                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                    role === 'student'
+                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${role === 'student'
                       ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 font-semibold'
                       : 'text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800'
-                  }`}
+                    }`}
                 >
                   <span>Student View</span>
                   {role === 'student' && <Check className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />}
@@ -142,11 +138,10 @@ export function Navbar() {
                 <button
                   type="button"
                   onClick={() => handleSelectRole('landlord')}
-                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${
-                    role === 'landlord'
+                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${role === 'landlord'
                       ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 font-semibold'
                       : 'text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800'
-                  }`}
+                    }`}
                 >
                   <span>Landlord View</span>
                   {role === 'landlord' && <Check className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />}
@@ -340,11 +335,10 @@ export function Navbar() {
                   switchRole('student');
                   setMobileMenuOpen(false);
                 }}
-                className={`rounded-lg py-2 text-xs font-semibold border ${
-                  role === 'student'
+                className={`rounded-lg py-2 text-xs font-semibold border ${role === 'student'
                     ? 'border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
                     : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300'
-                }`}
+                  }`}
               >
                 Student View
               </button>
@@ -354,11 +348,10 @@ export function Navbar() {
                   switchRole('landlord');
                   setMobileMenuOpen(false);
                 }}
-                className={`rounded-lg py-2 text-xs font-semibold border ${
-                  role === 'landlord'
+                className={`rounded-lg py-2 text-xs font-semibold border ${role === 'landlord'
                     ? 'border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
                     : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300'
-                }`}
+                  }`}
               >
                 Landlord View
               </button>

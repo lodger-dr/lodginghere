@@ -84,11 +84,11 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs animate-in fade-in duration-200">
-      <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl space-y-5 border border-slate-200">
+      <div className="relative w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl space-y-5 border border-slate-200 dark:border-slate-800 dark:bg-slate-900 dark:text-white">
         {/* Close Button */}
         <button
           onClick={handleReset}
-          className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 transition-colors"
+          className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 transition-colors cursor-pointer"
           aria-label="Close"
         >
           <X className="h-5 w-5" />
@@ -98,35 +98,35 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Header */}
             <div className="space-y-1">
-              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full">
+              <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-400 px-2.5 py-0.5 rounded-full">
                 <CalendarCheck className="h-3.5 w-3.5" />
                 <span>Zero-Commitment Physical Inspection</span>
               </div>
-              <h3 className="text-xl font-bold text-slate-900">Schedule Lodge Inspection</h3>
-              <p className="text-xs text-slate-500">
-                Inspect <strong className="text-slate-800">{lodge.title}</strong> before making any financial commitment.
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Schedule Lodge Inspection</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Inspect <strong className="text-slate-800 dark:text-slate-200">{lodge.title}</strong> before making any financial commitment.
               </p>
             </div>
 
             {/* Lodge snippet */}
-            <div className="rounded-xl border border-slate-100 bg-slate-50 p-3 flex items-center gap-3">
+            <div className="rounded-xl border border-slate-100 bg-slate-50 p-3 flex items-center gap-3 dark:border-slate-800 dark:bg-slate-850">
               <img
                 src={lodge.images[0] || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=400&q=80'}
                 alt={lodge.title}
                 className="h-14 w-14 rounded-lg object-cover shrink-0"
               />
               <div className="text-xs space-y-0.5 min-w-0">
-                <p className="font-bold text-slate-900 truncate">{lodge.title}</p>
-                <p className="text-slate-500 truncate flex items-center gap-1">
+                <p className="font-bold text-slate-900 dark:text-white truncate">{lodge.title}</p>
+                <p className="text-slate-500 dark:text-slate-400 truncate flex items-center gap-1">
                   <MapPin className="h-3 w-3 text-slate-400" />
                   <span>{lodge.neighbourhood} • {lodge.distance_to_campus}</span>
                 </p>
-                <p className="text-emerald-700 font-semibold">Landlord: {lodge.landlord_name}</p>
+                <p className="text-emerald-700 dark:text-emerald-400 font-semibold">Landlord: {lodge.landlord_name}</p>
               </div>
             </div>
 
             {error && (
-              <div className="rounded-lg bg-red-50 p-3 text-xs text-red-700 flex items-center gap-2">
+              <div className="rounded-lg bg-red-50 dark:bg-red-950/50 p-3 text-xs text-red-700 dark:text-red-400 flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{error}</span>
               </div>
@@ -135,7 +135,7 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
             {/* Contact Details */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Full Name *</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Full Name *</label>
                 <div className="relative">
                   <Input
                     value={studentName}
@@ -149,7 +149,7 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Phone Number *</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Phone Number *</label>
                 <div className="relative">
                   <Input
                     value={studentPhone}
@@ -164,7 +164,7 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-700">Email Address</label>
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Email Address</label>
               <div className="relative">
                 <Input
                   type="email"
@@ -180,7 +180,7 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
             {/* Date & Time Slot */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Preferred Date *</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Preferred Date *</label>
                 <Input
                   type="date"
                   value={date}
@@ -192,11 +192,11 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Time Window *</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Time Window *</label>
                 <select
                   value={timeSlot}
                   onChange={(e) => setTimeSlot(e.target.value as InspectionTimeSlot)}
-                  className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none"
+                  className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 >
                   <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
                   <option value="afternoon">Afternoon (12:00 PM - 4:00 PM)</option>
@@ -207,7 +207,7 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
 
             {/* Notes */}
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-700">
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                 Notes for Landlord (Optional)
               </label>
               <textarea
@@ -215,13 +215,13 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
                 onChange={(e) => setNotes(e.target.value)}
                 placeholder="e.g. Coming with my friend, interested in an ensuite room on ground floor..."
                 rows={2}
-                className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 placeholder-slate-400 focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 placeholder-slate-400 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:placeholder-slate-500"
               />
             </div>
 
             {/* Safety Reminder */}
-            <div className="rounded-lg bg-emerald-50/80 p-3 text-[11px] text-emerald-900 border border-emerald-100 flex items-start gap-2">
-              <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-600 mt-0.5" />
+            <div className="rounded-lg bg-emerald-50/80 p-3 text-[11px] text-emerald-900 border border-emerald-100 flex items-start gap-2 dark:bg-emerald-950/40 dark:border-emerald-800/60 dark:text-emerald-300">
+              <ShieldCheck className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400 mt-0.5" />
               <p>
                 <strong>Never pay advance rent before physical inspection.</strong> Physical inspection confirms room availability, water, electricity, and lock security.
               </p>
@@ -241,24 +241,24 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
         ) : (
           /* Success Screen */
           <div className="text-center py-6 space-y-4">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-950 dark:text-emerald-400">
               <CheckCircle2 className="h-8 w-8" />
             </div>
             <div className="space-y-1.5 max-w-sm mx-auto">
-              <h3 className="text-lg font-bold text-slate-900">Inspection Request Sent!</h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Your request to inspect <strong className="text-slate-800">{lodge.title}</strong> has been logged for{' '}
-                <strong className="text-slate-800">{date}</strong> ({timeSlot}). Landlord{' '}
-                <strong className="text-slate-800">{lodge.landlord_name}</strong> will review and confirm your slot.
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Inspection Request Sent!</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+                Your request to inspect <strong className="text-slate-800 dark:text-slate-200">{lodge.title}</strong> has been logged for{' '}
+                <strong className="text-slate-800 dark:text-slate-200">{date}</strong> ({timeSlot}). Landlord{' '}
+                <strong className="text-slate-800 dark:text-slate-200">{lodge.landlord_name}</strong> will review and confirm your slot.
               </p>
             </div>
 
-            <div className="rounded-xl border border-slate-100 bg-slate-50 p-3 text-xs text-left text-slate-600 space-y-1 max-w-xs mx-auto">
+            <div className="rounded-xl border border-slate-100 bg-slate-50 p-3 text-xs text-left text-slate-600 space-y-1 max-w-xs mx-auto dark:border-slate-800 dark:bg-slate-850 dark:text-slate-300">
               <p>
-                <strong className="text-slate-800">Landlord Contact:</strong> {lodge.landlord_phone || '+234 803 234 5678'}
+                <strong className="text-slate-800 dark:text-white">Landlord Contact:</strong> {lodge.landlord_phone || '+234 803 234 5678'}
               </p>
               <p>
-                <strong className="text-slate-800">Lodge Address:</strong> {lodge.address}
+                <strong className="text-slate-800 dark:text-white">Lodge Address:</strong> {lodge.address}
               </p>
             </div>
 

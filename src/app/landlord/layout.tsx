@@ -10,8 +10,10 @@ import {
   ShieldCheck,
   User,
   ArrowRightLeft,
-  Search,
+  ExternalLink,
+  Plus,
 } from 'lucide-react';
+import { Logo } from '@/components/shared/logo';
 
 interface LandlordLayoutProps {
   children: React.ReactNode;
@@ -20,66 +22,114 @@ interface LandlordLayoutProps {
 export default function LandlordLayout({ children }: LandlordLayoutProps) {
   const pathname = usePathname();
 
-  const navItems = [
-    { name: 'Overview', href: '/landlord/overview', icon: Building2 },
-    { name: 'My Properties', href: '/landlord/properties', icon: Building2 },
-    { name: 'Rooms & Availability', href: '/landlord/rooms', icon: BedDouble },
-    { name: 'Inspection Requests', href: '/landlord/inspections', icon: CalendarCheck },
-    { name: 'Identity & Authority', href: '/landlord/verification', icon: ShieldCheck },
-    { name: 'Landlord Profile', href: '/landlord/profile', icon: User },
+  const isLinkActive = (href: string) => pathname === href;
+
+  const sections = [
+    {
+      title: 'OVERVIEW',
+      items: [
+        { name: 'Dashboard', href: '/landlord/overview', icon: Building2 },
+      ],
+    },
+    {
+      title: 'PROPERTIES',
+      items: [
+        { name: 'My Properties', href: '/landlord/properties', icon: Building2 },
+        { name: 'Rooms & Vacancy', href: '/landlord/rooms', icon: BedDouble },
+      ],
+    },
+    {
+      title: 'STUDENT REQUESTS',
+      items: [
+        { name: 'Inspection Requests', href: '/landlord/inspections', icon: CalendarCheck },
+      ],
+    },
+    {
+      title: 'VERIFICATION',
+      items: [
+        { name: 'Identity & Authority', href: '/landlord/verification', icon: ShieldCheck },
+      ],
+    },
+    {
+      title: 'ACCOUNT',
+      items: [
+        { name: 'Provider Profile', href: '/landlord/profile', icon: User },
+      ],
+    },
   ];
 
   return (
-    <div className="flex min-h-[calc(100vh-4.5rem)] flex-col md:flex-row bg-slate-50">
-      <aside className="w-full md:w-64 border-r border-slate-200/80 bg-white p-5 shrink-0 space-y-6">
-        <div className="space-y-1">
-          <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-[11px] font-bold text-slate-800">
-            <Building2 className="h-3.5 w-3.5 text-slate-700" />
-            <span>Landlord Portal</span>
-          </span>
-          <h2 className="text-base font-extrabold text-slate-900 pt-1.5">Property Management</h2>
+    <div className="flex min-h-[calc(100vh-4rem)] bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+      {/* Dojah-style Left Navigation Sidebar */}
+      <aside className="w-64 border-r border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 shrink-0 hidden md:flex md:flex-col justify-between transition-colors">
+        <div className="space-y-4">
+          {/* Grouped Sidebar Navigation */}
+          <div className="space-y-5">
+            {sections.map((sec) => (
+              <div key={sec.title} className="space-y-1">
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-2.5 block">
+                  {sec.title}
+                </span>
+                <nav className="space-y-0.5">
+                  {sec.items.map((item) => {
+                    const Icon = item.icon;
+                    const active = isLinkActive(item.href);
+                    return (
+                      <Link
+                        key={item.href}
+                        href={item.href}
+                        className={`flex items-center gap-3 rounded-lg px-2.5 py-2 text-xs transition-colors ${
+                          active
+                            ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 font-bold'
+                            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800/60 dark:hover:text-slate-200 font-medium'
+                        }`}
+                      >
+                        <Icon className={`h-4 w-4 ${active ? 'text-blue-600 dark:text-blue-400' : 'text-slate-400'}`} />
+                        <span>{item.name}</span>
+                      </Link>
+                    );
+                  })}
+                </nav>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <nav className="space-y-1">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            const isActive = pathname === item.href;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={`flex items-center gap-3 rounded-xl px-3.5 py-2.5 text-xs font-medium transition-all ${
-                  isActive
-                    ? 'bg-slate-900 text-white font-semibold shadow-xs'
-                    : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                }`}
-              >
-                <Icon className={`h-4 w-4 ${isActive ? 'text-emerald-400' : 'text-slate-400'}`} />
-                <span>{item.name}</span>
-              </Link>
-            );
-          })}
-        </nav>
-
-        <div className="border-t border-slate-100 pt-4 space-y-2">
+        {/* Bottom User Card (Dojah style) */}
+        <div className="pt-4 border-t border-slate-100 dark:border-slate-800 space-y-3">
           <Link
             href="/student/overview"
-            className="flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2.5 text-xs font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200/70 transition-colors"
+            className="flex items-center justify-between rounded-lg px-2.5 py-1.5 text-xs text-slate-600 hover:bg-slate-50 dark:text-slate-400 dark:hover:bg-slate-800 transition-colors"
+            title="Switch to Student workspace"
           >
-            <ArrowRightLeft className="h-4 w-4 text-slate-500" />
-            <span>Switch to Student Portal</span>
+            <span className="flex items-center gap-2">
+              <ArrowRightLeft className="h-3.5 w-3.5 text-slate-400" />
+              <span>Switch to Student</span>
+            </span>
+            <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 px-1.5 py-0.5 rounded">
+              Role
+            </span>
           </Link>
-          <Link
-            href="/"
-            className="flex w-full items-center gap-2.5 rounded-xl px-3.5 py-2 text-xs font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-colors"
-          >
-            <Search className="h-4 w-4 text-slate-400" />
-            <span>Browse All Lodges</span>
-          </Link>
+
+          <div className="flex items-center justify-between p-2 rounded-xl bg-slate-50 dark:bg-slate-800/50">
+            <div className="flex items-center gap-2.5 min-w-0">
+              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white font-bold text-xs">
+                A
+              </div>
+              <div className="min-w-0">
+                <p className="text-xs font-bold text-slate-900 dark:text-white truncate">Chief Adebayo</p>
+                <p className="text-[10px] text-slate-400 truncate">adebayo@lodgehere.ng</p>
+              </div>
+            </div>
+            <Link href="/" title="Public view">
+              <ExternalLink className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" />
+            </Link>
+          </div>
         </div>
       </aside>
 
-      <main className="flex-1 p-6 md:p-10 max-w-5xl">{children}</main>
+      {/* Main Content Area */}
+      <main className="flex-1 p-6 md:p-8 max-w-6xl">{children}</main>
     </div>
   );
 }

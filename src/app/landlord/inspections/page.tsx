@@ -99,8 +99,8 @@ export default function LandlordInspectionsPage() {
     <div className="space-y-8">
       {/* Top Header */}
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Student Inspection Requests</h1>
-        <p className="text-xs text-slate-500">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Student Inspection Requests</h1>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           Review student appointments, accept inspection slots, propose reschedules, and record completed physical visits.
         </p>
       </div>
@@ -110,10 +110,10 @@ export default function LandlordInspectionsPage() {
         <Card>
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-amber-700">Pending Response</span>
-              <p className="text-2xl font-black text-amber-600">{pendingCount}</p>
+              <span className="text-xs font-semibold text-amber-700 dark:text-amber-400">Pending Response</span>
+              <p className="text-2xl font-black text-amber-600 dark:text-amber-400">{pendingCount}</p>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
               <Clock className="h-5 w-5" />
             </div>
           </CardContent>
@@ -122,10 +122,10 @@ export default function LandlordInspectionsPage() {
         <Card>
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-emerald-700">Confirmed & Scheduled</span>
-              <p className="text-2xl font-black text-emerald-600">{acceptedCount}</p>
+              <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">Confirmed & Scheduled</span>
+              <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{acceptedCount}</p>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
               <CheckCircle2 className="h-5 w-5" />
             </div>
           </CardContent>
@@ -134,10 +134,10 @@ export default function LandlordInspectionsPage() {
         <Card>
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-slate-500">Completed Inspections</span>
-              <p className="text-2xl font-black text-slate-900">{completedCount}</p>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Completed Inspections</span>
+              <p className="text-2xl font-black text-slate-900 dark:text-white">{completedCount}</p>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400">
               <UserCheck className="h-5 w-5" />
             </div>
           </CardContent>
@@ -145,43 +145,43 @@ export default function LandlordInspectionsPage() {
       </div>
 
       {/* Tabs */}
-      <div className="flex items-center gap-2 border-b border-slate-200 overflow-x-auto pb-1 text-xs">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 overflow-x-auto pb-1 text-xs">
         <button
           onClick={() => setActiveTab('all')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
             activeTab === 'all'
-              ? 'border-emerald-600 text-emerald-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
           }`}
         >
           All Requests ({inspections.length})
         </button>
         <button
           onClick={() => setActiveTab('pending')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
             activeTab === 'pending'
-              ? 'border-emerald-600 text-emerald-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
           }`}
         >
           Pending Review ({pendingCount})
         </button>
         <button
           onClick={() => setActiveTab('accepted')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
             activeTab === 'accepted'
-              ? 'border-emerald-600 text-emerald-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
           }`}
         >
           Confirmed Appointments ({acceptedCount})
         </button>
         <button
           onClick={() => setActiveTab('completed')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${
             activeTab === 'completed'
-              ? 'border-emerald-600 text-emerald-700'
-              : 'border-transparent text-slate-500 hover:text-slate-900'
+              ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+              : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
           }`}
         >
           Completed ({completedCount})
@@ -201,7 +201,7 @@ export default function LandlordInspectionsPage() {
               return (
                 <div
                   key={insp.id}
-                  className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-5 transition-all"
+                  className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs flex flex-col md:flex-row items-start md:items-center justify-between gap-5 transition-all dark:border-slate-800 dark:bg-slate-900"
                 >
                   {/* Left: Student & Lodge Info */}
                   <div className="flex items-start gap-4 min-w-0">
@@ -211,36 +211,36 @@ export default function LandlordInspectionsPage() {
                         'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=400&q=80'
                       }
                       alt={insp.property_title}
-                      className="h-20 w-24 rounded-xl object-cover shrink-0 bg-slate-100"
+                      className="h-20 w-24 rounded-xl object-cover shrink-0 bg-slate-100 dark:bg-slate-800"
                     />
 
                     <div className="space-y-1.5 min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         {isPending && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold text-amber-800">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-amber-100 px-2.5 py-0.5 text-[10px] font-bold text-amber-800 dark:bg-amber-950/60 dark:text-amber-400">
                             <Clock className="h-3 w-3" />
                             <span>Action Required</span>
                           </span>
                         )}
                         {isAccepted && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400">
                             <CheckCircle2 className="h-3 w-3" />
                             <span>Confirmed & Scheduled</span>
                           </span>
                         )}
                         {isRescheduled && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-0.5 text-[10px] font-bold text-blue-800">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-blue-100 px-2.5 py-0.5 text-[10px] font-bold text-blue-800 dark:bg-blue-950/60 dark:text-blue-400">
                             <RotateCcw className="h-3 w-3" />
                             <span>Reschedule Sent to Student</span>
                           </span>
                         )}
                         {isCompleted && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-700">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                             <CheckCircle2 className="h-3 w-3" />
                             <span>Visit Finished</span>
                           </span>
                         )}
-                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md">
+                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md dark:bg-emerald-950/60 dark:text-emerald-400">
                           {insp.property_title}
                         </span>
                       </div>
@@ -248,9 +248,9 @@ export default function LandlordInspectionsPage() {
                       <div className="space-y-0.5">
                         <div className="flex items-center gap-2">
                           <User className="h-3.5 w-3.5 text-slate-400" />
-                          <h4 className="font-bold text-sm text-slate-900">{insp.student_name}</h4>
+                          <h4 className="font-bold text-sm text-slate-900 dark:text-white">{insp.student_name}</h4>
                         </div>
-                        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500">
+                        <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
                           <span className="flex items-center gap-1">
                             <Phone className="h-3 w-3 text-slate-400" />
                             <span>{insp.student_phone}</span>
@@ -264,29 +264,29 @@ export default function LandlordInspectionsPage() {
                       </div>
 
                       {/* Appointment Time */}
-                      <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 pt-1">
-                        <CalendarCheck className="h-3.5 w-3.5 text-emerald-600" />
+                      <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-slate-200 pt-1">
+                        <CalendarCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
                         <span>
                           Requested for {insp.requested_date} ({insp.time_slot} slot)
                         </span>
                       </div>
 
                       {insp.student_notes && (
-                        <div className="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
-                          <strong className="text-slate-800">Student Note:</strong> &quot;{insp.student_notes}&quot;
+                        <div className="text-xs text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-850 p-2.5 rounded-lg border border-slate-100 dark:border-slate-800">
+                          <strong className="text-slate-800 dark:text-white">Student Note:</strong> &quot;{insp.student_notes}&quot;
                         </div>
                       )}
 
                       {insp.landlord_notes && (
-                        <div className="text-xs text-emerald-800 bg-emerald-50/60 p-2 rounded-lg border border-emerald-100">
-                          <strong className="text-emerald-950">Your Caretaker Instructions:</strong> {insp.landlord_notes}
+                        <div className="text-xs text-emerald-800 dark:text-emerald-300 bg-emerald-50/60 dark:bg-emerald-950/30 p-2 rounded-lg border border-emerald-100 dark:border-emerald-900/50">
+                          <strong className="text-emerald-950 dark:text-white">Your Caretaker Instructions:</strong> {insp.landlord_notes}
                         </div>
                       )}
                     </div>
                   </div>
 
                   {/* Right Actions */}
-                  <div className="flex flex-wrap items-center gap-2 shrink-0 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-slate-100">
+                  <div className="flex flex-wrap items-center gap-2 shrink-0 w-full md:w-auto pt-3 md:pt-0 border-t md:border-t-0 border-slate-100 dark:border-slate-800">
                     {isPending && (
                       <>
                         <Button
@@ -313,7 +313,7 @@ export default function LandlordInspectionsPage() {
                           size="sm"
                           variant="ghost"
                           onClick={() => handleReject(insp.id)}
-                          className="text-xs h-8 px-2 text-red-600 hover:bg-red-50"
+                          className="text-xs h-8 px-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40"
                         >
                           Decline
                         </Button>
@@ -324,15 +324,15 @@ export default function LandlordInspectionsPage() {
                       <Button
                         size="sm"
                         onClick={() => handleMarkCompleted(insp.id)}
-                        className="bg-slate-900 hover:bg-slate-800 text-xs h-8 px-3 gap-1"
+                        className="bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-xs h-8 px-3 gap-1 text-white"
                       >
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 dark:text-white" />
                         <span>Mark Inspection Completed</span>
                       </Button>
                     )}
 
                     <Link href={`/lodges/${insp.property_slug}`}>
-                      <Button size="sm" variant="ghost" className="text-xs h-8 px-2 text-slate-500">
+                      <Button size="sm" variant="ghost" className="text-xs h-8 px-2 text-slate-500 dark:text-slate-400">
                         <ExternalLink className="h-3.5 w-3.5" />
                       </Button>
                     </Link>
@@ -342,13 +342,13 @@ export default function LandlordInspectionsPage() {
             })}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center space-y-4">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center space-y-4 dark:border-slate-800 dark:bg-slate-900">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
               <CalendarCheck className="h-7 w-7" />
             </div>
             <div className="space-y-1 max-w-sm mx-auto">
-              <h3 className="font-bold text-sm text-slate-900">No requests in this category</h3>
-              <p className="text-xs text-slate-500">
+              <h3 className="font-bold text-sm text-slate-900 dark:text-white">No requests in this category</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 When students schedule physical inspections on your approved lodges, they will appear here.
               </p>
             </div>
@@ -359,31 +359,31 @@ export default function LandlordInspectionsPage() {
       {/* Accept & Add Note Modal */}
       {acceptTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-          <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200">
+          <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200 dark:border-slate-800 dark:bg-slate-900">
             <button
               onClick={() => setAcceptTarget(null)}
-              className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+              className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"
             >
               <X className="h-5 w-5" />
             </button>
 
             <div className="space-y-1">
-              <h3 className="text-lg font-bold text-slate-900">Confirm Inspection Slot</h3>
-              <p className="text-xs text-slate-500">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Confirm Inspection Slot</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Confirm {acceptTarget.requested_date} ({acceptTarget.time_slot}) for student{' '}
-                <strong>{acceptTarget.student_name}</strong>.
+                <strong className="text-slate-800 dark:text-slate-200">{acceptTarget.student_name}</strong>.
               </p>
             </div>
 
             <div className="space-y-1">
-              <label className="text-xs font-semibold text-slate-700">
+              <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                 Caretaker Note or Meeting Location
               </label>
               <textarea
                 value={acceptNote}
                 onChange={(e) => setAcceptNote(e.target.value)}
                 rows={3}
-                className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none"
+                className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
               />
             </div>
 
@@ -402,24 +402,24 @@ export default function LandlordInspectionsPage() {
       {/* Reschedule Modal */}
       {rescheduleTarget && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-          <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200">
+          <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200 dark:border-slate-800 dark:bg-slate-900">
             <button
               onClick={() => setRescheduleTarget(null)}
-              className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+              className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"
             >
               <X className="h-5 w-5" />
             </button>
 
             <div className="space-y-1">
-              <h3 className="text-lg font-bold text-slate-900">Propose Alternative Inspection Date</h3>
-              <p className="text-xs text-slate-500">
-                Suggest an alternative date and time for <strong>{rescheduleTarget.student_name}</strong>.
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Propose Alternative Inspection Date</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Suggest an alternative date and time for <strong className="text-slate-800 dark:text-slate-200">{rescheduleTarget.student_name}</strong>.
               </p>
             </div>
 
             <div className="space-y-3">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Proposed New Date *</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Proposed New Date *</label>
                 <Input
                   type="date"
                   value={rescheduleDate}
@@ -431,11 +431,11 @@ export default function LandlordInspectionsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Proposed Time Slot *</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Proposed Time Slot *</label>
                 <select
                   value={rescheduleSlot}
                   onChange={(e) => setRescheduleSlot(e.target.value as InspectionTimeSlot)}
-                  className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none"
+                  className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 >
                   <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
                   <option value="afternoon">Afternoon (12:00 PM - 4:00 PM)</option>
@@ -444,13 +444,13 @@ export default function LandlordInspectionsPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Reason / Note for Student</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Reason / Note for Student</label>
                 <textarea
                   value={rescheduleNote}
                   onChange={(e) => setRescheduleNote(e.target.value)}
                   placeholder="e.g. I will be out of town on your requested date. Can we do this day instead?"
                   rows={2}
-                  className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none"
+                  className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 />
               </div>
             </div>

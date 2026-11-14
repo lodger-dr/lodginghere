@@ -18,8 +18,8 @@ export default function LandlordProfilePage() {
   return (
     <div className="space-y-6">
       <div className="space-y-1">
-        <h1 className="text-2xl font-bold tracking-tight text-slate-900">Landlord Profile</h1>
-        <p className="text-xs text-slate-500">
+        <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">Landlord Profile</h1>
+        <p className="text-xs text-slate-500 dark:text-slate-400">
           Manage your business information and communication contact details.
         </p>
       </div>
@@ -34,8 +34,8 @@ export default function LandlordProfilePage() {
         <CardContent>
           <form onSubmit={handleSave} className="space-y-4">
             {saved && (
-              <div className="rounded-lg bg-emerald-50 border border-emerald-200 p-3 flex items-center gap-2 text-xs text-emerald-800">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+              <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 p-3 flex items-center gap-2 text-xs text-emerald-800 dark:text-emerald-300">
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>Profile updated successfully.</span>
               </div>
             )}
@@ -43,13 +43,14 @@ export default function LandlordProfilePage() {
             <Input
               label="Full Legal Name"
               name="fullName"
-              defaultValue="Landlord User"
+              defaultValue="Chief Adebayo Olanrewaju"
               required
             />
 
             <Input
               label="Business or Brand Name"
               name="businessName"
+              defaultValue="Adebayo Properties & Lodges"
               placeholder="e.g. Skyline Student Residences"
             />
 
@@ -57,7 +58,7 @@ export default function LandlordProfilePage() {
               label="Email Address"
               name="email"
               type="email"
-              defaultValue="landlord@example.com"
+              defaultValue="landlord.adebayo@example.com"
               disabled
               helperText="Managed by authentication"
             />
@@ -66,8 +67,8 @@ export default function LandlordProfilePage() {
               label="Contact Phone / WhatsApp"
               name="phone"
               type="tel"
-              defaultValue="08098765432"
-              placeholder="08098765432"
+              defaultValue="+234 803 234 5678"
+              placeholder="+234 803 234 5678"
               helperText="Used for coordinating arrival of inspecting students"
             />
 
@@ -81,4 +82,3 @@ export default function LandlordProfilePage() {
     </div>
   );
 }
-

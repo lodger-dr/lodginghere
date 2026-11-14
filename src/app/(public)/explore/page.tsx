@@ -148,41 +148,44 @@ function ExploreContent() {
         if (sortBy === 'availability') {
           return b.available_rooms - a.available_rooms;
         }
-        // Recommended default: rating and review count
-        return b.rating * b.review_count - a.rating * a.review_count;
+        // Default: recommended (verified first, then vacancy)
+        if (a.landlord_verified !== b.landlord_verified) {
+          return a.landlord_verified ? -1 : 1;
+        }
+        return b.available_rooms - a.available_rooms;
       });
   }, [
     lodges,
+    searchQuery,
     selectedUniSlug,
     accommodationType,
-    verifiedOnly,
     maxBudget,
     selectedAmenities,
-    searchQuery,
+    verifiedOnly,
     sortBy,
   ]);
 
-  const hasActiveFilters =
-    Boolean(searchQuery) ||
-    Boolean(selectedUniSlug) ||
-    Boolean(accommodationType) ||
-    Boolean(maxBudget) ||
-    selectedAmenities.length > 0 ||
-    !verifiedOnly;
+  const hasActiveFilters = Boolean(
+    selectedUniSlug ||
+      accommodationType ||
+      maxBudget ||
+      selectedAmenities.length > 0 ||
+      searchQuery.trim()
+  );
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10 space-y-8">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+      {/* Page Header */}
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="space-y-1">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-800 bg-emerald-100 px-3 py-1 rounded-full">
-            <ShieldCheck className="h-4 w-4 text-emerald-700" />
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-800/80 border border-emerald-200 px-3 py-1 rounded-full">
+            <ShieldCheck className="h-3.5 w-3.5" />
             <span>100% Physical-Inspection Verified Inventory</span>
           </div>
-          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900">
+          <h1 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             Explore Student Lodges
           </h1>
-          <p className="text-sm text-slate-500">
+          <p className="text-sm text-slate-500 dark:text-slate-400">
             Discover verified student accommodation with zero agent markup and upfront fee transparency.
           </p>
         </div>
@@ -199,7 +202,7 @@ function ExploreContent() {
           {searchQuery && (
             <button
               onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-3 text-slate-400 hover:text-slate-600"
+              className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer"
             >
               <X className="h-4 w-4" />
             </button>
@@ -223,10 +226,11 @@ function ExploreContent() {
               key={item.label}
               type="button"
               onClick={() => setAccommodationType(item.value)}
-              className={`rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-200 ${isActive
-                  ? 'bg-slate-900 text-white shadow-xs'
-                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900'
-                }`}
+              className={`rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${
+                isActive
+                  ? 'bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-900'
+                  : 'bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white'
+              }`}
             >
               {item.label}
             </button>
@@ -235,15 +239,15 @@ function ExploreContent() {
       </div>
 
       {/* Filter Card */}
-      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs space-y-4">
+      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-xs space-y-4 dark:border-slate-800 dark:bg-slate-900">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-xs">
           {/* University Filter */}
           <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700">University Campus</label>
+            <label className="font-semibold text-slate-700 dark:text-slate-300">University Campus</label>
             <select
               value={selectedUniSlug}
               onChange={(e) => setSelectedUniSlug(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-emerald-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
             >
               <option value="">All Nigerian Universities</option>
               {NIGERIAN_UNIVERSITIES.map((u) => (
@@ -256,11 +260,11 @@ function ExploreContent() {
 
           {/* Accommodation Type */}
           <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700">Lodge Type</label>
+            <label className="font-semibold text-slate-700 dark:text-slate-300">Lodge Type</label>
             <select
               value={accommodationType}
               onChange={(e) => setAccommodationType(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-emerald-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
             >
               <option value="">All Accommodation Types</option>
               <option value="self_contained">Self-Contained</option>
@@ -274,23 +278,23 @@ function ExploreContent() {
 
           {/* Max Budget */}
           <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700">Max Annual Budget (₦)</label>
+            <label className="font-semibold text-slate-700 dark:text-slate-300">Max Annual Budget (₦)</label>
             <input
               type="number"
               placeholder="e.g. 400000"
               value={maxBudget}
               onChange={(e) => setMaxBudget(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-emerald-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
             />
           </div>
 
           {/* Sort By */}
           <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700">Sort By</label>
+            <label className="font-semibold text-slate-700 dark:text-slate-300">Sort By</label>
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value as any)}
-              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-emerald-500 focus:outline-none"
+              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
             >
               <option value="recommended">Recommended & Top Rated</option>
               <option value="price_asc">Annual Rent: Low to High</option>
@@ -301,9 +305,9 @@ function ExploreContent() {
         </div>
 
         {/* Amenities Checklist Chips */}
-        <div className="space-y-2 pt-2 border-t border-slate-100">
+        <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-700">
+            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
               Must-Have Amenities
             </span>
             <div className="flex items-center gap-2">
@@ -312,9 +316,9 @@ function ExploreContent() {
                 id="verifiedOnly"
                 checked={verifiedOnly}
                 onChange={(e) => setVerifiedOnly(e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500"
+                className="h-4 w-4 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800"
               />
-              <label htmlFor="verifiedOnly" className="text-xs font-semibold text-slate-700 cursor-pointer">
+              <label htmlFor="verifiedOnly" className="text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
                 Verified Landlords Only
               </label>
             </div>
@@ -328,10 +332,11 @@ function ExploreContent() {
                   key={amenity.key}
                   type="button"
                   onClick={() => toggleAmenity(amenity.key)}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all ${isSelected
-                    ? 'bg-emerald-600 text-white shadow-xs'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200'
-                    }`}
+                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer ${
+                    isSelected
+                      ? 'bg-emerald-600 text-white shadow-xs'
+                      : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                  }`}
                 >
                   <span>{amenity.label}</span>
                   {isSelected && <X className="h-3 w-3" />}
@@ -343,29 +348,29 @@ function ExploreContent() {
 
         {/* Active Filter Tags & Reset */}
         {hasActiveFilters && (
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-xs">
-            <div className="flex flex-wrap items-center gap-2 text-slate-600">
-              <span className="font-semibold text-slate-500">Active Filters:</span>
+          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
+            <div className="flex flex-wrap items-center gap-2 text-slate-600 dark:text-slate-300">
+              <span className="font-semibold text-slate-500 dark:text-slate-400">Active Filters:</span>
               {selectedUni && (
-                <Badge variant="outline" className="gap-1 bg-emerald-50 text-emerald-700 border-emerald-200">
+                <Badge variant="outline" className="gap-1 bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800">
                   Uni: {selectedUni.acronym}
                   <X className="h-3 w-3 cursor-pointer" onClick={() => setSelectedUniSlug('')} />
                 </Badge>
               )}
               {accommodationType && (
-                <Badge variant="outline" className="gap-1 bg-slate-100 text-slate-800 border-slate-200">
+                <Badge variant="outline" className="gap-1 bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700">
                   Type: {accommodationType.replace(/_/g, ' ')}
                   <X className="h-3 w-3 cursor-pointer" onClick={() => setAccommodationType('')} />
                 </Badge>
               )}
               {maxBudget && (
-                <Badge variant="outline" className="gap-1 bg-slate-100 text-slate-800 border-slate-200">
+                <Badge variant="outline" className="gap-1 bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700">
                   Under ₦{Number(maxBudget).toLocaleString()}
                   <X className="h-3 w-3 cursor-pointer" onClick={() => setMaxBudget('')} />
                 </Badge>
               )}
               {selectedAmenities.map((a) => (
-                <Badge key={a} variant="outline" className="gap-1 bg-slate-100 text-slate-800 border-slate-200">
+                <Badge key={a} variant="outline" className="gap-1 bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700">
                   {a.replace(/_/g, ' ')}
                   <X className="h-3 w-3 cursor-pointer" onClick={() => toggleAmenity(a)} />
                 </Badge>
@@ -376,7 +381,7 @@ function ExploreContent() {
               variant="ghost"
               size="sm"
               onClick={resetFilters}
-              className="text-xs h-7 gap-1 text-slate-500 hover:text-slate-800"
+              className="text-xs h-7 gap-1 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
             >
               <RotateCcw className="h-3.5 w-3.5" />
               <span>Reset All Filters</span>
@@ -388,18 +393,18 @@ function ExploreContent() {
       {/* Results Section */}
       <div className="space-y-4">
         {/* Count Bar */}
-        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
           <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-slate-900">
+            <span className="text-sm font-bold text-slate-900 dark:text-white">
               {filteredLodges.length} {filteredLodges.length === 1 ? 'Lodge' : 'Lodges'} Found
             </span>
             {selectedUni && (
-              <span className="text-xs text-slate-500">
+              <span className="text-xs text-slate-500 dark:text-slate-400">
                 around {selectedUni.name} ({selectedUni.acronym})
               </span>
             )}
           </div>
-          <span className="text-xs text-slate-400 hidden sm:inline">
+          <span className="text-xs text-slate-400 dark:text-slate-500 hidden sm:inline">
             Direct landlord listings • 0% agency fees
           </span>
         </div>
@@ -417,15 +422,15 @@ function ExploreContent() {
           </div>
         ) : (
           /* Empty State */
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center space-y-4">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-50 text-amber-600">
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center space-y-4 dark:border-slate-800 dark:bg-slate-900">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-50 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400">
               <Building2 className="h-7 w-7" />
             </div>
             <div className="space-y-1.5 max-w-md mx-auto">
-              <h3 className="text-lg font-bold text-slate-900">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                 No verified lodges matched your specific filters
               </h3>
-              <p className="text-xs text-slate-500 leading-relaxed">
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                 Try widening your price range, clearing selected amenities, or switching to all universities to view available student accommodations.
               </p>
             </div>
@@ -458,7 +463,7 @@ function ExploreContent() {
 
 export default function ExplorePage() {
   return (
-    <Suspense fallback={<div className="p-12 text-center text-sm text-slate-500">Loading lodges...</div>}>
+    <Suspense fallback={<div className="p-12 text-center text-sm text-slate-500 dark:text-slate-400">Loading lodges...</div>}>
       <ExploreContent />
     </Suspense>
   );

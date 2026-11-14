@@ -142,8 +142,8 @@ export default function LandlordPropertiesPage() {
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">My Properties</h1>
-          <p className="text-xs text-slate-500">
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white">My Properties</h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             Create and manage your student lodge listings, set transparent upfront pricing, and monitor vacancies.
           </p>
         </div>
@@ -162,10 +162,10 @@ export default function LandlordPropertiesPage() {
         <Card>
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-slate-500">Active Lodges</span>
-              <p className="text-2xl font-black text-slate-900">{lodges.length}</p>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Active Lodges</span>
+              <p className="text-2xl font-black text-slate-900 dark:text-white">{lodges.length}</p>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
               <Building2 className="h-5 w-5" />
             </div>
           </CardContent>
@@ -174,10 +174,10 @@ export default function LandlordPropertiesPage() {
         <Card>
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-slate-500">Total Rooms Managed</span>
-              <p className="text-2xl font-black text-slate-900">{totalRooms}</p>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Total Rooms Managed</span>
+              <p className="text-2xl font-black text-slate-900 dark:text-white">{totalRooms}</p>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <BedDouble className="h-5 w-5" />
             </div>
           </CardContent>
@@ -186,10 +186,10 @@ export default function LandlordPropertiesPage() {
         <Card>
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-slate-500">Available Vacancies</span>
-              <p className="text-2xl font-black text-emerald-600">{totalAvailable}</p>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Available Vacancies</span>
+              <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{totalAvailable}</p>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
               <CheckCircle2 className="h-5 w-5" />
             </div>
           </CardContent>
@@ -199,8 +199,8 @@ export default function LandlordPropertiesPage() {
       {/* Property List */}
       <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-base font-bold text-slate-900">Your Property Portfolio</h2>
-          <span className="text-xs text-slate-400">All prices shown with zero agent inflation</span>
+          <h2 className="text-base font-bold text-slate-900 dark:text-white">Your Property Portfolio</h2>
+          <span className="text-xs text-slate-400 dark:text-slate-500">All prices shown with zero agent inflation</span>
         </div>
 
         {lodges.length > 0 ? (
@@ -213,9 +213,9 @@ export default function LandlordPropertiesPage() {
               return (
                 <div
                   key={lodge.id}
-                  className="rounded-2xl border border-slate-200 bg-white overflow-hidden shadow-xs flex flex-col"
+                  className="rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 overflow-hidden shadow-xs flex flex-col"
                 >
-                  <div className="relative aspect-16/9 w-full bg-slate-100 overflow-hidden">
+                  <div className="relative aspect-16/9 w-full bg-slate-100 dark:bg-slate-800 overflow-hidden">
                     <img
                       src={primaryImage}
                       alt={lodge.title}
@@ -236,44 +236,44 @@ export default function LandlordPropertiesPage() {
 
                   <div className="p-5 flex-1 flex flex-col space-y-3">
                     <div className="space-y-1">
-                      <span className="text-[11px] font-semibold text-emerald-700 flex items-center gap-1 truncate">
+                      <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-1 truncate">
                         <MapPin className="h-3 w-3 shrink-0" />
                         {lodge.distance_to_campus}
                       </span>
-                      <h3 className="font-bold text-sm text-slate-900 truncate">{lodge.title}</h3>
-                      <p className="text-xs text-slate-500 truncate">{lodge.address}</p>
+                      <h3 className="font-bold text-sm text-slate-900 dark:text-white truncate">{lodge.title}</h3>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 truncate">{lodge.address}</p>
                     </div>
 
-                    <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-xs">
+                    <div className="flex items-center justify-between pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
                       <div>
-                        <span className="text-slate-400 block text-[10px] uppercase font-semibold">
+                        <span className="text-slate-400 dark:text-slate-500 block text-[10px] uppercase font-semibold">
                           Annual Rent
                         </span>
-                        <span className="font-bold text-slate-900">
+                        <span className="font-bold text-slate-900 dark:text-white">
                           {formatNaira(lodge.pricing.min_price)}
                         </span>
                       </div>
                       <div className="text-right">
-                        <span className="text-slate-400 block text-[10px] uppercase font-semibold">
+                        <span className="text-slate-400 dark:text-slate-500 block text-[10px] uppercase font-semibold">
                           University
                         </span>
-                        <span className="font-bold text-slate-700 truncate max-w-[120px] block">
+                        <span className="font-bold text-slate-700 dark:text-slate-300 truncate max-w-[120px] block">
                           {lodge.university_name}
                         </span>
                       </div>
                     </div>
 
                     {/* Actions */}
-                    <div className="mt-auto pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <div className="mt-auto pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
                       <div className="flex items-center gap-1.5">
                         <Link href={`/landlord/rooms?propertyId=${lodge.id}`}>
-                          <Button size="sm" variant="outline" className="text-xs h-8 px-2.5 gap-1 text-slate-700">
+                          <Button size="sm" variant="outline" className="text-xs h-8 px-2.5 gap-1 text-slate-700 dark:text-slate-300">
                             <BedDouble className="h-3.5 w-3.5" />
                             <span>Rooms ({lodge.total_rooms})</span>
                           </Button>
                         </Link>
                         <Link href={`/lodges/${lodge.slug}`}>
-                          <Button size="sm" variant="ghost" className="text-xs h-8 px-2 gap-1 text-emerald-700 hover:bg-emerald-50">
+                          <Button size="sm" variant="ghost" className="text-xs h-8 px-2 gap-1 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40">
                             <ExternalLink className="h-3.5 w-3.5" />
                             <span>Preview</span>
                           </Button>
@@ -284,7 +284,7 @@ export default function LandlordPropertiesPage() {
                         size="sm"
                         variant="ghost"
                         onClick={() => handleDelete(lodge.id, lodge.title)}
-                        className="text-xs h-8 w-8 p-0 text-slate-400 hover:text-red-600 hover:bg-red-50"
+                        className="text-xs h-8 w-8 p-0 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40"
                         title="Delete Property"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -296,13 +296,13 @@ export default function LandlordPropertiesPage() {
             })}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center space-y-4">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600">
+          <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center space-y-4 dark:border-slate-800 dark:bg-slate-900">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
               <Building2 className="h-7 w-7" />
             </div>
             <div className="space-y-1 max-w-sm mx-auto">
-              <h3 className="font-bold text-sm text-slate-900">No properties added yet</h3>
-              <p className="text-xs text-slate-500">
+              <h3 className="font-bold text-sm text-slate-900 dark:text-white">No properties added yet</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 List your student lodge with transparent upfront fees and photos to start receiving inspection requests.
               </p>
             </div>
@@ -321,23 +321,23 @@ export default function LandlordPropertiesPage() {
       {/* Add Property Modal */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl space-y-5 border border-slate-200 my-8">
+          <div className="relative w-full max-w-2xl rounded-2xl bg-white p-6 shadow-2xl space-y-5 border border-slate-200 dark:border-slate-800 dark:bg-slate-900 my-8">
             <button
               onClick={() => setIsAddModalOpen(false)}
-              className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600"
+              className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"
             >
               <X className="h-5 w-5" />
             </button>
 
             <div className="space-y-1">
-              <h3 className="text-xl font-bold text-slate-900">Add New Student Lodge</h3>
-              <p className="text-xs text-slate-500">
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Add New Student Lodge</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Provide clear details and strictly transparent pricing. Listings appear instantly for inspection booking.
               </p>
             </div>
 
             {formError && (
-              <div className="rounded-lg bg-red-50 p-3 text-xs text-red-700 flex items-center gap-2">
+              <div className="rounded-lg bg-red-50 dark:bg-red-950/50 p-3 text-xs text-red-700 dark:text-red-400 flex items-center gap-2">
                 <AlertCircle className="h-4 w-4 shrink-0" />
                 <span>{formError}</span>
               </div>
@@ -345,7 +345,7 @@ export default function LandlordPropertiesPage() {
 
             <form onSubmit={handleCreateLodge} className="space-y-4">
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Lodge Name *</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Lodge Name *</label>
                 <Input
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
@@ -357,11 +357,11 @@ export default function LandlordPropertiesPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">University *</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">University *</label>
                   <select
                     value={universitySlug}
                     onChange={(e) => setUniversitySlug(e.target.value)}
-                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none"
+                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                   >
                     {NIGERIAN_UNIVERSITIES.map((u) => (
                       <option key={u.slug} value={u.slug}>
@@ -372,7 +372,7 @@ export default function LandlordPropertiesPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">Campus / Campus Gate</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Campus / Campus Gate</label>
                   <Input
                     value={campusName}
                     onChange={(e) => setCampusName(e.target.value)}
@@ -384,7 +384,7 @@ export default function LandlordPropertiesPage() {
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">Neighbourhood / Area *</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Neighbourhood / Area *</label>
                   <Input
                     value={neighbourhood}
                     onChange={(e) => setNeighbourhood(e.target.value)}
@@ -395,7 +395,7 @@ export default function LandlordPropertiesPage() {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700">Distance to Campus *</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Distance to Campus *</label>
                   <Input
                     value={distanceToCampus}
                     onChange={(e) => setDistanceToCampus(e.target.value)}
@@ -407,7 +407,7 @@ export default function LandlordPropertiesPage() {
               </div>
 
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Full Street Address *</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Full Street Address *</label>
                 <Input
                   value={address}
                   onChange={(e) => setAddress(e.target.value)}
@@ -418,51 +418,51 @@ export default function LandlordPropertiesPage() {
               </div>
 
               {/* Transparent Financials */}
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3">
-                <span className="text-xs font-bold text-slate-800 block">
+              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3 dark:border-slate-800 dark:bg-slate-850">
+                <span className="text-xs font-bold text-slate-800 dark:text-white block">
                   Transparent Upfront Pricing (Per Annum)
                 </span>
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[11px] font-semibold text-slate-600">Base Annual Rent (₦) *</label>
+                    <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Base Annual Rent (₦) *</label>
                     <Input
                       type="number"
                       value={minPrice}
                       onChange={(e) => setMinPrice(e.target.value)}
                       placeholder="450000"
-                      className="text-xs bg-white"
+                      className="text-xs bg-white dark:bg-slate-800"
                       required
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[11px] font-semibold text-slate-600">Caution Deposit (₦)</label>
+                    <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Caution Deposit (₦)</label>
                     <Input
                       type="number"
                       value={cautionDeposit}
                       onChange={(e) => setCautionDeposit(e.target.value)}
                       placeholder="40000"
-                      className="text-xs bg-white"
+                      className="text-xs bg-white dark:bg-slate-800"
                     />
                   </div>
                   <div className="space-y-1">
-                    <label className="text-[11px] font-semibold text-slate-600">Service Charge (₦)</label>
+                    <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Service Charge (₦)</label>
                     <Input
                       type="number"
                       value={serviceCharge}
                       onChange={(e) => setServiceCharge(e.target.value)}
                       placeholder="30000"
-                      className="text-xs bg-white"
+                      className="text-xs bg-white dark:bg-slate-800"
                     />
                   </div>
                 </div>
-                <p className="text-[10px] text-emerald-700 font-medium">
+                <p className="text-[10px] text-emerald-700 dark:text-emerald-400 font-medium">
                   Zero legal/agency commission: LodgeHere direct landlord model guarantees zero agent exploitation.
                 </p>
               </div>
 
               {/* Amenities */}
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700">Available Amenities</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Available Amenities</label>
                 <div className="flex flex-wrap gap-2">
                   {AMENITIES_CATALOG.map((a) => {
                     const isSelected = selectedAmenities.includes(a.key);
@@ -471,9 +471,9 @@ export default function LandlordPropertiesPage() {
                         key={a.key}
                         type="button"
                         onClick={() => toggleAmenity(a.key)}
-                        className={`rounded-full px-2.5 py-1 text-xs font-medium border transition-colors ${isSelected
+                        className={`rounded-full px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer ${isSelected
                             ? 'bg-emerald-600 text-white border-emerald-600'
-                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'
+                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-750'
                           }`}
                       >
                         {a.label}
@@ -485,7 +485,7 @@ export default function LandlordPropertiesPage() {
 
               {/* Real Property Images Upload via Supabase Storage */}
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
                   Property Photos (Real Upload to Storage)
                 </label>
                 <ImageUploader
@@ -497,12 +497,12 @@ export default function LandlordPropertiesPage() {
 
               {/* Description */}
               <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700">Description</label>
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Description</label>
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
-                  className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none"
+                  className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 />
               </div>
 
