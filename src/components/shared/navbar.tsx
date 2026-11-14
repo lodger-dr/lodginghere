@@ -15,7 +15,7 @@ interface NavbarProps {
 
 export function Navbar({ initialUserRole = null, initialUserEmail = null }: NavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [userRole, setUserRole] = useState<UserRole | null>(initialUserRole);
+  const [userRole, setUserRole] = useState<UserRole | null>(initialUserRole ?? (initialUserEmail ? 'student' : null));
   const [userEmail, setUserEmail] = useState<string | null>(initialUserEmail);
   const pathname = usePathname();
 
@@ -72,10 +72,10 @@ export function Navbar({ initialUserRole = null, initialUserEmail = null }: Navb
     try {
       const supabase = createClient();
       await supabase.auth.signOut();
-      window.location.href = '/login';
     } catch {
-      window.location.href = '/login';
+      // Graceful fallback
     }
+    window.location.href = '/auth/logout';
   };
 
   const isLinkActive = (path: string) => pathname === path;
@@ -159,16 +159,16 @@ export function Navbar({ initialUserRole = null, initialUserEmail = null }: Navb
             </div>
           ) : (
             <div className="flex items-center gap-2">
-              <Link href="/login">
+              <a href="/auth/login">
                 <Button variant="ghost" size="sm">
                   Sign In
                 </Button>
-              </Link>
-              <Link href="/register">
+              </a>
+              <a href="/auth/login?screen_hint=signup">
                 <Button variant="primary" size="sm">
-                  Register
+                  Signup
                 </Button>
-              </Link>
+              </a>
             </div>
           )}
         </div>
@@ -250,16 +250,16 @@ export function Navbar({ initialUserRole = null, initialUserEmail = null }: Navb
               </div>
             ) : (
               <div className="flex flex-col gap-2 pt-1">
-                <Link href="/login" onClick={() => setMobileMenuOpen(false)}>
+                <a href="/auth/login" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="outline" className="w-full justify-center">
                     Sign In
                   </Button>
-                </Link>
-                <Link href="/register" onClick={() => setMobileMenuOpen(false)}>
+                </a>
+                <a href="/auth/login?screen_hint=signup" onClick={() => setMobileMenuOpen(false)}>
                   <Button variant="primary" className="w-full justify-center">
-                    Register
+                    Signup
                   </Button>
-                </Link>
+                </a>
               </div>
             )}
           </div>

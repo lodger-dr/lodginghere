@@ -29,41 +29,71 @@ export async function signInAction(formData: FormData): Promise<ActionResponse> 
     };
   }
 
-  const supabase = await createClient();
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email: parsed.data.email,
-    password: parsed.data.password,
-  });
+  try {
+    const supabase = await createClient();
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: parsed.data.email,
+      password: parsed.data.password,
+    });
 
-  if (error) {
+    if (error) {
+      const msg = error.message.toLowerCase();
+      if (msg.includes('failed to fetch')) {
+        return {
+          success: false,
+          message: 'Unable to connect to the authentication server. Please check your network connection.',
+        };
+      }
+      if (msg.includes('invalid login credentials')) {
+        return {
+          success: false,
+          message: 'Invalid email or password. Please check your credentials.',
+        };
+      }
+      if (msg.includes('email not confirmed')) {
+        return {
+          success: false,
+          message: 'Please check your email and click the confirmation link before signing in.',
+        };
+      }
+      return {
+        success: false,
+        message: error.message || 'Invalid email or password',
+      };
+    }
+
+    if (!data.user) {
+      return {
+        success: false,
+        message: 'Authentication failed. Please try again.',
+      };
+    }
+
+    // Get user role from profile
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role')
+      .eq('id', data.user.id)
+      .single();
+
+    const role = profile?.role || 'student';
+
+    if (role === 'admin') {
+      redirect('/admin/dashboard');
+    } else if (role === 'landlord') {
+      redirect('/landlord/overview');
+    } else {
+      redirect('/student/overview');
+    }
+  } catch (err: unknown) {
+    if (err && typeof err === 'object' && 'digest' in err && typeof (err as { digest: unknown }).digest === 'string') {
+      // Next.js redirect throw, rethrow
+      throw err;
+    }
     return {
       success: false,
-      message: error.message || 'Invalid email or password',
+      message: 'Could not connect to authentication service. Please check your network or try again.',
     };
-  }
-
-  if (!data.user) {
-    return {
-      success: false,
-      message: 'Authentication failed. Please try again.',
-    };
-  }
-
-  // Get user role from profile
-  const { data: profile } = await supabase
-    .from('profiles')
-    .select('role')
-    .eq('id', data.user.id)
-    .single();
-
-  const role = profile?.role || 'student';
-
-  if (role === 'admin') {
-    redirect('/admin/dashboard');
-  } else if (role === 'landlord') {
-    redirect('/landlord/overview');
-  } else {
-    redirect('/student/overview');
   }
 }
 
@@ -105,20 +135,20 @@ export async function signUpAction(formData: FormData): Promise<ActionResponse> 
     });
 
     if (error) {
+      const msg = error.message.toLowerCase();
+      if (msg.includes('user already registered')) {
+        return {
+          success: false,
+          message: 'An account with this email already exists. Please sign in instead.',
+        };
+      }
       return {
         success: false,
         message: error.message,
       };
     }
 
-    if (data.session) {
-      redirect('/student/overview');
-    }
-
-    return {
-      success: true,
-      message: 'Account created! Please check your email to verify your address.',
-    };
+    redirect('/login?registered=true');
   } else if (role === 'landlord') {
     const rawData = {
       role: 'landlord' as const,
@@ -139,7 +169,7 @@ export async function signUpAction(formData: FormData): Promise<ActionResponse> 
     }
 
     const supabase = await createClient();
-    const { data, error } = await supabase.auth.signUp({
+    const { error } = await supabase.auth.signUp({
       email: parsed.data.email,
       password: parsed.data.password,
       options: {
@@ -154,20 +184,20 @@ export async function signUpAction(formData: FormData): Promise<ActionResponse> 
     });
 
     if (error) {
+      const msg = error.message.toLowerCase();
+      if (msg.includes('user already registered')) {
+        return {
+          success: false,
+          message: 'An account with this email already exists. Please sign in instead.',
+        };
+      }
       return {
         success: false,
         message: error.message,
       };
     }
 
-    if (data.session) {
-      redirect('/landlord/overview');
-    }
-
-    return {
-      success: true,
-      message: 'Landlord account created! Please check your email to verify your address.',
-    };
+    redirect('/login?registered=true');
   }
 
   return {

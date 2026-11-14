@@ -215,6 +215,22 @@ function RegisterForm() {
                 <ArrowRight className="h-4 w-4" />
               </Button>
 
+              <div className="relative my-1 w-full">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t border-slate-200" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                  <span className="bg-white px-2 text-slate-400">Or sign up with</span>
+                </div>
+              </div>
+
+              <a href="/auth/login?screen_hint=signup" className="w-full">
+                <Button type="button" variant="outline" className="w-full gap-2">
+                  <span>Sign up with Auth0 Universal Login</span>
+                  <ArrowRight className="h-4 w-4" />
+                </Button>
+              </a>
+
               <div className="text-center text-xs text-slate-500">
                 Already have an account?{' '}
                 <Link href="/login" className="font-semibold text-emerald-600 hover:text-emerald-700">
