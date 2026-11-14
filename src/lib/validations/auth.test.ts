@@ -1,0 +1,156 @@
+import { describe, it, expect } from 'vitest';
+import {
+  loginSchema,
+  studentSignUpSchema,
+  landlordSignUpSchema,
+  signUpSchema,
+  resetPasswordSchema,
+} from './auth';
+
+describe('Auth Validation Schemas', () => {
+  describe('loginSchema', () => {
+    it('should validate a valid email and password', () => {
+      const validData = {
+        email: 'student@example.com',
+        password: 'password123',
+      };
+      const result = loginSchema.safeParse(validData);
+      expect(result.success).toBe(true);
+    });
+
+    it('should reject invalid email formats', () => {
+      const invalidData = {
+        email: 'invalid-email',
+        password: 'password123',
+      };
+      const result = loginSchema.safeParse(invalidData);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.flatten().fieldErrors.email).toBeDefined();
+      }
+    });
+
+    it('should reject passwords shorter than 6 characters', () => {
+      const invalidData = {
+        email: 'student@example.com',
+        password: '123',
+      };
+      const result = loginSchema.safeParse(invalidData);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error.flatten().fieldErrors.password).toBeDefined();
+      }
+    });
+  });
+
+  describe('studentSignUpSchema', () => {
+    it('should accept valid student signup data', () => {
+      const validStudent = {
+        role: 'student' as const,
+        fullName: 'Chinedu Okafor',
+        email: 'chinedu@unilag.edu.ng',
+        password: 'SecurePassword1',
+        phone: '08012345678',
+        department: 'Computer Science',
+      };
+      const result = studentSignUpSchema.safeParse(validStudent);
+      expect(result.success).toBe(true);
+    });
+
+    it('should require a password with at least one uppercase letter and one number', () => {
+      const weakPassword = {
+        role: 'student' as const,
+        fullName: 'Chinedu Okafor',
+        email: 'chinedu@unilag.edu.ng',
+        password: 'lowercaseonly',
+      };
+      const result = studentSignUpSchema.safeParse(weakPassword);
+      expect(result.success).toBe(false);
+    });
+
+    it('should validate Nigerian phone numbers correctly', () => {
+      const validPhones = ['08012345678', '07098765432', '+2348012345678', '09012345678'];
+      validPhones.forEach((phone) => {
+        const student = {
+          role: 'student' as const,
+          fullName: 'Test Student',
+          email: 'test@example.com',
+          password: 'SecurePassword1',
+          phone,
+        };
+        const result = studentSignUpSchema.safeParse(student);
+        expect(result.success).toBe(true);
+      });
+
+      const invalidPhone = {
+        role: 'student' as const,
+        fullName: 'Test Student',
+        email: 'test@example.com',
+        password: 'SecurePassword1',
+        phone: '12345',
+      };
+      const result = studentSignUpSchema.safeParse(invalidPhone);
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe('landlordSignUpSchema', () => {
+    it('should accept valid landlord owner signup', () => {
+      const validLandlord = {
+        role: 'landlord' as const,
+        fullName: 'Alhaji Ibrahim',
+        email: 'ibrahim@example.com',
+        password: 'SecurePassword1',
+        providerType: 'owner' as const,
+        businessName: 'Apex Lodges',
+      };
+      const result = landlordSignUpSchema.safeParse(validLandlord);
+      expect(result.success).toBe(true);
+    });
+
+    it('should accept authorized representative provider type', () => {
+      const validRep = {
+        role: 'landlord' as const,
+        fullName: 'Agent Emeka',
+        email: 'emeka@example.com',
+        password: 'SecurePassword1',
+        providerType: 'authorized_representative' as const,
+      };
+      const result = landlordSignUpSchema.safeParse(validRep);
+      expect(result.success).toBe(true);
+    });
+
+    it('should reject invalid provider types', () => {
+      const invalid = {
+        role: 'landlord' as const,
+        fullName: 'Alhaji Ibrahim',
+        email: 'ibrahim@example.com',
+        password: 'SecurePassword1',
+        providerType: 'random_type',
+      };
+      const result = landlordSignUpSchema.safeParse(invalid);
+      expect(result.success).toBe(false);
+    });
+  });
+
+  describe('signUpSchema (discriminated union)', () => {
+    it('should properly discriminate student vs landlord based on role', () => {
+      const studentResult = signUpSchema.safeParse({
+        role: 'student',
+        fullName: 'Student User',
+        email: 'student@example.com',
+        password: 'SecurePassword1',
+      });
+      expect(studentResult.success).toBe(true);
+
+      const landlordResult = signUpSchema.safeParse({
+        role: 'landlord',
+        fullName: 'Landlord User',
+        email: 'landlord@example.com',
+        password: 'SecurePassword1',
+        providerType: 'owner',
+      });
+      expect(landlordResult.success).toBe(true);
+    });
+  });
+});
