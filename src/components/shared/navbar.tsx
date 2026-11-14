@@ -3,15 +3,14 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Building2, ChevronDown, Check } from 'lucide-react';
+import { Menu, X, Building2 } from 'lucide-react';
 import { Logo } from './logo';
 import { ThemeToggle } from './theme-toggle';
-import { useDevRole, DevRole } from '@/lib/dev-role';
+import { useDevRole } from '@/lib/dev-role';
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [roleDropdownOpen, setRoleDropdownOpen] = useState(false);
-  const { role, switchRole } = useDevRole();
+  const { role } = useDevRole();
   const pathname = usePathname();
 
   const isDashboard =
@@ -20,11 +19,6 @@ export function Navbar() {
     pathname.startsWith('/admin');
 
   const isLinkActive = (path: string) => pathname === path;
-
-  const handleSelectRole = (newRole: DevRole) => {
-    switchRole(newRole);
-    setRoleDropdownOpen(false);
-  };
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/95 dark:bg-slate-900/95 dark:border-slate-800 backdrop-blur-md transition-colors">
@@ -46,28 +40,31 @@ export function Navbar() {
             <nav className="hidden md:flex items-center gap-6 ml-4">
               <Link
                 href="/explore"
-                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/explore')
+                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
+                  isLinkActive('/explore')
                     ? 'text-blue-600 dark:text-blue-400 font-bold'
                     : 'text-slate-600 dark:text-slate-400'
-                  }`}
+                }`}
               >
                 Explore Lodges
               </Link>
               <Link
                 href="/universities"
-                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/universities')
+                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
+                  isLinkActive('/universities')
                     ? 'text-blue-600 dark:text-blue-400 font-bold'
                     : 'text-slate-600 dark:text-slate-400'
-                  }`}
+                }`}
               >
                 Universities
               </Link>
               <Link
                 href="/how-it-works"
-                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/how-it-works')
+                className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${
+                  isLinkActive('/how-it-works')
                     ? 'text-blue-600 dark:text-blue-400 font-bold'
                     : 'text-slate-600 dark:text-slate-400'
-                  }`}
+                }`}
               >
                 How It Works
               </Link>
@@ -75,14 +72,7 @@ export function Navbar() {
           )}
         </div>
 
-        {/* Center: Sandbox / Testing Mode Pill (matching Dojah reference screenshot) */}
-        <div className="hidden lg:flex items-center justify-center">
-          <span className="rounded-md border border-rose-200 bg-rose-50 px-3 py-1 text-[11px] font-medium text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300">
-            You are in testing mode
-          </span>
-        </div>
-
-        {/* Right Header Controls (matching Dojah reference screenshot) */}
+        {/* Right Header Controls */}
         <div className="flex items-center gap-2.5">
           {/* Action Button: Show Portal link on public pages; Show Explore Lodges on dashboard */}
           {!isDashboard ? (
@@ -105,50 +95,15 @@ export function Navbar() {
             </Link>
           )}
 
-          {/* Sandbox / Persona Switcher Toggle (matching Dojah orange switch pill) */}
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() => setRoleDropdownOpen(!roleDropdownOpen)}
-              className="flex items-center gap-1.5 rounded-md border border-amber-300/80 bg-amber-100/80 px-2.5 py-1 text-xs font-semibold text-amber-900 hover:bg-amber-100 dark:border-amber-800/80 dark:bg-amber-950/60 dark:text-amber-200 transition-colors"
-              title="Switch between Student and Landlord persona"
-            >
-              <span className="h-2 w-2 rounded-full bg-amber-500 animate-pulse" />
-              <span className="capitalize">{role}</span>
-              <ChevronDown className="h-3.5 w-3.5 text-amber-700 dark:text-amber-300" />
-            </button>
-
-            {/* Dropdown menu */}
-            {roleDropdownOpen && (
-              <div className="absolute right-0 mt-1.5 w-48 rounded-xl border border-slate-200 bg-white p-1.5 shadow-lg dark:border-slate-800 dark:bg-slate-900 z-50">
-                <div className="px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                  Select Persona
-                </div>
-                <button
-                  type="button"
-                  onClick={() => handleSelectRole('student')}
-                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${role === 'student'
-                      ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 font-semibold'
-                      : 'text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800'
-                    }`}
-                >
-                  <span>Student View</span>
-                  {role === 'student' && <Check className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />}
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleSelectRole('landlord')}
-                  className={`flex w-full items-center justify-between rounded-lg px-2.5 py-1.5 text-xs font-medium transition-colors ${role === 'landlord'
-                      ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/40 dark:text-blue-300 font-semibold'
-                      : 'text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800'
-                    }`}
-                >
-                  <span>Landlord View</span>
-                  {role === 'landlord' && <Check className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />}
-                </button>
-              </div>
-            )}
-          </div>
+          {/* Account Role Badge: automatically carries the role selected at signup */}
+          <Link
+            href={role === 'student' ? '/student/profile' : '/landlord/profile'}
+            className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+            title={`Account role: ${role === 'student' ? 'Student' : 'Landlord'}`}
+          >
+            <span className="h-2 w-2 rounded-full bg-emerald-500" />
+            <span className="capitalize">{role === 'student' ? 'Student' : 'Landlord'}</span>
+          </Link>
 
           {/* Workspace Pill */}
           <div className="hidden md:flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
@@ -168,9 +123,10 @@ export function Navbar() {
             <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
               {isDashboard ? 'Dashboard Menu' : 'Navigation'}
             </span>
-            <span className="rounded-md border border-rose-200 bg-rose-50 px-2 py-0.5 text-[10px] font-medium text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-300">
-              Testing Mode
-            </span>
+            <div className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-200">
+              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+              <span className="capitalize">{role === 'student' ? 'Student' : 'Landlord'}</span>
+            </div>
           </div>
 
           {/* Mobile Links: Dashboard-specific when in dashboard; Public links when on public site */}
@@ -328,35 +284,6 @@ export function Navbar() {
           )}
 
           <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  switchRole('student');
-                  setMobileMenuOpen(false);
-                }}
-                className={`rounded-lg py-2 text-xs font-semibold border ${role === 'student'
-                    ? 'border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
-                    : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300'
-                  }`}
-              >
-                Student View
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  switchRole('landlord');
-                  setMobileMenuOpen(false);
-                }}
-                className={`rounded-lg py-2 text-xs font-semibold border ${role === 'landlord'
-                    ? 'border-blue-600 bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
-                    : 'border-slate-200 dark:border-slate-800 text-slate-700 dark:text-slate-300'
-                  }`}
-              >
-                Landlord View
-              </button>
-            </div>
-
             {!isDashboard ? (
               <Link
                 href={role === 'student' ? '/student/overview' : '/landlord/overview'}
