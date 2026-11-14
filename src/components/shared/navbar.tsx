@@ -100,25 +100,22 @@ export function Navbar({ initialUserRole = null, initialUserEmail = null }: Navb
         <nav className="hidden md:flex items-center gap-6">
           <Link
             href="/explore"
-            className={`text-sm font-medium transition-colors hover:text-emerald-600 ${
-              isLinkActive('/explore') ? 'text-emerald-600 font-semibold' : 'text-slate-600'
-            }`}
+            className={`text-sm font-medium transition-colors hover:text-emerald-600 ${isLinkActive('/explore') ? 'text-emerald-600 font-semibold' : 'text-slate-600'
+              }`}
           >
             Explore Lodges
           </Link>
           <Link
             href="/universities"
-            className={`text-sm font-medium transition-colors hover:text-emerald-600 ${
-              isLinkActive('/universities') ? 'text-emerald-600 font-semibold' : 'text-slate-600'
-            }`}
+            className={`text-sm font-medium transition-colors hover:text-emerald-600 ${isLinkActive('/universities') ? 'text-emerald-600 font-semibold' : 'text-slate-600'
+              }`}
           >
             Universities
           </Link>
           <Link
             href="/how-it-works"
-            className={`text-sm font-medium transition-colors hover:text-emerald-600 ${
-              isLinkActive('/how-it-works') ? 'text-emerald-600 font-semibold' : 'text-slate-600'
-            }`}
+            className={`text-sm font-medium transition-colors hover:text-emerald-600 ${isLinkActive('/how-it-works') ? 'text-emerald-600 font-semibold' : 'text-slate-600'
+              }`}
           >
             How It Works
           </Link>
