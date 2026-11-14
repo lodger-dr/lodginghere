@@ -31,7 +31,7 @@ export function AccordionItem({
       <button
         type="button"
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-4 sm:p-5 text-left transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/40 cursor-pointer focus:outline-none"
+        className="w-full flex items-center justify-between p-4 sm:p-5 text-left transition-colors hover:bg-slate-50/50 dark:hover:bg-slate-800/40 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-inset"
         aria-expanded={isOpen}
       >
         <div className="flex items-center gap-3.5 min-w-0 pr-4">

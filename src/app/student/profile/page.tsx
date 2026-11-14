@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState } from 'react';
-import { User, GraduationCap, Phone, Mail, Save, CheckCircle2 } from 'lucide-react';
+import Link from 'next/link';
+import { User, GraduationCap, Phone, Mail, Save, CheckCircle2, Trash2, BellOff, ShieldCheck, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
@@ -87,6 +88,56 @@ export default function StudentProfilePage() {
               <span>Save Changes</span>
             </Button>
           </form>
+        </CardContent>
+      </Card>
+
+      {/* Privacy, Communications & Data Deletion */}
+      <Card className="border-slate-200 dark:border-slate-800">
+        <CardHeader>
+          <CardTitle className="text-base text-slate-900 dark:text-white flex items-center gap-2">
+            <ShieldCheck className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
+            <span>Privacy, Communications &amp; Data Rights</span>
+          </CardTitle>
+          <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
+            Control your notifications, exercise data rights under NDPA/GDPR, or request account erasure.
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <div className="rounded-xl border border-slate-200 dark:border-slate-800 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-slate-50/50 dark:bg-slate-850">
+            <div className="space-y-0.5">
+              <h4 className="text-xs font-bold text-slate-900 dark:text-white flex items-center gap-1.5">
+                <BellOff className="h-3.5 w-3.5 text-slate-500" />
+                <span>Email Notifications &amp; Unsubscribe</span>
+              </h4>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                Manage granular subscriptions or unsubscribe from all promotional campus digests.
+              </p>
+            </div>
+            <Link href="/unsubscribe?email=daniel.student@example.com">
+              <Button variant="outline" size="sm" className="text-xs gap-1.5 shrink-0">
+                <span>Manage Notifications</span>
+                <ArrowRight className="h-3 w-3" />
+              </Button>
+            </Link>
+          </div>
+
+          <div className="rounded-xl border border-rose-200 dark:border-rose-900/60 p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 bg-rose-50/40 dark:bg-rose-950/20">
+            <div className="space-y-0.5">
+              <h4 className="text-xs font-bold text-rose-950 dark:text-rose-200 flex items-center gap-1.5">
+                <Trash2 className="h-3.5 w-3.5 text-rose-600" />
+                <span>Request Account &amp; Data Deletion</span>
+              </h4>
+              <p className="text-[11px] text-rose-800/80 dark:text-rose-300">
+                Permanently purge your account, contact information, and inspection appointment history.
+              </p>
+            </div>
+            <Link href="/data-deletion">
+              <Button variant="danger" size="sm" className="text-xs gap-1.5 shrink-0">
+                <Trash2 className="h-3.5 w-3.5" />
+                <span>Request Erasure</span>
+              </Button>
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>

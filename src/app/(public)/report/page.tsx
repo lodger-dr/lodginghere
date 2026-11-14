@@ -82,8 +82,24 @@ export default function ReportPage() {
                 label="Your Email (Optional, for follow-up)"
                 type="email"
                 placeholder="you@example.com"
-                helperText="We will never disclose your identity to the reported provider"
+                helperText="We will never disclose your identity to the reported provider in accordance with our Privacy Policy"
               />
+
+              <div className="flex items-start gap-2.5 pt-1">
+                <input
+                  id="report-consent"
+                  type="checkbox"
+                  required
+                  className="h-4 w-4 mt-0.5 rounded border-slate-300 text-rose-600 focus:ring-rose-500 cursor-pointer"
+                />
+                <label htmlFor="report-consent" className="text-xs text-slate-700 dark:text-slate-300 leading-snug cursor-pointer">
+                  I confirm that this report is submitted in good faith and the details provided are accurate in accordance with the{' '}
+                  <Link href="/terms" className="text-emerald-700 underline dark:text-emerald-400 font-semibold">
+                    Terms of Service
+                  </Link>
+                  .
+                </label>
+              </div>
 
               <Button type="submit" variant="danger" className="w-full">
                 Submit Report to Admin

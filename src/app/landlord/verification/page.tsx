@@ -90,6 +90,23 @@ export default function LandlordVerificationPage() {
                 </div>
               </div>
 
+              {/* Explicit Verification Consent */}
+              <div className="flex items-start gap-2.5 pt-1">
+                <input
+                  id="verification-consent"
+                  type="checkbox"
+                  required
+                  className="h-4 w-4 mt-0.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
+                />
+                <label htmlFor="verification-consent" className="text-xs text-slate-700 dark:text-slate-300 leading-snug cursor-pointer">
+                  I consent to the collection and verification of my submitted identity and property documentation strictly for administrator verification in accordance with the{' '}
+                  <a href="/privacy" target="_blank" className="text-emerald-700 underline dark:text-emerald-400 font-semibold">
+                    Privacy Policy
+                  </a>
+                  . I confirm that I am legally authorized to list this accommodation.
+                </label>
+              </div>
+
               <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700">
                 Submit Documents for Review
               </Button>

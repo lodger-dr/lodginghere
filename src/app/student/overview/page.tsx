@@ -111,6 +111,7 @@ export default function StudentOverviewPage() {
           <div className="shrink-0 flex flex-col items-start lg:items-end gap-2">
             <WinningCTA
               idleText="Explore Verified Accommodations"
+              winText="Lock In Your Spot — Win!"
               href="/student/explore"
               size="lg"
             />

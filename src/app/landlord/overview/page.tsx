@@ -83,13 +83,12 @@ export default function LandlordOverviewPage() {
               <span>Filters</span>
             </button>
           </Link>
-          <Link href="/landlord/properties">
-            <WinningCTA
-              idleText="Add Property"
-              winText="List & Fill Vacancies — Win!"
-              size="sm"
-            />
-          </Link>
+          <WinningCTA
+            href="/landlord/properties"
+            idleText="Add Property"
+            winText="List & Fill Vacancies — Win!"
+            size="sm"
+          />
         </div>
       </div>
 

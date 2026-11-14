@@ -80,13 +80,12 @@ export default function StudentInspectionsPage() {
             Track physical inspection appointments, landlord responses, and directions to properties.
           </p>
         </div>
-        <Link href="/explore">
-          <WinningCTA
-            idleText="Find Another Lodge"
-            winText="Lock In Your Next Spot — Win!"
-            size="sm"
-          />
-        </Link>
+        <WinningCTA
+          href="/explore"
+          idleText="Find Another Lodge"
+          winText="Lock In Your Next Spot — Win!"
+          size="sm"
+        />
       </div>
 
       {/* Trust Reminder Banner */}

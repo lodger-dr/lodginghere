@@ -58,6 +58,8 @@ export function WinningCTA({
         href={href}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
+        onFocus={() => setIsHovered(true)}
+        onBlur={() => setIsHovered(false)}
         className={baseClasses}
       >
         {content}
@@ -72,6 +74,8 @@ export function WinningCTA({
       onClick={onClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
+      onFocus={() => setIsHovered(true)}
+      onBlur={() => setIsHovered(false)}
       className={`${baseClasses} ${disabled ? 'opacity-50 pointer-events-none' : ''}`}
     >
       {content}

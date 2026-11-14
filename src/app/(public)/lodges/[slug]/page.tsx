@@ -222,7 +222,7 @@ export default function LodgeDetailPage() {
           <div className="relative aspect-16/9 md:aspect-21/9 w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-850 shadow-md">
             <img
               src={images[activeImageIndex]}
-              alt={`${lodge.title} - photo ${activeImageIndex + 1}`}
+              alt={`${lodge.title} - accommodation photograph ${activeImageIndex + 1} of ${images.length}`}
               className="h-full w-full object-cover transition-all duration-300"
             />
             <div className="absolute bottom-4 right-4 rounded-full bg-slate-900/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur-xs">
@@ -236,13 +236,13 @@ export default function LodgeDetailPage() {
                 <button
                   key={idx}
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border-2 transition-all cursor-pointer ${
+                  className={`relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border-2 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none ${
                     idx === activeImageIndex
                       ? 'border-emerald-600 shadow-md scale-102'
                       : 'border-transparent opacity-70 hover:opacity-100'
                   }`}
                 >
-                  <img src={img} alt="Thumbnail" className="h-full w-full object-cover" />
+                  <img src={img} alt={`${lodge.title} thumbnail preview ${idx + 1}`} className="h-full w-full object-cover" />
                 </button>
               ))}
             </div>
@@ -256,72 +256,83 @@ export default function LodgeDetailPage() {
             {/* Lodge Overview */}
             <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-4 dark:border-slate-800 dark:bg-slate-900">
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">About this Accommodation</h2>
-              <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed whitespace-pre-line">
+              <p className="text-xs sm:text-sm text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-line">
                 {lodge.description}
               </p>
 
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs">
                 <div>
-                  <span className="text-slate-400 dark:text-slate-500 block font-medium">Campus</span>
+                  <span className="text-slate-500 dark:text-slate-400 block font-medium">Campus</span>
                   <span className="font-bold text-slate-900 dark:text-white">{lodge.campus_name}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 dark:text-slate-500 block font-medium">Neighbourhood</span>
+                  <span className="text-slate-500 dark:text-slate-400 block font-medium">Neighbourhood</span>
                   <span className="font-bold text-slate-900 dark:text-white">{lodge.neighbourhood}</span>
                 </div>
                 <div>
-                  <span className="text-slate-400 dark:text-slate-500 block font-medium">Total Units</span>
+                  <span className="text-slate-500 dark:text-slate-400 block font-medium">Total Units</span>
                   <span className="font-bold text-slate-900 dark:text-white">{lodge.total_rooms} Rooms</span>
                 </div>
               </div>
             </div>
 
-            {/* Transparent Fees Breakdown (Anti-Agent Scam Feature) */}
+            {/* Transparent Fees Breakdown (Strict Zero Hidden Fees) */}
             <div className="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-6 shadow-xs space-y-4 dark:border-emerald-900/60 dark:bg-emerald-950/20">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
                   <h2 className="text-lg font-bold text-emerald-950 dark:text-emerald-300 flex items-center gap-2">
-                    <ShieldCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                    <ShieldCheck className="h-5 w-5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
                     <span>Strict Transparent Pricing</span>
                   </h2>
-                  <p className="text-xs text-emerald-800 dark:text-emerald-400/90">
-                    No hidden agency fees, no sudden agreement commissions, no unexpected charges.
+                  <p className="text-xs text-emerald-900 dark:text-emerald-300">
+                    No hidden agency fees, no sudden commissions, 100% itemized move-in costs.
                   </p>
                 </div>
-                <Badge variant="outline" className="border-emerald-300 bg-white text-emerald-800 font-bold dark:border-emerald-800 dark:bg-slate-900 dark:text-emerald-400">
-                  Guaranteed
+                <Badge variant="outline" className="border-emerald-300 bg-white text-emerald-800 font-bold dark:border-emerald-800 dark:bg-slate-900 dark:text-emerald-300">
+                  Verified Standard
                 </Badge>
               </div>
 
               <div className="rounded-xl border border-emerald-200 bg-white p-4 space-y-3 text-xs dark:border-slate-800 dark:bg-slate-900">
                 <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-800">
-                  <span className="text-slate-600 dark:text-slate-400">Base Annual Rent</span>
+                  <span className="text-slate-700 dark:text-slate-300">Base Annual Rent</span>
                   <span className="font-bold text-slate-900 dark:text-white">{formatNaira(lodge.pricing.min_price)}</span>
                 </div>
                 <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-800">
                   <div>
-                    <span className="text-slate-600 dark:text-slate-400 block">Caution Deposit</span>
-                    <span className="text-[10px] text-slate-400 dark:text-slate-500">100% Refundable at lease expiration</span>
+                    <span className="text-slate-700 dark:text-slate-300 block">Caution Deposit</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">Refundable upon move-out inspection per tenancy agreement</span>
                   </div>
                   <span className="font-bold text-slate-900 dark:text-white">{formatNaira(lodge.pricing.caution_deposit)}</span>
                 </div>
                 <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-800">
                   <div>
-                    <span className="text-slate-600 dark:text-slate-400 block">Service & Maintenance Charge</span>
-                    <span className="text-[10px] text-slate-400 dark:text-slate-500">Covers waste disposal, security, water pump</span>
+                    <span className="text-slate-700 dark:text-slate-300 block">Service &amp; Maintenance Charge</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">Covers waste disposal, security, and compound utilities</span>
                   </div>
                   <span className="font-bold text-slate-900 dark:text-white">{formatNaira(lodge.pricing.service_charge)}</span>
                 </div>
+
                 <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-800">
                   <div>
-                    <span className="text-emerald-700 dark:text-emerald-400 font-semibold block">Legal & Agency Commission</span>
-                    <span className="text-[10px] text-emerald-600 dark:text-emerald-500">LodgeHere Direct Landlord Guarantee</span>
+                    <span className="text-emerald-700 dark:text-emerald-400 font-semibold block">Middleman Agency Commission</span>
+                    <span className="text-[10px] text-emerald-700 dark:text-emerald-400">0% Direct Landlord Policy</span>
                   </div>
                   <span className="font-bold text-emerald-700 dark:text-emerald-400">₦0 (FREE)</span>
                 </div>
 
+                {lodge.pricing.legal_agency_fee > 0 && (
+                  <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-800">
+                    <div>
+                      <span className="text-slate-700 dark:text-slate-300 font-medium block">Tenancy Agreement Legal Documentation</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400">Landlord legal agreement drafting</span>
+                    </div>
+                    <span className="font-bold text-slate-900 dark:text-white">{formatNaira(lodge.pricing.legal_agency_fee)}</span>
+                  </div>
+                )}
+
                 <div className="flex items-center justify-between pt-2 text-sm font-black text-slate-900 dark:text-white">
-                  <span>Total Transparent Move-in Cost</span>
+                  <span>Total Itemized Move-in Cost</span>
                   <span className="text-emerald-700 dark:text-emerald-400 text-base">{formatNaira(totalMoveIn)}</span>
                 </div>
               </div>

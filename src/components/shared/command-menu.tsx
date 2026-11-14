@@ -33,7 +33,6 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
   const { role, switchRole } = useDevRole();
   const { theme, toggleTheme } = useTheme();
   const [query, setQuery] = useState('');
-  const [selectedIndex, setSelectedIndex] = useState(0);
   const [lodges, setLodges] = useState<Lodge[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -41,7 +40,6 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
     if (isOpen) {
       setLodges(getLodges());
       setQuery('');
-      setSelectedIndex(0);
       setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [isOpen]);
@@ -162,6 +160,9 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
       onClick={onClose}
     >
       <div
+        role="dialog"
+        aria-modal="true"
+        aria-label="Command palette and quick actions"
         className="w-full max-w-xl rounded-2xl border border-slate-200/80 bg-white/95 dark:border-slate-800/80 dark:bg-slate-900/95 backdrop-blur-2xl shadow-2xl overflow-hidden divide-y divide-slate-100 dark:divide-slate-800/60 animate-in zoom-in-95 duration-150"
         onClick={(e) => e.stopPropagation()}
       >
