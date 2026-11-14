@@ -102,51 +102,46 @@ export default function StudentInspectionsPage() {
       <div className="flex items-center gap-2 border-b border-slate-200 overflow-x-auto pb-1 text-xs">
         <button
           onClick={() => setActiveTab('all')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${
-            activeTab === 'all'
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${activeTab === 'all'
               ? 'border-emerald-600 text-emerald-700'
               : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
+            }`}
         >
           All Requests ({inspections.length})
         </button>
         <button
           onClick={() => setActiveTab('accepted')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${
-            activeTab === 'accepted'
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${activeTab === 'accepted'
               ? 'border-emerald-600 text-emerald-700'
               : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
+            }`}
         >
           Confirmed / Accepted ({acceptedCount})
         </button>
         <button
           onClick={() => setActiveTab('pending')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${
-            activeTab === 'pending'
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${activeTab === 'pending'
               ? 'border-emerald-600 text-emerald-700'
               : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
+            }`}
         >
           Awaiting Response ({pendingCount})
         </button>
         <button
           onClick={() => setActiveTab('rescheduled')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${
-            activeTab === 'rescheduled'
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${activeTab === 'rescheduled'
               ? 'border-emerald-600 text-emerald-700'
               : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
+            }`}
         >
           Reschedule Proposed ({rescheduledCount})
         </button>
         <button
           onClick={() => setActiveTab('completed')}
-          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${
-            activeTab === 'completed'
+          className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap ${activeTab === 'completed'
               ? 'border-emerald-600 text-emerald-700'
               : 'border-transparent text-slate-500 hover:text-slate-900'
-          }`}
+            }`}
         >
           Completed ({completedCount})
         </button>

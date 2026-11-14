@@ -23,147 +23,7 @@ export const AMENITIES_CATALOG: { key: AmenityKey; label: string; icon: string }
   { key: 'kitchen_cabinet', label: 'Kitchen Cabinets & Sink', icon: 'Utensils' },
 ];
 
-// Verified Seed Lodges for Campus Housing
-export const SEED_LODGES: Lodge[] = [
-  {
-    id: 'lodge-unilag-01',
-    title: 'Heritage Heights Student Villa',
-    slug: 'heritage-heights-student-villa',
-    description:
-      'Executive self-contained student apartments located along St. Finbarrs College Road, Akoka. Features reliable 24/7 borehole water, backup power supply, fully tiled rooms, dedicated prepaid electricity meters, and gated security with access control. 5 minutes walk to UNILAG Main Gate.',
-    landlord_id: 'landlord-adebayo',
-    landlord_name: 'Chief Adebayo Olanrewaju',
-    landlord_phone: '+234 803 234 5678',
-    landlord_verified: true,
-    university_slug: 'university-of-lagos',
-    university_name: 'University of Lagos',
-    campus_name: 'Akoka Main Campus',
-    neighbourhood: 'Akoka, Yaba',
-    address: '14 St. Finbarrs College Road, Akoka, Yaba, Lagos',
-    distance_to_campus: '5 mins walk to Main Gate',
-    accommodation_type: 'self_contained',
-    pricing: {
-      min_price: 450000,
-      max_price: 520000,
-      caution_deposit: 50000,
-      service_charge: 35000,
-      legal_agency_fee: 0,
-    },
-    amenities: [
-      'running_water',
-      'solar_inverter',
-      'security_guard',
-      'gated_compound',
-      'prepaid_meter',
-      'tiled_floor',
-      'wardrobe',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
-    ],
-    status: 'approved',
-    rating: 4.9,
-    review_count: 18,
-    total_rooms: 12,
-    available_rooms: 3,
-    created_at: '2026-09-01T10:00:00Z',
-    updated_at: '2026-11-10T12:00:00Z',
-  },
-  {
-    id: 'lodge-unn-01',
-    title: 'Silver Crest Campus Lodge',
-    slug: 'silver-crest-campus-lodge',
-    description:
-      'Premier student residence situated on Ofulonu Road near UNN Hilltop gate. Designed for serious students with quiet study atmosphere, continuous running borehole water, individual meters, and perimeter fence with 24/7 security.',
-    landlord_id: 'landlord-eze',
-    landlord_name: 'Engr. Emeka Eze',
-    landlord_phone: '+234 802 345 6789',
-    landlord_verified: true,
-    university_slug: 'university-of-nigeria-nsukka',
-    university_name: 'University of Nigeria, Nsukka',
-    campus_name: 'Nsukka Campus',
-    neighbourhood: 'Hilltop, Nsukka',
-    address: '22 Ofulonu Road, Hilltop, Nsukka, Enugu',
-    distance_to_campus: '7 mins walk to Hilltop Gate',
-    accommodation_type: 'self_contained',
-    pricing: {
-      min_price: 320000,
-      max_price: 380000,
-      caution_deposit: 30000,
-      service_charge: 25000,
-      legal_agency_fee: 0,
-    },
-    amenities: [
-      'running_water',
-      'generator',
-      'security_guard',
-      'gated_compound',
-      'prepaid_meter',
-      'tiled_floor',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=1200&q=80',
-    ],
-    status: 'approved',
-    rating: 4.8,
-    review_count: 14,
-    total_rooms: 16,
-    available_rooms: 4,
-    created_at: '2026-09-15T08:00:00Z',
-    updated_at: '2026-11-12T14:00:00Z',
-  },
-  {
-    id: 'lodge-ui-01',
-    title: 'Greenwood Executive Residency',
-    slug: 'greenwood-executive-residency',
-    description:
-      'Spacious modern student apartments along Polytechnic Road, Sango, Ibadan. Serviced with stable borehole water, solar inverters, fitted kitchen cabinetry, and round-the-clock security surveillance.',
-    landlord_id: 'landlord-alabi',
-    landlord_name: 'Dr. (Mrs) Funke Alabi',
-    landlord_phone: '+234 805 456 7890',
-    landlord_verified: true,
-    university_slug: 'university-of-ibadan',
-    university_name: 'University of Ibadan',
-    campus_name: 'Main Campus',
-    neighbourhood: 'Sango, Ibadan',
-    address: '8 Polytechnic Road, Sango, Ibadan, Oyo',
-    distance_to_campus: '8 mins commute to UI Main Gate',
-    accommodation_type: 'one_bedroom',
-    pricing: {
-      min_price: 550000,
-      max_price: 650000,
-      caution_deposit: 60000,
-      service_charge: 40000,
-      legal_agency_fee: 0,
-    },
-    amenities: [
-      'running_water',
-      'solar_inverter',
-      'security_guard',
-      'gated_compound',
-      'prepaid_meter',
-      'kitchen_cabinet',
-      'tiled_floor',
-      'wifi',
-    ],
-    images: [
-      'https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?auto=format&fit=crop&w=1200&q=80',
-      'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=1200&q=80',
-    ],
-    status: 'approved',
-    rating: 5.0,
-    review_count: 22,
-    total_rooms: 8,
-    available_rooms: 2,
-    created_at: '2026-08-20T09:00:00Z',
-    updated_at: '2026-11-14T09:00:00Z',
-  },
-];
-
-// Fallback verified landlord ID in Supabase database
+// Fallback verified account IDs in Supabase database
 export const DEFAULT_LANDLORD_ID = 'c60d761b-1819-412c-8b5b-34b5cd6d648e';
 export const DEFAULT_STUDENT_ID = '28b1d478-aa15-4efe-a211-de340ca492ce';
 
@@ -257,9 +117,9 @@ function mapSupabasePropertyToLodge(row: any): Lodge {
   };
 }
 
-// Data API: Returns stored properties or initial verified seed lodges
+// Real Data API: Zero hardcoded seed listings. Starts at 0 inventory.
 export function getLodges(): Lodge[] {
-  return getStorage<Lodge[]>(STORAGE_KEYS.LODGES, SEED_LODGES);
+  return getStorage<Lodge[]>(STORAGE_KEYS.LODGES, []);
 }
 
 export async function fetchLodges(): Promise<Lodge[]> {
@@ -269,7 +129,7 @@ export async function fetchLodges(): Promise<Lodge[]> {
       .from('properties')
       .select('*, universities(*), campuses(*), profiles(*), rooms(*)');
 
-    if (!error && data && data.length > 0) {
+    if (!error && data) {
       const mapped = data.map(mapSupabasePropertyToLodge);
       setStorage(STORAGE_KEYS.LODGES, mapped);
       return mapped;
@@ -364,7 +224,7 @@ export async function fetchRooms(propertyId?: string): Promise<Room[]> {
       query = query.eq('property_id', propertyId);
     }
     const { data, error } = await query;
-    if (!error && data && data.length > 0) {
+    if (!error && data) {
       const mapped: Room[] = data.map((r) => ({
         id: r.id,
         property_id: r.property_id,
@@ -489,7 +349,7 @@ export async function fetchInspections(filter?: { student_id?: string; landlord_
     if (filter?.landlord_id) query = query.eq('landlord_id', filter.landlord_id);
 
     const { data, error } = await query;
-    if (!error && data && data.length > 0) {
+    if (!error && data) {
       const mapped: Inspection[] = data.map((i) => ({
         id: i.id,
         property_id: i.property_id,
