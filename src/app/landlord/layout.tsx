@@ -7,13 +7,11 @@ import {
   Building2,
   BedDouble,
   CalendarCheck,
-  BookmarkCheck,
   ShieldCheck,
   User,
-  LogOut,
-  PlusCircle,
+  ArrowRightLeft,
+  Search,
 } from 'lucide-react';
-import { signOutAction } from '@/app/(auth)/actions';
 
 interface LandlordLayoutProps {
   children: React.ReactNode;
@@ -35,9 +33,14 @@ export default function LandlordLayout({ children }: LandlordLayoutProps) {
     <div className="flex min-h-[calc(100vh-4rem)] flex-col md:flex-row bg-slate-50">
       <aside className="w-full md:w-64 border-r border-slate-200 bg-white p-4 shrink-0 space-y-6">
         <div className="space-y-1">
-          <span className="text-[10px] font-bold tracking-wider uppercase text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full">
-            Landlord Portal
-          </span>
+          <div className="flex items-center gap-1.5">
+            <span className="text-[10px] font-bold tracking-wider uppercase text-emerald-800 bg-emerald-100 px-2.5 py-1 rounded-full">
+              Landlord Persona
+            </span>
+            <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-200">
+              Dev Mode
+            </span>
+          </div>
           <h2 className="text-base font-bold text-slate-900 pt-1">Property Management</h2>
         </div>
 
@@ -62,16 +65,21 @@ export default function LandlordLayout({ children }: LandlordLayoutProps) {
           })}
         </nav>
 
-        <div className="border-t border-slate-200 pt-4">
-          <form action={signOutAction}>
-            <button
-              type="submit"
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium text-slate-500 hover:bg-rose-50 hover:text-rose-600 transition-colors"
-            >
-              <LogOut className="h-4 w-4" />
-              <span>Sign Out</span>
-            </button>
-          </form>
+        <div className="border-t border-slate-200 pt-4 space-y-2">
+          <Link
+            href="/student/overview"
+            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 transition-colors"
+          >
+            <ArrowRightLeft className="h-4 w-4 text-emerald-600" />
+            <span>Switch to Student Portal</span>
+          </Link>
+          <Link
+            href="/"
+            className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-medium text-slate-500 hover:bg-slate-50 hover:text-slate-900 transition-colors"
+          >
+            <Search className="h-4 w-4 text-slate-400" />
+            <span>Public Marketplace</span>
+          </Link>
         </div>
       </aside>
 
@@ -79,4 +87,3 @@ export default function LandlordLayout({ children }: LandlordLayoutProps) {
     </div>
   );
 }
-

@@ -1,4 +1,3 @@
-import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
 
 export async function updateSession(request: NextRequest) {
@@ -8,101 +7,26 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const path = request.nextUrl.pathname;
 
-  if (!supabaseUrl || !supabaseAnonKey) {
-    // If environment variables are not configured yet, do not block public requests
-    return response;
-  }
+  // Development Stage:
+  // All authentication and sign-up requirements are completely bypassed for testing.
+  // The active user persona is tracked via the 'dev_role' cookie ('student' or 'landlord').
+  const devRoleCookie = request.cookies.get('dev_role')?.value;
 
-  try {
-    const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet: Array<{ name: string; value: string; options?: Record<string, unknown> }>) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-          response = NextResponse.next({
-            request,
-          });
-          cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options as any)
-          );
-        },
-      },
+  // Synchronize dev_role cookie if directly navigating to portal paths
+  if (path.startsWith('/student') && devRoleCookie !== 'student') {
+    response.cookies.set('dev_role', 'student', {
+      path: '/',
+      maxAge: 31536000,
+      sameSite: 'lax',
     });
-
-    const path = request.nextUrl.pathname;
-
-    // Fast-path OAuth callback routes so exchangeCodeForSession sets cookies directly
-    if (path.startsWith('/auth/callback') || path.startsWith('/api/auth/callback')) {
-      return response;
-    }
-
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    // 1. Unauthenticated users trying to access protected portals
-    const isStudentRoute = path.startsWith('/student');
-    const isLandlordRoute = path.startsWith('/landlord');
-    const isAdminRoute = path.startsWith('/admin');
-
-    if (!user && (isStudentRoute || isLandlordRoute || isAdminRoute)) {
-      const url = request.nextUrl.clone();
-      url.pathname = '/login';
-      url.searchParams.set('next', path);
-      return NextResponse.redirect(url);
-    }
-
-    // 2. Authenticated user role check
-    if (user) {
-      // Fetch profile role from database
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single();
-
-      const role = profile?.role || 'student';
-
-      // If visiting auth pages while logged in, redirect to respective portal
-      if (path === '/login' || path === '/register' || path === '/reset-password') {
-        const url = request.nextUrl.clone();
-        if (role === 'admin') {
-          url.pathname = '/admin/dashboard';
-        } else if (role === 'landlord') {
-          url.pathname = '/landlord/overview';
-        } else {
-          url.pathname = '/student/overview';
-        }
-        return NextResponse.redirect(url);
-      }
-
-      // Role boundary enforcement
-      if (isStudentRoute && role !== 'student' && role !== 'admin') {
-        const url = request.nextUrl.clone();
-        url.pathname = '/landlord/overview';
-        return NextResponse.redirect(url);
-      }
-
-      if (isLandlordRoute && role !== 'landlord' && role !== 'admin') {
-        const url = request.nextUrl.clone();
-        url.pathname = '/student/overview';
-        return NextResponse.redirect(url);
-      }
-
-      if (isAdminRoute && role !== 'admin') {
-        const url = request.nextUrl.clone();
-        url.pathname = role === 'landlord' ? '/landlord/overview' : '/student/overview';
-        return NextResponse.redirect(url);
-      }
-    }
-  } catch (error) {
-    // Fail safely if database or auth network request encounters a transient issue
-    console.error('Supabase middleware session update error:', error);
+  } else if (path.startsWith('/landlord') && devRoleCookie !== 'landlord') {
+    response.cookies.set('dev_role', 'landlord', {
+      path: '/',
+      maxAge: 31536000,
+      sameSite: 'lax',
+    });
   }
 
   return response;

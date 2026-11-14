@@ -1,0 +1,555 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useParams, useRouter } from 'next/navigation';
+import {
+  ShieldCheck,
+  MapPin,
+  BedDouble,
+  Droplets,
+  Sun,
+  Zap,
+  Lock,
+  Wifi,
+  CalendarCheck,
+  CheckCircle2,
+  XCircle,
+  Share2,
+  Heart,
+  ChevronLeft,
+  Phone,
+  User,
+  ArrowRight,
+  AlertTriangle,
+  Info,
+  Building2,
+  Layers,
+  Grid,
+  Utensils,
+} from 'lucide-react';
+import { getLodgeBySlug, getRooms, AMENITIES_CATALOG } from '@/lib/data/lodges-data';
+import { Lodge, Room, AmenityKey } from '@/types/database';
+import { formatNaira } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent } from '@/components/ui/card';
+import { InspectionModal } from '@/components/lodges/inspection-modal';
+
+const AMENITY_ICONS: Record<AmenityKey, React.ComponentType<{ className?: string }>> = {
+  running_water: Droplets,
+  solar_inverter: Sun,
+  generator: Zap,
+  security_guard: ShieldCheck,
+  gated_compound: Lock,
+  prepaid_meter: Zap,
+  wifi: Wifi,
+  wardrobe: Layers,
+  tiled_floor: Grid,
+  kitchen_cabinet: Utensils,
+};
+
+export default function LodgeDetailPage() {
+  const params = useParams();
+  const router = useRouter();
+  const slug = params?.slug as string;
+
+  const [lodge, setLodge] = useState<Lodge | null>(null);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isInspectionModalOpen, setIsInspectionModalOpen] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
+  const [copiedLink, setCopiedLink] = useState(false);
+
+  useEffect(() => {
+    if (!slug) return;
+    const load = () => {
+      const found = getLodgeBySlug(slug);
+      if (found) {
+        setLodge(found);
+        setRooms(getRooms(found.id));
+      }
+    };
+    load();
+
+    const handleDataChange = () => load();
+    window.addEventListener('lodgehere-data-change', handleDataChange);
+    return () => window.removeEventListener('lodgehere-data-change', handleDataChange);
+  }, [slug]);
+
+  if (!lodge) {
+    return (
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-20 text-center space-y-4">
+        <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-500">
+          <Building2 className="h-7 w-7" />
+        </div>
+        <h2 className="text-xl font-bold text-slate-900">Lodge Listing Not Found</h2>
+        <p className="text-xs text-slate-500 max-w-sm mx-auto">
+          The lodge you are searching for may have been archived or is awaiting physical verification review.
+        </p>
+        <Link href="/explore">
+          <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+            Browse All Verified Lodges
+          </Button>
+        </Link>
+      </div>
+    );
+  }
+
+  const images = lodge.images.length > 0 ? lodge.images : [
+    'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=1200&q=80',
+  ];
+
+  const totalMoveIn =
+    lodge.pricing.min_price +
+    lodge.pricing.caution_deposit +
+    lodge.pricing.service_charge +
+    lodge.pricing.legal_agency_fee;
+
+  const handleShare = () => {
+    if (typeof window !== 'undefined') {
+      navigator.clipboard.writeText(window.location.href);
+      setCopiedLink(true);
+      setTimeout(() => setCopiedLink(false), 2500);
+    }
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50/50 pb-20">
+      {/* Breadcrumb Navigation */}
+      <div className="border-b border-slate-200 bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between text-xs text-slate-500">
+          <div className="flex items-center gap-2 truncate">
+            <Link href="/explore" className="flex items-center gap-1 hover:text-emerald-600">
+              <ChevronLeft className="h-3.5 w-3.5" />
+              <span>Back to Lodges</span>
+            </Link>
+            <span>/</span>
+            <span className="truncate">{lodge.university_name}</span>
+            <span>/</span>
+            <span className="font-semibold text-slate-800 truncate">{lodge.title}</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleShare}
+              className="h-8 px-2.5 text-xs gap-1.5"
+            >
+              <Share2 className="h-3.5 w-3.5" />
+              <span>{copiedLink ? 'Link Copied!' : 'Share'}</span>
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsSaved(!isSaved)}
+              className={`h-8 px-2.5 text-xs gap-1.5 ${isSaved ? 'text-rose-600 border-rose-200 bg-rose-50' : ''}`}
+            >
+              <Heart className={`h-3.5 w-3.5 ${isSaved ? 'fill-rose-600' : ''}`} />
+              <span>{isSaved ? 'Saved' : 'Save'}</span>
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+        {/* Title Header */}
+        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+          <div className="space-y-2">
+            <div className="flex flex-wrap items-center gap-2">
+              {lodge.landlord_verified && (
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800">
+                  <ShieldCheck className="h-4 w-4 text-emerald-700" />
+                  <span>Verified Landlord & Property Surveyed</span>
+                </span>
+              )}
+              <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white">
+                {lodge.accommodation_type.replace(/_/g, ' ').toUpperCase()}
+              </span>
+              <span className="rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 text-xs font-bold">
+                {lodge.available_rooms > 0
+                  ? `${lodge.available_rooms} Room${lodge.available_rooms > 1 ? 's' : ''} Vacant`
+                  : 'Fully Occupied'}
+              </span>
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900">
+              {lodge.title}
+            </h1>
+
+            <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600">
+              <span className="flex items-center gap-1 font-semibold text-emerald-700">
+                <MapPin className="h-4 w-4 text-emerald-600 shrink-0" />
+                {lodge.distance_to_campus}
+              </span>
+              <span>•</span>
+              <span className="text-slate-500">{lodge.address}</span>
+            </div>
+          </div>
+
+          {/* Quick Header Price */}
+          <div className="text-left md:text-right shrink-0">
+            <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider block">
+              Annual Rent From
+            </span>
+            <div className="flex items-baseline gap-1">
+              <span className="text-3xl font-black text-slate-900">
+                {formatNaira(lodge.pricing.min_price)}
+              </span>
+              <span className="text-sm text-slate-500 font-normal">/ year</span>
+            </div>
+            <span className="text-xs font-semibold text-emerald-600 block">
+              Direct Landlord • ₦0 Agent Fee
+            </span>
+          </div>
+        </div>
+
+        {/* Photo Gallery Grid */}
+        <div className="space-y-3">
+          <div className="relative aspect-16/9 md:aspect-21/9 w-full overflow-hidden rounded-2xl bg-slate-100 shadow-md">
+            <img
+              src={images[activeImageIndex]}
+              alt={`${lodge.title} - photo ${activeImageIndex + 1}`}
+              className="h-full w-full object-cover transition-all duration-300"
+            />
+            <div className="absolute bottom-4 right-4 rounded-full bg-slate-900/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur-xs">
+              Photo {activeImageIndex + 1} of {images.length}
+            </div>
+          </div>
+
+          {images.length > 1 && (
+            <div className="flex items-center gap-3 overflow-x-auto pb-2">
+              {images.map((img, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setActiveImageIndex(idx)}
+                  className={`relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border-2 transition-all ${
+                    idx === activeImageIndex
+                      ? 'border-emerald-600 shadow-md scale-102'
+                      : 'border-transparent opacity-70 hover:opacity-100'
+                  }`}
+                >
+                  <img src={img} alt="Thumbnail" className="h-full w-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Main Content Layout: 2 Columns */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Left Column: Details, Rooms, Amenities, House Rules */}
+          <div className="lg:col-span-2 space-y-8">
+            {/* Lodge Overview */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-4">
+              <h2 className="text-lg font-bold text-slate-900">About this Accommodation</h2>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed whitespace-pre-line">
+                {lodge.description}
+              </p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 pt-4 border-t border-slate-100 text-xs">
+                <div>
+                  <span className="text-slate-400 block font-medium">Campus</span>
+                  <span className="font-bold text-slate-900">{lodge.campus_name}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block font-medium">Neighbourhood</span>
+                  <span className="font-bold text-slate-900">{lodge.neighbourhood}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block font-medium">Total Units</span>
+                  <span className="font-bold text-slate-900">{lodge.total_rooms} Rooms</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Transparent Fees Breakdown (Anti-Agent Scam Feature) */}
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-6 shadow-xs space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <h2 className="text-lg font-bold text-emerald-950 flex items-center gap-2">
+                    <ShieldCheck className="h-5 w-5 text-emerald-600" />
+                    <span>Strict Transparent Pricing</span>
+                  </h2>
+                  <p className="text-xs text-emerald-800">
+                    No hidden agency fees, no sudden agreement commissions, no unexpected charges.
+                  </p>
+                </div>
+                <Badge variant="outline" className="border-emerald-300 bg-white text-emerald-800 font-bold">
+                  Guaranteed
+                </Badge>
+              </div>
+
+              <div className="rounded-xl border border-emerald-200 bg-white p-4 space-y-3 text-xs">
+                <div className="flex items-center justify-between py-1 border-b border-slate-100">
+                  <span className="text-slate-600">Base Annual Rent</span>
+                  <span className="font-bold text-slate-900">{formatNaira(lodge.pricing.min_price)}</span>
+                </div>
+                <div className="flex items-center justify-between py-1 border-b border-slate-100">
+                  <div>
+                    <span className="text-slate-600 block">Caution Deposit</span>
+                    <span className="text-[10px] text-slate-400">100% Refundable at lease expiration</span>
+                  </div>
+                  <span className="font-bold text-slate-900">{formatNaira(lodge.pricing.caution_deposit)}</span>
+                </div>
+                <div className="flex items-center justify-between py-1 border-b border-slate-100">
+                  <div>
+                    <span className="text-slate-600 block">Service & Maintenance Charge</span>
+                    <span className="text-[10px] text-slate-400">Covers waste disposal, security, water pump</span>
+                  </div>
+                  <span className="font-bold text-slate-900">{formatNaira(lodge.pricing.service_charge)}</span>
+                </div>
+                <div className="flex items-center justify-between py-1 border-b border-slate-100">
+                  <div>
+                    <span className="text-emerald-700 font-semibold block">Legal & Agency Commission</span>
+                    <span className="text-[10px] text-emerald-600">LodgeHere Direct Landlord Guarantee</span>
+                  </div>
+                  <span className="font-bold text-emerald-700">₦0 (FREE)</span>
+                </div>
+
+                <div className="flex items-center justify-between pt-2 text-sm font-black text-slate-900">
+                  <span>Total Transparent Move-in Cost</span>
+                  <span className="text-emerald-700 text-base">{formatNaira(totalMoveIn)}</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Available Rooms Section */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <h2 className="text-lg font-bold text-slate-900">Rooms & Current Vacancy</h2>
+                  <p className="text-xs text-slate-500">
+                    Specific rooms in this lodge with live availability status.
+                  </p>
+                </div>
+                <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full">
+                  {rooms.length} Room{rooms.length === 1 ? '' : 's'} Configured
+                </span>
+              </div>
+
+              {rooms.length > 0 ? (
+                <div className="space-y-3">
+                  {rooms.map((room) => {
+                    const isAvailable = room.status === 'available';
+                    return (
+                      <div
+                        key={room.id}
+                        className={`rounded-xl border p-4 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
+                          isAvailable
+                            ? 'border-slate-200 bg-white hover:border-emerald-300'
+                            : 'border-slate-100 bg-slate-50/70 opacity-75'
+                        }`}
+                      >
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <h4 className="text-sm font-bold text-slate-900">{room.room_number}</h4>
+                            <span
+                              className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
+                                isAvailable
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : 'bg-slate-200 text-slate-700'
+                              }`}
+                            >
+                              {isAvailable ? 'Vacant / Ready' : 'Occupied'}
+                            </span>
+                          </div>
+                          <p className="text-xs text-slate-500">{room.title}</p>
+                          {room.features && room.features.length > 0 && (
+                            <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                              {room.features.map((feat, i) => (
+                                <span
+                                  key={i}
+                                  className="rounded-md bg-slate-100 px-2 py-0.5 text-[10px] text-slate-600"
+                                >
+                                  {feat}
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex items-center sm:flex-col items-start sm:items-end justify-between sm:justify-center gap-2 shrink-0">
+                          <div className="text-left sm:text-right">
+                            <span className="text-base font-extrabold text-slate-900 block">
+                              {formatNaira(room.annual_rent)}
+                            </span>
+                            <span className="text-[10px] text-slate-400">per annum</span>
+                          </div>
+
+                          {isAvailable ? (
+                            <Button
+                              size="sm"
+                              onClick={() => setIsInspectionModalOpen(true)}
+                              className="bg-emerald-600 hover:bg-emerald-700 text-xs h-8 px-3 gap-1"
+                            >
+                              <CalendarCheck className="h-3.5 w-3.5" />
+                              <span>Inspect This Room</span>
+                            </Button>
+                          ) : (
+                            <span className="text-[11px] font-semibold text-slate-400">
+                              Currently Occupied
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              ) : (
+                <div className="rounded-xl border border-dashed border-slate-200 p-8 text-center space-y-2">
+                  <BedDouble className="h-6 w-6 text-slate-400 mx-auto" />
+                  <p className="text-xs font-semibold text-slate-700">All room types listed under general pricing</p>
+                  <p className="text-[11px] text-slate-400">
+                    Book an inspection to view all available vacant layouts with the caretaker.
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {/* Amenities Grid */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-4">
+              <h2 className="text-lg font-bold text-slate-900">Amenities & Facility Features</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                {AMENITIES_CATALOG.map((cat) => {
+                  const Icon = AMENITY_ICONS[cat.key] || CheckCircle2;
+                  const isIncluded = lodge.amenities.includes(cat.key);
+                  return (
+                    <div
+                      key={cat.key}
+                      className={`flex items-center gap-3 rounded-xl border p-3 ${
+                        isIncluded
+                          ? 'border-emerald-200 bg-emerald-50/30 text-slate-900 font-medium'
+                          : 'border-slate-100 bg-slate-50/50 text-slate-400'
+                      }`}
+                    >
+                      <div
+                        className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
+                          isIncluded ? 'bg-emerald-100 text-emerald-700' : 'bg-slate-100 text-slate-400'
+                        }`}
+                      >
+                        <Icon className="h-4 w-4" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <span className="block truncate">{cat.label}</span>
+                        <span className="text-[10px] text-slate-400">
+                          {isIncluded ? 'Provided on-premises' : 'Not available'}
+                        </span>
+                      </div>
+                      {isIncluded ? (
+                        <CheckCircle2 className="h-4 w-4 text-emerald-600 shrink-0" />
+                      ) : (
+                        <XCircle className="h-4 w-4 text-slate-300 shrink-0" />
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* House Rules & Trust Disclaimers */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-4">
+              <h2 className="text-lg font-bold text-slate-900">Safety & Student Protection Guidelines</h2>
+              <div className="space-y-3 text-xs text-slate-600">
+                <div className="flex items-start gap-2.5 rounded-xl bg-amber-50/80 border border-amber-200 p-3.5 text-amber-950">
+                  <AlertTriangle className="h-4 w-4 text-amber-600 shrink-0 mt-0.5" />
+                  <div className="space-y-1">
+                    <span className="font-bold">Golden Rule: Never pay before physical inspection</span>
+                    <p className="text-[11px] text-amber-900 leading-relaxed">
+                      LodgeHere never asks students to pay rent or deposit into personal accounts before physical
+                      verification. Always schedule an inspection, verify the room locks, water flow, and speak with the verified caretaker.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-2.5 rounded-xl bg-slate-50 border border-slate-200 p-3.5 text-slate-700">
+                  <Info className="h-4 w-4 text-slate-500 shrink-0 mt-0.5" />
+                  <div className="space-y-0.5">
+                    <span className="font-bold text-slate-900">Verified Landlord Authority</span>
+                    <p className="text-[11px] text-slate-500">
+                      The landlord profile for this lodge has undergone identity and ownership verification by LodgeHere moderators.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Right Column: Sticky Booking & Landlord Profile Card */}
+          <div className="space-y-6">
+            {/* Sticky Booking Card */}
+            <div className="sticky top-20 rounded-2xl border border-slate-200 bg-white p-6 shadow-lg space-y-5">
+              <div className="space-y-1 border-b border-slate-100 pb-4">
+                <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block">
+                  Transparent Pricing
+                </span>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-3xl font-extrabold text-slate-900">
+                    {formatNaira(lodge.pricing.min_price)}
+                  </span>
+                  <span className="text-xs text-slate-500">/ yr</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-xs text-emerald-700 font-semibold pt-1">
+                  <CheckCircle2 className="h-3.5 w-3.5" />
+                  <span>{lodge.available_rooms} Room{lodge.available_rooms > 1 ? 's' : ''} currently vacant</span>
+                </div>
+              </div>
+
+              {/* Action Button */}
+              <div className="space-y-3">
+                <Button
+                  onClick={() => setIsInspectionModalOpen(true)}
+                  size="lg"
+                  className="w-full bg-emerald-600 hover:bg-emerald-700 font-bold gap-2 shadow-md h-12 text-sm"
+                >
+                  <CalendarCheck className="h-5 w-5" />
+                  <span>Book Free Physical Inspection</span>
+                </Button>
+
+                <p className="text-[11px] text-center text-slate-400">
+                  Free of charge • Zero advance commitment required
+                </p>
+              </div>
+
+              {/* Landlord Contact Snippet */}
+              <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 space-y-3 text-xs">
+                <span className="font-bold text-slate-900 block">Verified Property Owner</span>
+                <div className="flex items-center gap-3">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 font-bold">
+                    <User className="h-5 w-5" />
+                  </div>
+                  <div className="space-y-0.5 min-w-0">
+                    <p className="font-bold text-slate-900 truncate">{lodge.landlord_name}</p>
+                    <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 font-semibold">
+                      <ShieldCheck className="h-3 w-3" />
+                      <span>Verified Landlord</span>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="pt-2 border-t border-slate-200/60 space-y-1 text-slate-600">
+                  <div className="flex items-center gap-2">
+                    <Phone className="h-3.5 w-3.5 text-slate-400" />
+                    <span>{lodge.landlord_phone || '+234 803 234 5678'}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                    <span className="truncate">{lodge.address}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Schedule Inspection Modal */}
+      <InspectionModal
+        lodge={lodge}
+        isOpen={isInspectionModalOpen}
+        onClose={() => setIsInspectionModalOpen(false)}
+      />
+    </div>
+  );
+}

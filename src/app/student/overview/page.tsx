@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import {
   CalendarCheck,
@@ -8,12 +10,32 @@ import {
   ShieldCheck,
   Clock,
   ArrowRight,
-  AlertCircle,
+  MapPin,
+  CheckCircle2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { getInspections } from '@/lib/data/lodges-data';
+import { Inspection } from '@/types/database';
 
 export default function StudentOverviewPage() {
+  const [inspections, setInspections] = useState<Inspection[]>([]);
+
+  useEffect(() => {
+    const load = () => {
+      setInspections(getInspections());
+    };
+    load();
+
+    const handleDataChange = () => load();
+    window.addEventListener('lodgehere-data-change', handleDataChange);
+    return () => window.removeEventListener('lodgehere-data-change', handleDataChange);
+  }, []);
+
+  const activeInspections = inspections.filter(
+    (i) => i.status === 'pending' || i.status === 'accepted' || i.status === 'reschedule_requested'
+  );
+
   return (
     <div className="space-y-8">
       {/* Header */}
@@ -30,7 +52,7 @@ export default function StudentOverviewPage() {
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
               <span className="text-xs font-semibold text-slate-500">Active Inspections</span>
-              <p className="text-2xl font-extrabold text-slate-900">0</p>
+              <p className="text-2xl font-extrabold text-slate-900">{activeInspections.length}</p>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600">
               <CalendarCheck className="h-5 w-5" />
@@ -41,8 +63,10 @@ export default function StudentOverviewPage() {
         <Card>
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-slate-500">Confirmed Bookings</span>
-              <p className="text-2xl font-extrabold text-slate-900">0</p>
+              <span className="text-xs font-semibold text-slate-500">Completed Inspections</span>
+              <p className="text-2xl font-extrabold text-emerald-600">
+                {inspections.filter((i) => i.status === 'completed').length}
+              </p>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
               <BookmarkCheck className="h-5 w-5" />
@@ -53,14 +77,71 @@ export default function StudentOverviewPage() {
         <Card>
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-slate-500">Saved Lodges</span>
-              <p className="text-2xl font-extrabold text-slate-900">0</p>
+              <span className="text-xs font-semibold text-slate-500">Total Requests</span>
+              <p className="text-2xl font-extrabold text-purple-600">{inspections.length}</p>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
-              <Heart className="h-5 w-5" />
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600">
+              <Clock className="h-5 w-5" />
             </div>
           </CardContent>
         </Card>
+      </div>
+
+      {/* Recent Inspections */}
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h2 className="text-base font-bold text-slate-900">Recent Inspection Appointments</h2>
+          <Link href="/student/inspections">
+            <Button variant="ghost" size="sm" className="text-xs gap-1 text-emerald-700">
+              <span>View All</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Button>
+          </Link>
+        </div>
+
+        {activeInspections.length > 0 ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {activeInspections.slice(0, 2).map((insp) => (
+              <div
+                key={insp.id}
+                className="rounded-2xl border border-slate-200 bg-white p-4 shadow-xs flex items-center justify-between gap-4"
+              >
+                <div className="flex items-center gap-3 min-w-0">
+                  <img
+                    src={insp.property_image || 'https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?auto=format&fit=crop&w=400&q=80'}
+                    alt={insp.property_title}
+                    className="h-14 w-14 rounded-lg object-cover shrink-0"
+                  />
+                  <div className="space-y-0.5 min-w-0">
+                    <span
+                      className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full ${
+                        insp.status === 'accepted'
+                          ? 'bg-emerald-100 text-emerald-800'
+                          : 'bg-amber-100 text-amber-800'
+                      }`}
+                    >
+                      {insp.status === 'accepted' ? 'Confirmed by Landlord' : 'Awaiting Response'}
+                    </span>
+                    <h4 className="font-bold text-xs text-slate-900 truncate">{insp.property_title}</h4>
+                    <p className="text-[11px] text-slate-500">
+                      {insp.requested_date} ({insp.time_slot})
+                    </p>
+                  </div>
+                </div>
+
+                <Link href="/student/inspections">
+                  <Button size="sm" variant="outline" className="text-xs h-8 px-2.5">
+                    Details
+                  </Button>
+                </Link>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-xl border border-dashed border-slate-200 bg-white p-6 text-center text-xs text-slate-500">
+            No active inspection requests. Find a lodge and schedule a free inspection.
+          </div>
+        )}
       </div>
 
       {/* Quick Action & Status Banner */}
@@ -108,4 +189,3 @@ export default function StudentOverviewPage() {
     </div>
   );
 }
-

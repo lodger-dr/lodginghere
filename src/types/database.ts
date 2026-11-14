@@ -140,3 +140,104 @@ export interface LandlordProfile {
   updated_at: string;
 }
 
+export type AmenityKey =
+  | 'running_water'
+  | 'solar_inverter'
+  | 'generator'
+  | 'security_guard'
+  | 'gated_compound'
+  | 'prepaid_meter'
+  | 'wifi'
+  | 'wardrobe'
+  | 'tiled_floor'
+  | 'kitchen_cabinet';
+
+export interface LodgePricing {
+  min_price: number;
+  max_price: number;
+  caution_deposit: number;
+  service_charge: number;
+  legal_agency_fee: number;
+}
+
+export interface Lodge {
+  id: string;
+  title: string;
+  slug: string;
+  description: string;
+  landlord_id: string;
+  landlord_name: string;
+  landlord_phone?: string;
+  landlord_verified: boolean;
+  university_slug: string;
+  university_name: string;
+  campus_name: string;
+  neighbourhood: string;
+  address: string;
+  distance_to_campus: string;
+  accommodation_type: AccommodationType;
+  pricing: LodgePricing;
+  amenities: AmenityKey[];
+  images: string[];
+  status: ListingStatus;
+  rating: number;
+  review_count: number;
+  total_rooms: number;
+  available_rooms: number;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface Room {
+  id: string;
+  property_id: string;
+  room_number: string;
+  title: string;
+  accommodation_type: AccommodationType;
+  annual_rent: number;
+  total_units: number;
+  available_units: number;
+  status: RoomAvailabilityStatus;
+  features: string[];
+  images: string[];
+  created_at: string;
+}
+
+export type InspectionTimeSlot = 'morning' | 'afternoon' | 'evening';
+
+export interface Inspection {
+  id: string;
+  property_id: string;
+  property_title: string;
+  property_slug: string;
+  property_address: string;
+  property_image: string;
+  student_id: string;
+  student_name: string;
+  student_phone: string;
+  student_email: string;
+  landlord_id: string;
+  requested_date: string;
+  time_slot: InspectionTimeSlot;
+  status: InspectionStatus;
+  rescheduled_date?: string;
+  rescheduled_time_slot?: InspectionTimeSlot;
+  student_notes?: string;
+  landlord_notes?: string;
+  created_at: string;
+  updated_at?: string;
+}
+
+export interface Booking {
+  id: string;
+  property_id: string;
+  room_id: string;
+  student_id: string;
+  landlord_id: string;
+  status: BookingStatus;
+  total_amount: number;
+  move_in_date: string;
+  created_at: string;
+}
+
+

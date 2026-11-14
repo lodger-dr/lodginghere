@@ -11,9 +11,7 @@ import {
   FileCheck2,
   AlertTriangle,
   History,
-  LogOut,
 } from 'lucide-react';
-import { signOutAction } from '@/app/(auth)/actions';
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -62,15 +60,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </nav>
 
         <div className="border-t border-slate-800 pt-4">
-          <form action={signOutAction}>
-            <button
-              type="submit"
-              className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium text-slate-500 hover:bg-rose-950/40 hover:text-rose-400 transition-colors"
-            >
-              <LogOut className="h-4 w-4" />
-              <span>Exit Admin Console</span>
-            </button>
-          </form>
+          <Link
+            href="/"
+            className="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-xs font-medium text-slate-400 hover:bg-slate-900 hover:text-white transition-colors"
+          >
+            <Building2 className="h-4 w-4 text-emerald-400" />
+            <span>Return to Marketplace</span>
+          </Link>
         </div>
       </aside>
 

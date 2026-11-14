@@ -50,7 +50,7 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/register?role=landlord" className="hover:text-emerald-400 transition-colors">
+                <Link href="/landlord/overview" className="hover:text-emerald-400 transition-colors">
                   List Your Property
                 </Link>
               </li>
