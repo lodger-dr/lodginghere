@@ -13,6 +13,7 @@ export interface UserProfile {
   email: string;
   phone?: string | null;
   avatar_path?: string | null;
+  onboarding_completed?: boolean;
   created_at?: string;
   updated_at?: string;
 }

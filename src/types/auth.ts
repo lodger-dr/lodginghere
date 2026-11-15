@@ -29,3 +29,30 @@ export interface LandlordSignUpData {
 
 export type SignUpFormData = StudentSignUpData | LandlordSignUpData;
 
+export interface EmailSignUpData {
+  email: string;
+  password: string;
+}
+
+export interface StudentOnboardingData {
+  role: 'student';
+  fullName: string;
+  phone?: string;
+  universityId?: string;
+  campusName?: string;
+  department?: string;
+  preferredRoomType?: string;
+}
+
+export interface LandlordOnboardingData {
+  role: 'landlord';
+  fullName: string;
+  phone?: string;
+  providerType: ProviderType;
+  businessName?: string;
+  operatingArea?: string;
+}
+
+export type OnboardingData = StudentOnboardingData | LandlordOnboardingData;
+
+
