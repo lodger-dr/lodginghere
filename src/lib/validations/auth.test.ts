@@ -5,6 +5,10 @@ import {
   landlordSignUpSchema,
   signUpSchema,
   resetPasswordSchema,
+  emailSignUpSchema,
+  studentOnboardingSchema,
+  landlordOnboardingSchema,
+  onboardingSchema,
 } from './auth';
 
 describe('Auth Validation Schemas', () => {
@@ -180,6 +184,67 @@ describe('Auth Validation Schemas', () => {
         providerType: 'owner',
       });
       expect(landlordResult.success).toBe(true);
+    });
+  });
+
+  describe('emailSignUpSchema', () => {
+    it('should validate valid email and password (min 8 chars, 1 uppercase, 1 number)', () => {
+      const valid = {
+        email: 'user@gmail.com',
+        password: 'Password123',
+      };
+      expect(emailSignUpSchema.safeParse(valid).success).toBe(true);
+    });
+
+    it('should reject email missing @ or invalid domain', () => {
+      const invalid = {
+        email: 'invalid-email',
+        password: 'Password123',
+      };
+      expect(emailSignUpSchema.safeParse(invalid).success).toBe(false);
+    });
+
+    it('should reject passwords without uppercase letter or number', () => {
+      expect(emailSignUpSchema.safeParse({ email: 'user@gmail.com', password: 'passwordonly' }).success).toBe(false);
+      expect(emailSignUpSchema.safeParse({ email: 'user@gmail.com', password: 'PASSWORDONLY' }).success).toBe(false);
+      expect(emailSignUpSchema.safeParse({ email: 'user@gmail.com', password: 'Pass1' }).success).toBe(false);
+    });
+  });
+
+  describe('onboardingSchema', () => {
+    it('should validate complete student onboarding data', () => {
+      const student = {
+        role: 'student' as const,
+        fullName: 'Chukwuemeka Adebayo',
+        phone: '08012345678',
+        universityId: 'university-of-lagos',
+        campusName: 'Main Campus',
+        department: 'Computer Science',
+        preferredRoomType: 'self_contained',
+      };
+      expect(studentOnboardingSchema.safeParse(student).success).toBe(true);
+      expect(onboardingSchema.safeParse(student).success).toBe(true);
+    });
+
+    it('should validate complete landlord onboarding data', () => {
+      const landlord = {
+        role: 'landlord' as const,
+        fullName: 'Chief Adebayo',
+        phone: '08032345678',
+        providerType: 'owner' as const,
+        businessName: 'Apex Lodges',
+        operatingArea: 'Akoka, Lagos',
+      };
+      expect(landlordOnboardingSchema.safeParse(landlord).success).toBe(true);
+      expect(onboardingSchema.safeParse(landlord).success).toBe(true);
+    });
+
+    it('should reject student onboarding if full name is less than 2 characters', () => {
+      const invalid = {
+        role: 'student' as const,
+        fullName: 'A',
+      };
+      expect(studentOnboardingSchema.safeParse(invalid).success).toBe(false);
     });
   });
 });
