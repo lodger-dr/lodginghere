@@ -3,24 +3,26 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Building2, Search, Compass, LogOut, Phone, User as UserIcon } from 'lucide-react';
+import { Menu, X, Search, LogOut } from 'lucide-react';
 import { Logo } from './logo';
 import { ThemeToggle } from './theme-toggle';
 import { CommandMenu } from './command-menu';
 import { useAuth } from '@/context/auth-context';
 import { useDevRole } from '@/lib/dev-role';
-import { useTour } from '@/context/tour-context';
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
-  const { user, profile, role: authRole, isAuthenticated, isLoading: authLoading, signOut } = useAuth();
+  const { user, profile, role: authRole, isAuthenticated, signOut } = useAuth();
   const { role: devRole } = useDevRole();
-  const { startTour } = useTour();
   const pathname = usePathname();
 
   const effectiveRole = authRole || devRole || 'student';
-  const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'My Account';
+  const displayName =
+    profile?.full_name ||
+    user?.user_metadata?.full_name ||
+    user?.email?.split('@')[0] ||
+    'My Account';
   const initialLetter = displayName.charAt(0).toUpperCase();
 
   // Listen for Command+K / Ctrl+K keyboard shortcut
@@ -37,19 +39,19 @@ export function Navbar() {
 
   const isDashboard = Boolean(
     pathname &&
-    (pathname.startsWith('/student') ||
-      pathname.startsWith('/landlord') ||
-      pathname.startsWith('/admin'))
+      (pathname.startsWith('/student') ||
+        pathname.startsWith('/landlord') ||
+        pathname.startsWith('/admin'))
   );
 
   const isLinkActive = (path: string) => pathname === path;
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-slate-200/60 bg-white/80 dark:bg-slate-900/80 dark:border-slate-800/60 backdrop-blur-xl transition-colors">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-3 sm:px-6 lg:px-8 gap-2 sm:gap-4">
-          {/* Left: Brand Logo & Hamburger */}
-          <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+      <header className="sticky top-0 z-40 w-full border-b border-slate-200/70 bg-white/90 dark:bg-slate-900/90 dark:border-slate-800/70 backdrop-blur-md transition-colors">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          {/* Left: Brand Logo & Mobile Toggle */}
+          <div className="flex items-center gap-3 shrink-0">
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -59,110 +61,76 @@ export function Navbar() {
               {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
             <Logo />
+          </div>
 
-            {/* Navigation Links: ONLY shown on public website views, never in dashboard */}
+          {/* Middle: Nav Links & Search Bar (Centered) */}
+          <div className="hidden md:flex items-center gap-6 lg:gap-8">
             {!isDashboard && (
-              <nav className="hidden md:flex items-center gap-6 ml-4">
+              <nav className="flex items-center gap-5 lg:gap-7">
                 <Link
                   href="/explore"
-                  className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/explore')
-                    ? 'text-blue-600 dark:text-blue-400 font-bold'
-                    : 'text-slate-600 dark:text-slate-400'
-                    }`}
+                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${
+                    isLinkActive('/explore')
+                      ? 'text-slate-900 dark:text-white font-bold'
+                      : 'text-slate-600 dark:text-slate-400'
+                  }`}
                 >
                   Explore Lodges
                 </Link>
                 <Link
                   href="/universities"
-                  className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/universities')
-                    ? 'text-blue-600 dark:text-blue-400 font-bold'
-                    : 'text-slate-600 dark:text-slate-400'
-                    }`}
+                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${
+                    isLinkActive('/universities')
+                      ? 'text-slate-900 dark:text-white font-bold'
+                      : 'text-slate-600 dark:text-slate-400'
+                  }`}
                 >
                   Universities
                 </Link>
                 <Link
                   href="/how-it-works"
-                  className={`text-xs font-semibold transition-colors hover:text-blue-600 dark:hover:text-blue-400 ${isLinkActive('/how-it-works')
-                    ? 'text-blue-600 dark:text-blue-400 font-bold'
-                    : 'text-slate-600 dark:text-slate-400'
-                    }`}
+                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${
+                    isLinkActive('/how-it-works')
+                      ? 'text-slate-900 dark:text-white font-bold'
+                      : 'text-slate-600 dark:text-slate-400'
+                  }`}
                 >
                   How It Works
                 </Link>
               </nav>
             )}
-          </div>
 
-          {/* Center: Sleek Compact Command K Search Widget */}
-          <div data-tour="command-search" className="flex-1 max-w-sm hidden sm:block">
+            {/* Compact Search Trigger */}
             <button
               type="button"
               onClick={() => setCommandOpen(true)}
-              className="w-full flex items-center justify-between rounded-full border border-slate-200/80 bg-slate-100/70 hover:bg-slate-100/90 px-3.5 py-1.5 text-xs text-slate-500 hover:border-slate-300 dark:border-slate-800/80 dark:bg-slate-800/60 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-800 backdrop-blur-md transition-all shadow-2xs cursor-pointer group"
+              className="flex items-center gap-2.5 rounded-full border border-slate-200/90 bg-slate-100/70 hover:bg-slate-100/90 px-3.5 py-1.5 text-xs text-slate-500 hover:border-slate-300 dark:border-slate-800/80 dark:bg-slate-800/60 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-800 transition-all cursor-pointer group shadow-2xs"
             >
-              <div className="flex items-center gap-2 min-w-0">
-                <Search className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors shrink-0" />
-                <span className="text-slate-400 dark:text-slate-400 text-xs truncate">
-                  Search lodges, campuses, commands...
-                </span>
-              </div>
-              <kbd className="ml-2 inline-flex items-center gap-0.5 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-mono font-medium text-slate-500 shadow-2xs dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 shrink-0">
-                <span className="text-[10px]">⌘</span>K
+              <Search className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors shrink-0" />
+              <span className="text-slate-400 dark:text-slate-400 text-xs truncate max-w-[140px] lg:max-w-[180px]">
+                Search lodges, campuses...
+              </span>
+              <kbd className="ml-1 inline-flex items-center gap-0.5 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-mono text-slate-500 dark:border-slate-700 dark:bg-slate-900 shadow-2xs shrink-0">
+                ⌘K
               </kbd>
             </button>
           </div>
 
-          {/* Right Header Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
-            {/* Interactive Tour Guide Button */}
-            <button
-              type="button"
-              onClick={() => startTour()}
-              className="flex items-center gap-1.5 rounded-md border border-emerald-200/80 bg-emerald-50/70 hover:bg-emerald-100/90 dark:border-emerald-800/80 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/60 px-2 sm:px-2.5 py-1 text-xs font-bold text-emerald-800 dark:text-emerald-300 transition-colors cursor-pointer shadow-2xs"
-              title="Start 6-step guided walkthrough"
-            >
-              <Compass className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-              <span className="hidden sm:inline">Tour Guide</span>
-            </button>
-
-            {/* Contact Support Hotline (Desktop matching template) */}
-            {!isDashboard && (
-              <a
-                href="tel:+234800563434"
-                className="hidden xl:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors mr-1"
-                title="Direct Support"
-              >
-                <Phone className="h-3 w-3 text-slate-400" />
-                <span>+234 800 LODGE</span>
-              </a>
-            )}
-
-            {/* Auth Affordances on Public Pages vs Dashboard Profile Controls */}
+          {/* Right: Auth Controls & Theme Toggle */}
+          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
             {!isDashboard ? (
               <div className="flex items-center gap-2">
                 <Link
                   href="/login"
-                  className="rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
+                  className="rounded-full px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
                 >
                   Sign In
                 </Link>
-
                 <Link
                   href="/register"
-                  className="inline-flex items-center rounded-full bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 px-3.5 sm:px-4 py-1.5 text-xs font-bold shadow-xs transition-all active:scale-[0.98]"
+                  className="inline-flex items-center rounded-full bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 px-4 py-1.5 text-xs font-bold shadow-xs transition-all active:scale-[0.98]"
                 >
                   Get Started
-                </Link>
-
-                {/* Dev Testing shortcut so user never gets locked out of testing dashboard */}
-                <Link
-                  href={effectiveRole === 'student' ? '/student/overview' : '/landlord/overview'}
-                  className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50/80 px-2.5 py-1 text-[11px] font-bold text-blue-700 hover:bg-blue-100 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300 transition-colors"
-                  title="Dev shortcut: Open Portal directly"
-                >
-                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
-                  <span>Portal</span>
                 </Link>
               </div>
             ) : isAuthenticated ? (
@@ -170,8 +138,7 @@ export function Navbar() {
                 {/* Account Role Badge */}
                 <Link
                   href={effectiveRole === 'student' ? '/student/profile' : '/landlord/profile'}
-                  data-tour="role-badge"
-                  className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 sm:px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                  className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
                   title={`Account role: ${effectiveRole === 'student' ? 'Student' : 'Landlord'}`}
                 >
                   <span className="h-2 w-2 rounded-full bg-emerald-500" />
@@ -179,7 +146,7 @@ export function Navbar() {
                 </Link>
 
                 {/* User Profile Pill & Sign Out */}
-                <div className="flex items-center gap-1 sm:gap-2">
+                <div className="flex items-center gap-1.5 sm:gap-2">
                   <Link
                     href={effectiveRole === 'student' ? '/student/profile' : '/landlord/profile'}
                     className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 px-2 py-1 text-xs font-medium text-slate-700 dark:text-slate-200 hover:border-slate-300 transition-colors shadow-2xs"
@@ -194,7 +161,7 @@ export function Navbar() {
                   <button
                     type="button"
                     onClick={() => signOut()}
-                    className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                    className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
                     title="Sign Out"
                     aria-label="Sign Out"
                   >
@@ -205,15 +172,6 @@ export function Navbar() {
             ) : (
               <div className="flex items-center gap-2">
                 <Link
-                  href={effectiveRole === 'student' ? '/student/profile' : '/landlord/profile'}
-                  data-tour="role-badge"
-                  className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 sm:px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
-                  title={`Account role: ${effectiveRole === 'student' ? 'Student' : 'Landlord'}`}
-                >
-                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
-                  <span className="capitalize">{effectiveRole}</span>
-                </Link>
-                <Link
                   href="/login"
                   className="rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
                 >
@@ -222,7 +180,7 @@ export function Navbar() {
               </div>
             )}
 
-            {/* Dark Mode Toggle (Moon / Sun) */}
+            {/* Dark Mode Toggle */}
             <ThemeToggle />
           </div>
         </div>
@@ -241,29 +199,11 @@ export function Navbar() {
             >
               <div className="flex items-center gap-2">
                 <Search className="h-4 w-4 text-slate-400" />
-                <span>Quick search or actions...</span>
+                <span>Quick search lodges, campuses...</span>
               </div>
               <kbd className="rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-mono dark:border-slate-700 dark:bg-slate-900">
                 ⌘K
               </kbd>
-            </button>
-
-            {/* Mobile Tour Guide Button */}
-            <button
-              type="button"
-              onClick={() => {
-                setMobileMenuOpen(false);
-                startTour();
-              }}
-              className="w-full flex items-center justify-between rounded-xl border border-emerald-200/80 bg-emerald-50/70 p-2.5 text-xs font-bold text-emerald-800 dark:border-emerald-800/80 dark:bg-emerald-950/40 dark:text-emerald-300"
-            >
-              <div className="flex items-center gap-2">
-                <Compass className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
-                <span>Interactive Tour Guide</span>
-              </div>
-              <span className="text-[10px] bg-emerald-200/60 dark:bg-emerald-900/60 px-2 py-0.5 rounded-full">
-                6 Steps
-              </span>
             </button>
 
             {isAuthenticated ? (
@@ -274,7 +214,9 @@ export function Navbar() {
                       {initialLetter}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{displayName}</p>
+                      <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                        {displayName}
+                      </p>
                       <p className="text-[10px] text-slate-400 truncate">{user?.email}</p>
                     </div>
                   </div>
@@ -291,148 +233,39 @@ export function Navbar() {
                   </button>
                 </div>
 
-                <div className="flex items-center justify-between pb-1 border-b border-slate-100 dark:border-slate-800">
-                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                    {isDashboard ? 'Dashboard Menu' : 'Navigation'}
-                  </span>
-                  <div className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-200">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    <span className="capitalize">{effectiveRole}</span>
-                  </div>
+                <div className="space-y-1 pt-1">
+                  <Link
+                    href="/explore"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                  >
+                    Explore Lodges
+                  </Link>
+                  <Link
+                    href="/universities"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                  >
+                    Universities
+                  </Link>
+                  <Link
+                    href="/how-it-works"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                  >
+                    How It Works
+                  </Link>
                 </div>
 
-                {isDashboard ? (
-                  <div className="space-y-1">
-                    {effectiveRole === 'student' && (
-                      <>
-                        <Link
-                          href="/student/overview"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          Overview
-                        </Link>
-                        <Link
-                          href="/student/explore"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          Explore Lodges
-                        </Link>
-                        <Link
-                          href="/student/inspections"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          My Inspections
-                        </Link>
-                        <Link
-                          href="/student/bookings"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          My Bookings
-                        </Link>
-                        <Link
-                          href="/student/favourites"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          Favourites
-                        </Link>
-                        <Link
-                          href="/student/profile"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          Profile Settings
-                        </Link>
-                      </>
-                    )}
-                    {effectiveRole === 'landlord' && (
-                      <>
-                        <Link
-                          href="/landlord/overview"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          Overview
-                        </Link>
-                        <Link
-                          href="/landlord/properties"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          My Properties
-                        </Link>
-                        <Link
-                          href="/landlord/rooms"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          Rooms & Vacancy
-                        </Link>
-                        <Link
-                          href="/landlord/inspections"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          Inspection Requests
-                        </Link>
-                        <Link
-                          href="/landlord/verification"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          Identity & Authority
-                        </Link>
-                        <Link
-                          href="/landlord/profile"
-                          onClick={() => setMobileMenuOpen(false)}
-                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                          Provider Profile
-                        </Link>
-                      </>
-                    )}
-                  </div>
-                ) : (
-                  <div className="space-y-1">
-                    <Link
-                      href="/explore"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Explore Lodges
-                    </Link>
-                    <Link
-                      href="/universities"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Universities
-                    </Link>
-                    <Link
-                      href="/how-it-works"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      How It Works
-                    </Link>
-                  </div>
-                )}
-
-                {!isDashboard && (
-                  <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                    <Link
-                      href={effectiveRole === 'student' ? '/student/overview' : '/landlord/overview'}
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block w-full text-center rounded-lg bg-blue-600 py-2.5 text-xs font-semibold text-white hover:bg-blue-700"
-                    >
-                      Open {effectiveRole === 'student' ? 'Student' : 'Landlord'} Dashboard
-                    </Link>
-                  </div>
-                )}
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
+                  <Link
+                    href={effectiveRole === 'student' ? '/student/overview' : '/landlord/overview'}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full text-center rounded-xl bg-blue-600 py-2.5 text-xs font-semibold text-white hover:bg-blue-700"
+                  >
+                    Open {effectiveRole === 'student' ? 'Student' : 'Landlord'} Dashboard
+                  </Link>
+                </div>
               </>
             ) : (
               <div className="space-y-3 pt-1">
@@ -464,14 +297,14 @@ export function Navbar() {
                   <Link
                     href="/login"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block w-full text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50"
+                    className="block w-full text-center rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50"
                   >
                     Sign In
                   </Link>
                   <Link
                     href="/register"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block w-full text-center rounded-lg bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 shadow-xs"
+                    className="block w-full text-center rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-950 py-2.5 text-xs font-bold hover:bg-slate-800 dark:hover:bg-slate-100 shadow-xs"
                   >
                     Create Account
                   </Link>
