@@ -19,7 +19,6 @@ import {
   ArrowRightLeft,
 } from 'lucide-react';
 import { getLodges } from '@/lib/data/lodges-data';
-import { NIGERIAN_UNIVERSITIES } from '@/lib/data/nigerian-universities';
 import { useDevRole } from '@/lib/dev-role';
 import { useTheme } from '@/lib/theme';
 import { Lodge } from '@/types/database';
@@ -69,13 +68,6 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
         l.campus_name.toLowerCase().includes(query.toLowerCase())
     )
     .slice(0, 4);
-
-  const filteredUnis = NIGERIAN_UNIVERSITIES.filter(
-    (u) =>
-      u.name.toLowerCase().includes(query.toLowerCase()) ||
-      u.acronym.toLowerCase().includes(query.toLowerCase()) ||
-      u.city.toLowerCase().includes(query.toLowerCase())
-  ).slice(0, 3);
 
   const navigationItems = [
     {
@@ -194,7 +186,7 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search lodges, campuses, or type a quick command..."
+            placeholder="Search lodges or type a quick command..."
             className="w-full bg-transparent text-xs sm:text-sm text-slate-900 placeholder:text-slate-400 focus:outline-none dark:text-white"
           />
           {query ? (
@@ -235,36 +227,6 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
                         {lodge.title}
                       </p>
                       <p className="text-[11px] text-slate-400 truncate">{lodge.campus_name} • ₦{lodge.pricing.min_price.toLocaleString()}/yr</p>
-                    </div>
-                  </div>
-                  <ArrowRight className="h-3.5 w-3.5 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* Universities Jump */}
-          {filteredUnis.length > 0 && (
-            <div className="space-y-1">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 block">
-                Campuses
-              </span>
-              {filteredUnis.map((uni) => (
-                <button
-                  key={uni.slug}
-                  type="button"
-                  onClick={() => handleSelect(() => router.push(`/universities?search=${uni.slug}`))}
-                  className="w-full flex items-center justify-between rounded-xl px-3 py-2 text-left text-xs transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 group cursor-pointer"
-                >
-                  <div className="flex items-center gap-3 min-w-0">
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
-                      <GraduationCap className="h-3.5 w-3.5" />
-                    </div>
-                    <div className="min-w-0">
-                      <p className="font-bold text-slate-900 dark:text-white truncate">
-                        {uni.name} ({uni.acronym})
-                      </p>
-                      <p className="text-[11px] text-slate-400 truncate">{uni.city}, {uni.state} State</p>
                     </div>
                   </div>
                   <ArrowRight className="h-3.5 w-3.5 text-slate-400 opacity-0 group-hover:opacity-100 transition-opacity" />

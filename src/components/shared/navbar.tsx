@@ -39,9 +39,9 @@ export function Navbar() {
 
   const isDashboard = Boolean(
     pathname &&
-      (pathname.startsWith('/student') ||
-        pathname.startsWith('/landlord') ||
-        pathname.startsWith('/admin'))
+    (pathname.startsWith('/student') ||
+      pathname.startsWith('/landlord') ||
+      pathname.startsWith('/admin'))
   );
 
   const isLinkActive = (path: string) => pathname === path;
@@ -69,31 +69,28 @@ export function Navbar() {
               <nav className="flex items-center gap-5 lg:gap-7">
                 <Link
                   href="/explore"
-                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${
-                    isLinkActive('/explore')
+                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${isLinkActive('/explore')
                       ? 'text-slate-900 dark:text-white font-bold'
                       : 'text-slate-600 dark:text-slate-400'
-                  }`}
+                    }`}
                 >
                   Explore Lodges
                 </Link>
                 <Link
                   href="/universities"
-                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${
-                    isLinkActive('/universities')
+                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${isLinkActive('/universities')
                       ? 'text-slate-900 dark:text-white font-bold'
                       : 'text-slate-600 dark:text-slate-400'
-                  }`}
+                    }`}
                 >
                   Universities
                 </Link>
                 <Link
                   href="/how-it-works"
-                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${
-                    isLinkActive('/how-it-works')
+                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${isLinkActive('/how-it-works')
                       ? 'text-slate-900 dark:text-white font-bold'
                       : 'text-slate-600 dark:text-slate-400'
-                  }`}
+                    }`}
                 >
                   How It Works
                 </Link>
@@ -108,7 +105,7 @@ export function Navbar() {
             >
               <Search className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors shrink-0" />
               <span className="text-slate-400 dark:text-slate-400 text-xs truncate max-w-[140px] lg:max-w-[180px]">
-                Search lodges, campuses...
+                Search lodges...
               </span>
               <kbd className="ml-1 inline-flex items-center gap-0.5 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-mono text-slate-500 dark:border-slate-700 dark:bg-slate-900 shadow-2xs shrink-0">
                 ⌘K
