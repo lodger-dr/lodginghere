@@ -483,7 +483,13 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
       };
     }
 
-    const adminClient = createAdminClient();
+    let adminClient: ReturnType<typeof createAdminClient> | null = null;
+    try {
+      adminClient = createAdminClient();
+    } catch (clientErr) {
+      console.warn('Could not initialize admin client, falling back to authenticated client:', clientErr);
+    }
+    const dbClient = adminClient || supabase;
 
     if (role === 'student') {
       const universityId = formData.get('universityId') as string | null;
@@ -505,7 +511,7 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
         }
       }
 
-      const { error: profileError } = await adminClient
+      const { error: profileError } = await dbClient
         .from('profiles')
         .update({
           full_name: fullName,
@@ -520,29 +526,35 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
         console.error('Error updating student profile in onboarding:', profileError);
         return {
           success: false,
-          message: 'Failed to save student profile. Please try again.',
+          message: profileError.message || 'Failed to save student profile. Please try again.',
         };
       }
 
-      await adminClient.from('student_profiles').upsert({
-        user_id: user.id,
-        university_id: universityIdValue,
-        department: department || null,
-        updated_at: new Date().toISOString(),
-      });
-
       try {
-        await adminClient.auth.admin.updateUserById(user.id, {
-          app_metadata: { role: 'student' },
-          user_metadata: {
-            full_name: fullName,
-            role: 'student',
-            onboarding_completed: true,
-            campus_name: campusName || null,
-          },
+        await dbClient.from('student_profiles').upsert({
+          user_id: user.id,
+          university_id: universityIdValue,
+          department: department || null,
+          updated_at: new Date().toISOString(),
         });
-      } catch (adminErr) {
-        console.warn('Could not update student metadata:', adminErr);
+      } catch (spErr) {
+        console.warn('Student subprofile upsert warning:', spErr);
+      }
+
+      if (adminClient) {
+        try {
+          await adminClient.auth.admin.updateUserById(user.id, {
+            app_metadata: { role: 'student' },
+            user_metadata: {
+              full_name: fullName,
+              role: 'student',
+              onboarding_completed: true,
+              campus_name: campusName || null,
+            },
+          });
+        } catch (adminErr) {
+          console.warn('Could not update student metadata in auth:', adminErr);
+        }
       }
 
       return {
@@ -554,7 +566,7 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
       const businessName = (formData.get('businessName') as string)?.trim() || null;
       const operatingArea = (formData.get('operatingArea') as string)?.trim() || null;
 
-      const { error: profileError } = await adminClient
+      const { error: profileError } = await dbClient
         .from('profiles')
         .update({
           full_name: fullName,
@@ -569,30 +581,36 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
         console.error('Error updating landlord profile in onboarding:', profileError);
         return {
           success: false,
-          message: 'Failed to save accommodation provider profile. Please try again.',
+          message: profileError.message || 'Failed to save accommodation provider profile. Please try again.',
         };
       }
 
-      await adminClient.from('landlord_profiles').upsert({
-        user_id: user.id,
-        provider_type: providerType === 'authorized_representative' ? 'authorized_representative' : 'owner',
-        business_name: businessName,
-        contact_details: operatingArea ? { operating_area: operatingArea } : null,
-        updated_at: new Date().toISOString(),
-      });
-
       try {
-        await adminClient.auth.admin.updateUserById(user.id, {
-          app_metadata: { role: 'landlord' },
-          user_metadata: {
-            full_name: fullName,
-            role: 'landlord',
-            onboarding_completed: true,
-            business_name: businessName,
-          },
+        await dbClient.from('landlord_profiles').upsert({
+          user_id: user.id,
+          provider_type: providerType === 'authorized_representative' ? 'authorized_representative' : 'owner',
+          business_name: businessName,
+          contact_details: operatingArea ? { operating_area: operatingArea } : null,
+          updated_at: new Date().toISOString(),
         });
-      } catch (adminErr) {
-        console.warn('Could not update landlord metadata:', adminErr);
+      } catch (lpErr) {
+        console.warn('Landlord subprofile upsert warning:', lpErr);
+      }
+
+      if (adminClient) {
+        try {
+          await adminClient.auth.admin.updateUserById(user.id, {
+            app_metadata: { role: 'landlord' },
+            user_metadata: {
+              full_name: fullName,
+              role: 'landlord',
+              onboarding_completed: true,
+              business_name: businessName,
+            },
+          });
+        } catch (adminErr) {
+          console.warn('Could not update landlord metadata in auth:', adminErr);
+        }
       }
 
       return {
@@ -600,11 +618,12 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
         redirectTo: '/landlord/overview',
       };
     }
-  } catch (err) {
+  } catch (err: unknown) {
     console.error('Onboarding action error:', err);
+    const msg = err instanceof Error ? err.message : String(err);
     return {
       success: false,
-      message: 'An unexpected error occurred while completing onboarding. Please try again.',
+      message: msg || 'An unexpected error occurred while completing onboarding. Please try again.',
     };
   }
 }
