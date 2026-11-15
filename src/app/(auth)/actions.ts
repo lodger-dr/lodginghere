@@ -7,6 +7,7 @@ import {
   studentSignUpSchema,
   landlordSignUpSchema,
   resetPasswordSchema,
+  emailSignUpSchema,
 } from '@/lib/validations/auth';
 
 export interface ActionResponse {
@@ -82,12 +83,19 @@ export async function signInAction(formData: FormData): Promise<ActionResponse> 
       };
     }
 
-    // Get verified user role from profile
+    // Get verified user role and onboarding status from profile
     const { data: profile } = await supabase
       .from('profiles')
-      .select('role')
+      .select('role, onboarding_completed')
       .eq('id', data.user.id)
       .single();
+
+    if (profile && profile.onboarding_completed === false) {
+      return {
+        success: true,
+        redirectTo: '/onboarding',
+      };
+    }
 
     const role = profile?.role || 'student';
     const nextParam = formData.get('next');
