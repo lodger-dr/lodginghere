@@ -1,7 +1,7 @@
 'use server';
 
 import { redirect } from 'next/navigation';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
 import {
   loginSchema,
   studentSignUpSchema,
@@ -14,6 +14,11 @@ export interface ActionResponse {
   message?: string;
   redirectTo?: string;
   errors?: Record<string, string[]>;
+}
+
+function isSafeRedirect(path: unknown): path is string {
+  if (typeof path !== 'string') return false;
+  return path.startsWith('/') && !path.startsWith('//') && !path.startsWith('/\\') && !path.includes('\\');
 }
 
 export async function signInAction(formData: FormData): Promise<ActionResponse> {
@@ -70,7 +75,7 @@ export async function signInAction(formData: FormData): Promise<ActionResponse> 
       };
     }
 
-    // Get user role from profile
+    // Get verified user role from profile
     const { data: profile } = await supabase
       .from('profiles')
       .select('role')
@@ -78,9 +83,13 @@ export async function signInAction(formData: FormData): Promise<ActionResponse> 
       .single();
 
     const role = profile?.role || 'student';
+    const nextParam = formData.get('next');
+
     let redirectTo = '/student/overview';
 
-    if (role === 'admin') {
+    if (isSafeRedirect(nextParam)) {
+      redirectTo = nextParam;
+    } else if (role === 'admin') {
       redirectTo = '/admin/dashboard';
     } else if (role === 'landlord') {
       redirectTo = '/landlord/overview';
@@ -135,11 +144,11 @@ export async function signUpAction(formData: FormData): Promise<ActionResponse> 
             .select('id')
             .eq('slug', parsed.data.universityId)
             .single();
-          universityIdValue = uni?.id || parsed.data.universityId;
+          universityIdValue = uni?.id || null;
         }
       }
 
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: parsed.data.email,
         password: parsed.data.password,
         options: {
@@ -179,6 +188,26 @@ export async function signUpAction(formData: FormData): Promise<ActionResponse> 
         };
       }
 
+      // Sync role into app_metadata using admin client
+      if (data?.user?.id) {
+        try {
+          const adminClient = createAdminClient();
+          await adminClient.auth.admin.updateUserById(data.user.id, {
+            app_metadata: { role: 'student' },
+          });
+        } catch {
+          // Non-critical fallback
+        }
+      }
+
+      // If session is active (autoconfirm enabled)
+      if (data?.session) {
+        return {
+          success: true,
+          redirectTo: '/student/overview',
+        };
+      }
+
       return {
         success: true,
         redirectTo: '/login?registered=true',
@@ -203,7 +232,7 @@ export async function signUpAction(formData: FormData): Promise<ActionResponse> 
       }
 
       const supabase = await createClient();
-      const { error } = await supabase.auth.signUp({
+      const { data, error } = await supabase.auth.signUp({
         email: parsed.data.email,
         password: parsed.data.password,
         options: {
@@ -240,6 +269,24 @@ export async function signUpAction(formData: FormData): Promise<ActionResponse> 
         return {
           success: false,
           message: error.message,
+        };
+      }
+
+      if (data?.user?.id) {
+        try {
+          const adminClient = createAdminClient();
+          await adminClient.auth.admin.updateUserById(data.user.id, {
+            app_metadata: { role: 'landlord' },
+          });
+        } catch {
+          // Non-critical fallback
+        }
+      }
+
+      if (data?.session) {
+        return {
+          success: true,
+          redirectTo: '/landlord/overview',
         };
       }
 
@@ -287,8 +334,9 @@ export async function resetPasswordAction(formData: FormData): Promise<ActionRes
 
   try {
     const supabase = await createClient();
+    const appBaseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-      redirectTo: `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/reset-password`,
+      redirectTo: `${appBaseUrl}/api/auth/callback?next=/reset-password`,
     });
 
     if (error) {

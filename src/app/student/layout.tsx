@@ -12,8 +12,10 @@ import {
   Heart,
   User,
   ExternalLink,
+  LogOut,
 } from 'lucide-react';
 import { useTour } from '@/context/tour-context';
+import { useAuth } from '@/context/auth-context';
 
 interface StudentLayoutProps {
   children: React.ReactNode;
@@ -22,6 +24,11 @@ interface StudentLayoutProps {
 export default function StudentLayout({ children }: StudentLayoutProps) {
   const pathname = usePathname();
   const { startTour } = useTour();
+  const { user, profile, signOut } = useAuth();
+
+  const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'Student User';
+  const displayEmail = user?.email || profile?.email || 'student@lodgehere.ng';
+  const initialLetter = displayName.charAt(0).toUpperCase();
 
   const isLinkActive = (href: string) => {
     if (href === '/student/overview') return pathname === href;
@@ -121,16 +128,26 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
           <div className="flex items-center justify-between p-2.5 rounded-2xl border border-slate-200/60 bg-white/60 dark:border-slate-800/60 dark:bg-slate-800/40 backdrop-blur-md">
             <div className="flex items-center gap-2.5 min-w-0">
               <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white font-bold text-xs">
-                D
+                {initialLetter}
               </div>
               <div className="min-w-0">
-                <p className="text-xs font-bold text-slate-900 dark:text-white truncate">Daniel Okafor</p>
-                <p className="text-[10px] text-slate-400 truncate">daniel@lodgehere.ng</p>
+                <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{displayName}</p>
+                <p className="text-[10px] text-slate-400 truncate">{displayEmail}</p>
               </div>
             </div>
-            <Link href="/" title="Public view">
-              <ExternalLink className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" />
-            </Link>
+            <div className="flex items-center gap-1">
+              <button
+                type="button"
+                onClick={() => signOut()}
+                className="p-1 rounded-md text-slate-400 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                title="Sign Out"
+              >
+                <LogOut className="h-3.5 w-3.5" />
+              </button>
+              <Link href="/" title="Public view">
+                <ExternalLink className="h-3.5 w-3.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200" />
+              </Link>
+            </div>
           </div>
         </div>
       </aside>

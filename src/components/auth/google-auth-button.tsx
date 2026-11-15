@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button';
 interface GoogleAuthButtonProps {
   role?: 'student' | 'landlord';
   text?: string;
+  next?: string;
   onError?: (message: string) => void;
   className?: string;
 }
@@ -14,6 +15,7 @@ interface GoogleAuthButtonProps {
 export function GoogleAuthButton({
   role = 'student',
   text = 'Continue with Google',
+  next,
   onError,
   className,
 }: GoogleAuthButtonProps) {
@@ -24,7 +26,10 @@ export function GoogleAuthButton({
     try {
       const supabase = createClient();
       const origin = window.location.origin;
-      const callbackUrl = `${origin}/auth/callback?role=${role}`;
+      let callbackUrl = `${origin}/auth/callback?role=${role}`;
+      if (next) {
+        callbackUrl += `&next=${encodeURIComponent(next)}`;
+      }
 
       const { data, error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
@@ -60,7 +65,7 @@ export function GoogleAuthButton({
       variant="outline"
       onClick={handleGoogleAuth}
       isLoading={isLoading}
-      className={`w-full flex items-center justify-center gap-3 border-slate-300 bg-white text-slate-700 hover:bg-slate-50 font-semibold shadow-xs transition-colors py-2.5 ${className || ''}`}
+      className={`w-full flex items-center justify-center gap-3 border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-700/80 font-semibold shadow-xs transition-colors py-2.5 ${className || ''}`}
     >
       {!isLoading && (
         <svg className="h-4 w-4 shrink-0" viewBox="0 0 24 24">

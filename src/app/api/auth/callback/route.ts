@@ -1,5 +1,10 @@
 import { NextResponse, type NextRequest } from 'next/server';
-import { createClient } from '@/lib/supabase/server';
+import { createClient, createAdminClient } from '@/lib/supabase/server';
+
+function isSafeRedirect(path: string | null): boolean {
+  if (!path) return false;
+  return path.startsWith('/') && !path.startsWith('//') && !path.startsWith('/\\') && !path.includes('\\');
+}
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -29,36 +34,54 @@ export async function GET(request: NextRequest) {
       }
 
       if (data?.user) {
-        // Query the profile role
-        const { data: profile } = await supabase
+        const adminClient = createAdminClient();
+
+        // Query existing profile
+        const { data: profile } = await adminClient
           .from('profiles')
           .select('role')
           .eq('id', data.user.id)
           .single();
 
-        let userRole = profile?.role || 'student';
+        let userRole = profile?.role;
 
-        // If the user signed up specifically through the landlord tab
-        if (roleParam === 'landlord' && userRole !== 'admin') {
-          if (userRole !== 'landlord') {
-            await supabase
-              .from('profiles')
-              .update({ role: 'landlord' })
-              .eq('id', data.user.id);
+        // If profile does not exist yet, create it with the requested role
+        if (!userRole) {
+          const meta = data.user.user_metadata || {};
+          const assignedRole = roleParam === 'landlord' ? 'landlord' : 'student';
 
-            await supabase
-              .from('landlord_profiles')
-              .upsert({
-                user_id: data.user.id,
-                provider_type: 'owner',
-              });
+          await adminClient.from('profiles').upsert({
+            id: data.user.id,
+            role: assignedRole,
+            full_name: meta.full_name || meta.name || data.user.email?.split('@')[0] || 'User',
+            email: data.user.email || '',
+            avatar_path: meta.avatar_url || meta.picture || null,
+          });
 
-            userRole = 'landlord';
+          if (assignedRole === 'landlord') {
+            await adminClient.from('landlord_profiles').upsert({
+              user_id: data.user.id,
+              provider_type: 'owner',
+            });
+          } else {
+            await adminClient.from('student_profiles').upsert({
+              user_id: data.user.id,
+            });
           }
+          userRole = assignedRole;
         }
 
-        // Handle explicit next redirection if provided and safe
-        if (nextParam && nextParam.startsWith('/')) {
+        // Store the verified role in server-only app_metadata for tamper-proof middleware checks
+        try {
+          await adminClient.auth.admin.updateUserById(data.user.id, {
+            app_metadata: { role: userRole },
+          });
+        } catch (updateErr) {
+          console.warn('Could not update app_metadata:', updateErr);
+        }
+
+        // Handle explicit next redirection if provided and validated safe
+        if (isSafeRedirect(nextParam)) {
           return NextResponse.redirect(`${baseUrl}${nextParam}`);
         }
 

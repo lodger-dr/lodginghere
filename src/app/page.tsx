@@ -13,6 +13,7 @@ import {
   Search,
   CheckCircle2,
   Sparkles,
+  Star,
   Award,
   Zap,
 } from 'lucide-react';
@@ -281,49 +282,76 @@ export default function HomePage() {
   return (
     <div className="space-y-12 sm:space-y-20 lg:space-y-28 pb-20 sm:pb-28">
       {/* ======================================================== */}
-      {/* 1. HERO SECTION (Elevated Architectural Perspective) */}
+      {/* 1. HERO SECTION (Atmospheric Lodge Frame matching template) */}
       {/* ======================================================== */}
-      <section className="relative px-3 sm:px-6 lg:px-8 pt-2 sm:pt-5">
-        <div className="relative mx-auto max-w-7xl rounded-2xl sm:rounded-3xl md:rounded-[2.75rem] bg-slate-950 min-h-[500px] sm:min-h-[620px] flex flex-col justify-between p-4 sm:p-8 md:p-12 text-center shadow-2xl ring-1 ring-black/10">
+      <section className="relative px-3 sm:px-6 lg:px-8 pt-2 sm:pt-4">
+        <div className="relative mx-auto max-w-7xl rounded-3xl sm:rounded-[2.75rem] border border-white/20 dark:border-white/10 ring-1 ring-black/20 overflow-hidden shadow-2xl min-h-[600px] sm:min-h-[680px] lg:min-h-[720px] flex flex-col justify-between p-5 sm:p-10 lg:p-12">
 
-          {/* Architectural Street Perspective Background (Clipped safely without breaking popovers) */}
-          <div className="absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl md:rounded-[2.75rem] pointer-events-none">
+          {/* Atmospheric Modern Lodge Background with warm glowing illumination */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div
               className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out scale-100 hover:scale-105"
               style={{
-                backgroundImage: `url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=2400&q=85')`,
+                backgroundImage: `url('https://images.unsplash.com/photo-1518780664697-55e3ad937233?auto=format&fit=crop&w=2400&q=85')`,
               }}
             />
-            {/* Balanced Editorial Dark Vignette Overlay */}
+            {/* Cinematic dark gradient vignette overlay for perfect contrast */}
             <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-slate-950/35" />
           </div>
 
-          {/* Centered Headline & Badge */}
-          <div className="relative z-10 mx-auto max-w-4xl pt-6 sm:pt-12 md:pt-16 space-y-3 sm:space-y-4">
-            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white drop-shadow-md text-balance leading-tight">
-              Browse Homes, Apartments <br className="hidden sm:inline" />
-              & Rentals with Ease
-            </h1>
+          {/* Huge Display Typography across background (matching reference design) */}
+          <div className="absolute top-10 sm:top-16 inset-x-0 flex items-center justify-center pointer-events-none select-none z-10 overflow-hidden">
+            <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[10.5rem] font-light tracking-[0.22em] text-white/12 dark:text-white/15 uppercase font-sans whitespace-nowrap">
+              LodgeHere
+            </span>
+          </div>
 
-            {/* Translucent Glass Pill Badge */}
-            <div className="pt-0.5">
-              <span className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/20 bg-white/10 px-3 sm:px-4 py-1 sm:py-1.5 text-[11px] sm:text-xs font-semibold text-white backdrop-blur-md shadow-xs">
-                <Sparkles className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-emerald-300 shrink-0" />
-                <span>Verified Student Accommodation • Nigerian Campuses</span>
-              </span>
+          {/* Top Status Pill inside the Hero Frame */}
+          <div className="relative z-20 flex items-center justify-between">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-black/40 px-3.5 py-1 text-[11px] sm:text-xs font-semibold text-white backdrop-blur-md">
+              <span className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Verified Student Accommodations • Nigerian Campuses</span>
             </div>
           </div>
 
-          {/* Bottom Floating Search Capsule Bar */}
-          <div className="relative z-20 pt-6 sm:pt-8 md:pt-10 pb-2 w-full">
-            <HeroSearch />
+          {/* Bottom Grid: Editorial Headline & Social Proof (Left) + Floating Glass Search Card (Right) */}
+          <div className="relative z-20 pt-16 sm:pt-24 lg:pt-32 grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-end">
+            {/* Left Column: Social Proof Rating & Big Headline */}
+            <div className="lg:col-span-7 space-y-4 sm:space-y-6 text-left">
+              {/* Rating & Social Proof Pill */}
+              <div className="inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-black/40 px-4 py-1.5 backdrop-blur-md">
+                <div className="flex items-center gap-1.5 text-amber-400">
+                  <Star className="h-4 w-4 fill-amber-400 text-amber-400" />
+                  <span className="font-extrabold text-sm text-white">4.9</span>
+                </div>
+                <span className="text-white/30">•</span>
+                <span className="text-xs font-medium text-white/90">500+ Happy Students</span>
+                <span className="text-white/30">•</span>
+                <span className="text-xs font-semibold text-emerald-300">0% Agency Fees</span>
+              </div>
+
+              {/* Main Headline */}
+              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.1rem] font-black tracking-tight text-white leading-[1.06] text-balance">
+                Where Campus <br />
+                Meets Comfort
+              </h1>
+
+              <p className="text-xs sm:text-sm text-white/80 max-w-lg leading-relaxed text-pretty">
+                Direct-from-landlord accommodations near top Nigerian universities. Guaranteed physical inspections before paying, 0% agent markup, and clear upfront rent.
+              </p>
+            </div>
+
+            {/* Right Column: Floating Frosted Search Card */}
+            <div className="lg:col-span-5 w-full flex justify-end">
+              <HeroSearch />
+            </div>
           </div>
         </div>
 
         {/* ======================================================== */}
-        {/* 2. FLOATING 4-FEATURE HIGHLIGHTS BAR */}
+        {/* 2. 4-FEATURE HIGHLIGHTS BAR */}
         {/* ======================================================== */}
-        <div className="relative z-30 mx-auto max-w-6xl mt-4 sm:-mt-8 px-2 sm:px-4">
+        <div className="relative z-30 mx-auto max-w-6xl mt-6 sm:mt-10 px-2 sm:px-4">
           <div className="rounded-2xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-4 sm:p-7 shadow-xl shadow-slate-950/5 ring-1 ring-black/5 dark:ring-white/5">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:divide-x lg:divide-slate-100 dark:lg:divide-slate-800">
 

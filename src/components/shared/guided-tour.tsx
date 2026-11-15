@@ -251,8 +251,8 @@ export function GuidedTour() {
         <div className="space-y-2.5 text-xs text-slate-600 dark:text-slate-300">
           {/* What it is */}
           <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300 font-bold text-[10px]">
-              📌
+            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-blue-100 text-blue-700 dark:bg-blue-900/60 dark:text-blue-300">
+              <HelpCircle className="h-3 w-3" />
             </div>
             <div className="space-y-0.5 min-w-0">
               <span className="font-bold text-slate-900 dark:text-white block">What it is</span>
@@ -264,8 +264,8 @@ export function GuidedTour() {
 
           {/* What to do */}
           <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300 font-bold text-[10px]">
-              🎯
+            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">
+              <MousePointerClick className="h-3 w-3" />
             </div>
             <div className="space-y-0.5 min-w-0">
               <span className="font-bold text-slate-900 dark:text-white block">What to do</span>
@@ -277,8 +277,8 @@ export function GuidedTour() {
 
           {/* How it works */}
           <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300 font-bold text-[10px]">
-              💡
+            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-amber-100 text-amber-700 dark:bg-amber-900/60 dark:text-amber-300">
+              <Lightbulb className="h-3 w-3" />
             </div>
             <div className="space-y-0.5 min-w-0">
               <span className="font-bold text-slate-900 dark:text-white block">How it works</span>

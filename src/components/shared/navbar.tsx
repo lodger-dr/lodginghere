@@ -3,19 +3,25 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Building2, Search, Compass } from 'lucide-react';
+import { Menu, X, Building2, Search, Compass, LogOut, Phone, User as UserIcon } from 'lucide-react';
 import { Logo } from './logo';
 import { ThemeToggle } from './theme-toggle';
 import { CommandMenu } from './command-menu';
+import { useAuth } from '@/context/auth-context';
 import { useDevRole } from '@/lib/dev-role';
 import { useTour } from '@/context/tour-context';
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
-  const { role } = useDevRole();
+  const { user, profile, role: authRole, isAuthenticated, isLoading: authLoading, signOut } = useAuth();
+  const { role: devRole } = useDevRole();
   const { startTour } = useTour();
   const pathname = usePathname();
+
+  const effectiveRole = authRole || devRole || 'student';
+  const displayName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || 'My Account';
+  const initialLetter = displayName.charAt(0).toUpperCase();
 
   // Listen for Command+K / Ctrl+K keyboard shortcut
   useEffect(() => {
@@ -120,34 +126,101 @@ export function Navbar() {
               <span className="hidden sm:inline">Tour Guide</span>
             </button>
 
-            {/* Action Button: ONLY shown on public website pages */}
+            {/* Contact Support Hotline (Desktop matching template) */}
             {!isDashboard && (
-              <Link href={role === 'student' ? '/student/overview' : '/landlord/overview'}>
-                <button
-                  type="button"
-                  className="hidden sm:inline-flex items-center rounded-md bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-colors"
-                >
-                  {role === 'student' ? 'Student Portal' : 'Landlord Portal'}
-                </button>
-              </Link>
+              <a
+                href="tel:+234800563434"
+                className="hidden xl:inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 transition-colors mr-1"
+                title="Direct Support"
+              >
+                <Phone className="h-3 w-3 text-slate-400" />
+                <span>+234 800 LODGE</span>
+              </a>
             )}
 
-            {/* Account Role Badge: automatically carries the role selected at signup */}
-            <Link
-              href={role === 'student' ? '/student/profile' : '/landlord/profile'}
-              data-tour="role-badge"
-              className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 sm:px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
-              title={`Account role: ${role === 'student' ? 'Student' : 'Landlord'}`}
-            >
-              <span className="h-2 w-2 rounded-full bg-emerald-500" />
-              <span className="capitalize">{role === 'student' ? 'Student' : 'Landlord'}</span>
-            </Link>
+            {/* Auth Affordances on Public Pages vs Dashboard Profile Controls */}
+            {!isDashboard ? (
+              <div className="flex items-center gap-2">
+                <Link
+                  href="/login"
+                  className="rounded-lg px-2.5 sm:px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
+                >
+                  Sign In
+                </Link>
 
-            {/* Workspace Pill */}
-            <div className="hidden md:flex items-center gap-1.5 rounded-md border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200">
-              <Building2 className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
-              <span>LodgeHere</span>
-            </div>
+                <Link
+                  href="/register"
+                  className="inline-flex items-center rounded-full bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 px-3.5 sm:px-4 py-1.5 text-xs font-bold shadow-xs transition-all active:scale-[0.98]"
+                >
+                  Get Started
+                </Link>
+
+                {/* Dev Testing shortcut so user never gets locked out of testing dashboard */}
+                <Link
+                  href={effectiveRole === 'student' ? '/student/overview' : '/landlord/overview'}
+                  className="hidden lg:inline-flex items-center gap-1.5 rounded-full border border-blue-200 bg-blue-50/80 px-2.5 py-1 text-[11px] font-bold text-blue-700 hover:bg-blue-100 dark:border-blue-900/60 dark:bg-blue-950/40 dark:text-blue-300 transition-colors"
+                  title="Dev shortcut: Open Portal directly"
+                >
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
+                  <span>Portal</span>
+                </Link>
+              </div>
+            ) : isAuthenticated ? (
+              <>
+                {/* Account Role Badge */}
+                <Link
+                  href={effectiveRole === 'student' ? '/student/profile' : '/landlord/profile'}
+                  data-tour="role-badge"
+                  className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 sm:px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                  title={`Account role: ${effectiveRole === 'student' ? 'Student' : 'Landlord'}`}
+                >
+                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="capitalize">{effectiveRole}</span>
+                </Link>
+
+                {/* User Profile Pill & Sign Out */}
+                <div className="flex items-center gap-1 sm:gap-2">
+                  <Link
+                    href={effectiveRole === 'student' ? '/student/profile' : '/landlord/profile'}
+                    className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 px-2 py-1 text-xs font-medium text-slate-700 dark:text-slate-200 hover:border-slate-300 transition-colors shadow-2xs"
+                    title={displayName}
+                  >
+                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
+                      {initialLetter}
+                    </div>
+                    <span className="hidden md:inline max-w-[90px] truncate">{displayName}</span>
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => signOut()}
+                    className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+                    title="Sign Out"
+                    aria-label="Sign Out"
+                  >
+                    <LogOut className="h-3.5 w-3.5" />
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link
+                  href={effectiveRole === 'student' ? '/student/profile' : '/landlord/profile'}
+                  data-tour="role-badge"
+                  className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 sm:px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
+                  title={`Account role: ${effectiveRole === 'student' ? 'Student' : 'Landlord'}`}
+                >
+                  <span className="h-2 w-2 rounded-full bg-emerald-500" />
+                  <span className="capitalize">{effectiveRole}</span>
+                </Link>
+                <Link
+                  href="/login"
+                  className="rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
+                >
+                  Sign In
+                </Link>
+              </div>
+            )}
 
             {/* Dark Mode Toggle (Moon / Sun) */}
             <ThemeToggle />
@@ -193,147 +266,216 @@ export function Navbar() {
               </span>
             </button>
 
-            <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">
-              <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
-                {isDashboard ? 'Dashboard Menu' : 'Navigation'}
-              </span>
-              <div className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-200">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                <span className="capitalize">{role === 'student' ? 'Student' : 'Landlord'}</span>
-              </div>
-            </div>
+            {isAuthenticated ? (
+              <>
+                <div className="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
+                      {initialLetter}
+                    </div>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-slate-900 dark:text-white truncate">{displayName}</p>
+                      <p className="text-[10px] text-slate-400 truncate">{user?.email}</p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      signOut();
+                    }}
+                    className="flex items-center gap-1 text-xs text-rose-600 font-semibold px-2 py-1 rounded hover:bg-rose-50"
+                  >
+                    <LogOut className="h-3.5 w-3.5" />
+                    <span>Sign Out</span>
+                  </button>
+                </div>
 
-            {/* Mobile Links: Dashboard-specific when in dashboard; Public links when on public site */}
-            {isDashboard ? (
-              <div className="space-y-1">
-                {pathname.startsWith('/student') && (
-                  <>
+                <div className="flex items-center justify-between pb-1 border-b border-slate-100 dark:border-slate-800">
+                  <span className="text-xs font-bold text-slate-500 uppercase tracking-wider">
+                    {isDashboard ? 'Dashboard Menu' : 'Navigation'}
+                  </span>
+                  <div className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 py-0.5 text-[11px] font-medium text-slate-700 dark:border-slate-800 dark:bg-slate-800 dark:text-slate-200">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    <span className="capitalize">{effectiveRole}</span>
+                  </div>
+                </div>
+
+                {isDashboard ? (
+                  <div className="space-y-1">
+                    {effectiveRole === 'student' && (
+                      <>
+                        <Link
+                          href="/student/overview"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          Overview
+                        </Link>
+                        <Link
+                          href="/student/explore"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          Explore Lodges
+                        </Link>
+                        <Link
+                          href="/student/inspections"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          My Inspections
+                        </Link>
+                        <Link
+                          href="/student/bookings"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          My Bookings
+                        </Link>
+                        <Link
+                          href="/student/favourites"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          Favourites
+                        </Link>
+                        <Link
+                          href="/student/profile"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          Profile Settings
+                        </Link>
+                      </>
+                    )}
+                    {effectiveRole === 'landlord' && (
+                      <>
+                        <Link
+                          href="/landlord/overview"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          Overview
+                        </Link>
+                        <Link
+                          href="/landlord/properties"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          My Properties
+                        </Link>
+                        <Link
+                          href="/landlord/rooms"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          Rooms & Vacancy
+                        </Link>
+                        <Link
+                          href="/landlord/inspections"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          Inspection Requests
+                        </Link>
+                        <Link
+                          href="/landlord/verification"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          Identity & Authority
+                        </Link>
+                        <Link
+                          href="/landlord/profile"
+                          onClick={() => setMobileMenuOpen(false)}
+                          className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                        >
+                          Provider Profile
+                        </Link>
+                      </>
+                    )}
+                  </div>
+                ) : (
+                  <div className="space-y-1">
                     <Link
-                      href="/student/overview"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Overview
-                    </Link>
-                    <Link
-                      href="/student/explore"
+                      href="/explore"
                       onClick={() => setMobileMenuOpen(false)}
                       className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
                       Explore Lodges
                     </Link>
                     <Link
-                      href="/student/inspections"
+                      href="/universities"
                       onClick={() => setMobileMenuOpen(false)}
                       className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
-                      My Inspections
+                      Universities
                     </Link>
                     <Link
-                      href="/student/bookings"
+                      href="/how-it-works"
                       onClick={() => setMobileMenuOpen(false)}
                       className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                     >
-                      My Bookings
+                      How It Works
                     </Link>
-                    <Link
-                      href="/student/favourites"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Favourites
-                    </Link>
-                    <Link
-                      href="/student/profile"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Profile Settings
-                    </Link>
-                  </>
+                  </div>
                 )}
-                {pathname.startsWith('/landlord') && (
-                  <>
-                    <Link
-                      href="/landlord/overview"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Overview
-                    </Link>
-                    <Link
-                      href="/landlord/properties"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      My Properties
-                    </Link>
-                    <Link
-                      href="/landlord/rooms"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Rooms & Vacancy
-                    </Link>
-                    <Link
-                      href="/landlord/inspections"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Inspection Requests
-                    </Link>
-                    <Link
-                      href="/landlord/verification"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Identity & Authority
-                    </Link>
-                    <Link
-                      href="/landlord/profile"
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                      Provider Profile
-                    </Link>
-                  </>
-                )}
-              </div>
-            ) : (
-              <div className="space-y-1">
-                <Link
-                  href="/explore"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                >
-                  Explore Lodges
-                </Link>
-                <Link
-                  href="/universities"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                >
-                  Universities
-                </Link>
-                <Link
-                  href="/how-it-works"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
-                >
-                  How It Works
-                </Link>
-              </div>
-            )}
 
-            {!isDashboard && (
-              <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
-                <Link
-                  href={role === 'student' ? '/student/overview' : '/landlord/overview'}
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="block w-full text-center rounded-lg bg-blue-600 py-2.5 text-xs font-semibold text-white hover:bg-blue-700"
-                >
-                  Open {role === 'student' ? 'Student' : 'Landlord'} Dashboard
-                </Link>
+                {!isDashboard && (
+                  <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                    <Link
+                      href={effectiveRole === 'student' ? '/student/overview' : '/landlord/overview'}
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block w-full text-center rounded-lg bg-blue-600 py-2.5 text-xs font-semibold text-white hover:bg-blue-700"
+                    >
+                      Open {effectiveRole === 'student' ? 'Student' : 'Landlord'} Dashboard
+                    </Link>
+                  </div>
+                )}
+              </>
+            ) : (
+              <div className="space-y-3 pt-1">
+                <div className="space-y-1">
+                  <Link
+                    href="/explore"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                  >
+                    Explore Lodges
+                  </Link>
+                  <Link
+                    href="/universities"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                  >
+                    Universities
+                  </Link>
+                  <Link
+                    href="/how-it-works"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                  >
+                    How It Works
+                  </Link>
+                </div>
+
+                <div className="pt-2 border-t border-slate-100 dark:border-slate-800 space-y-2">
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full text-center rounded-lg border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 py-2.5 text-xs font-bold text-slate-700 dark:text-slate-200 hover:bg-slate-50"
+                  >
+                    Sign In
+                  </Link>
+                  <Link
+                    href="/register"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block w-full text-center rounded-lg bg-emerald-600 py-2.5 text-xs font-bold text-white hover:bg-emerald-700 shadow-xs"
+                  >
+                    Create Account
+                  </Link>
+                </div>
               </div>
             )}
           </div>

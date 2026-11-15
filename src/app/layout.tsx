@@ -5,6 +5,7 @@ import { Navbar } from '@/components/shared/navbar';
 import { Footer } from '@/components/shared/footer';
 import { CookieConsentBanner } from '@/components/shared/cookie-consent-banner';
 import { TourProvider } from '@/context/tour-context';
+import { AuthProvider } from '@/context/auth-context';
 import { GuidedTour } from '@/components/shared/guided-tour';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -46,7 +47,7 @@ export const metadata: Metadata = {
     title: 'LodgeHere — Verified Student Accommodation Across Nigerian Campuses',
     description:
       'Find genuine student accommodation near your university. Verified landlords, 100% transparent upfront pricing, and direct physical inspections.',
-    images: ['/og-image.png'],
+    images: ['og-image.png'],
   },
 };
 
@@ -80,11 +81,13 @@ export default function RootLayout({
         className={`${inter.className} flex min-h-full flex-col bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100 transition-colors duration-150`}
       >
         <TourProvider>
-          <Navbar />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <CookieConsentBanner />
-          <GuidedTour />
+          <AuthProvider>
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <CookieConsentBanner />
+            <GuidedTour />
+          </AuthProvider>
         </TourProvider>
       </body>
     </html>
