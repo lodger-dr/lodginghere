@@ -46,7 +46,7 @@ export default function AdminDashboardPage() {
         <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-xs font-semibold text-slate-400">Approved Properties</span>
-            <CheckCircle2 className="h-4 w-4 text-emerald-400" />
+            <CheckCircle2 className="h-4 w-4 text-blue-400" />
           </div>
           <p className="text-2xl font-bold text-white">0</p>
           <span className="text-[11px] text-slate-500">Live in public marketplace</span>

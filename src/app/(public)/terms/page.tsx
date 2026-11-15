@@ -19,10 +19,6 @@ export default function TermsOfServicePage() {
       <div className="mx-auto max-w-4xl space-y-10">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3.5 py-1 text-xs font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border dark:border-emerald-800">
-            <Scale className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
-            <span>Fair Accommodation Standards</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             Terms of Service
           </h1>
@@ -67,11 +63,11 @@ export default function TermsOfServicePage() {
             <p>
               By accessing, browsing, registering an account, or scheduling an inspection on LodgeHere (the &quot;Platform&quot;),
               you agree to be bound by these Terms of Service and our{' '}
-              <Link href="/privacy" className="text-emerald-700 font-semibold underline dark:text-emerald-400">
+              <Link href="/privacy" className="text-blue-600 font-semibold underline dark:text-blue-400">
                 Privacy Policy
               </Link>{' '}
               and{' '}
-              <Link href="/cookies" className="text-emerald-700 font-semibold underline dark:text-emerald-400">
+              <Link href="/cookies" className="text-blue-600 font-semibold underline dark:text-blue-400">
                 Cookie Policy
               </Link>.
               If you do not agree to these terms, you must not access or use our services.
@@ -137,7 +133,7 @@ export default function TermsOfServicePage() {
             <p>
               You have the right to terminate your account and request complete deletion of your personal data at any time.
               To exercise this right, visit our{' '}
-              <Link href="/data-deletion" className="text-emerald-700 font-semibold underline dark:text-emerald-400">
+              <Link href="/data-deletion" className="text-blue-600 font-semibold underline dark:text-blue-400">
                 Data Deletion Request Portal
               </Link>.
               We reserve the right to suspend or terminate accounts that violate these terms, attempt fraud, or fail safety verifications.
@@ -155,10 +151,10 @@ export default function TermsOfServicePage() {
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">9. Dispute Resolution & Contact</h2>
             <p>
               If a dispute arises regarding a listing or inspection, users should report the issue via our{' '}
-              <Link href="/report" className="text-emerald-700 font-semibold underline dark:text-emerald-400">
+              <Link href="/report" className="text-blue-600 font-semibold underline dark:text-blue-400">
                 Resolution Center
               </Link>{' '}
-              or reach our support team at <a href="mailto:support@lodgehere.ng" className="text-emerald-700 underline dark:text-emerald-400 font-semibold">support@lodgehere.ng</a>.
+              or reach our support team at <a href="mailto:support@lodgehere.ng" className="text-blue-600 underline dark:text-blue-400 font-semibold">support@lodgehere.ng</a>.
             </p>
           </section>
         </div>

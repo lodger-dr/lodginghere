@@ -36,7 +36,6 @@ import { Badge } from '@/components/ui/badge';
 import { InspectionModal } from '@/components/lodges/inspection-modal';
 import { WinningCTA } from '@/components/ui/winning-cta';
 import { Accordion, AccordionItem } from '@/components/ui/accordion';
-import { AccommodationJsonLd } from '@/components/shared/json-ld';
 
 const AMENITY_ICONS: Record<AmenityKey, React.ComponentType<{ className?: string }>> = {
   running_water: Droplets,
@@ -127,7 +126,6 @@ export default function LodgeDetailPage() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-28 lg:pb-20 dark:bg-slate-950">
-      <AccommodationJsonLd lodge={lodge} />
       {/* Breadcrumb Navigation */}
       <div className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
@@ -154,11 +152,10 @@ export default function LodgeDetailPage() {
             <button
               type="button"
               onClick={() => setIsSaved(!isSaved)}
-              className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${
-                isSaved
-                  ? 'border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-400'
-                  : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200'
-              }`}
+              className={`flex items-center gap-1.5 rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors cursor-pointer ${isSaved
+                ? 'border-rose-200 bg-rose-50 text-rose-600 dark:border-rose-900/60 dark:bg-rose-950/40 dark:text-rose-400'
+                : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200'
+                }`}
             >
               <Heart className={`h-3.5 w-3.5 ${isSaved ? 'fill-rose-600 text-rose-600 dark:fill-rose-400 dark:text-rose-400' : ''}`} />
               <span>{isSaved ? 'Saved' : 'Save'}</span>
@@ -238,11 +235,10 @@ export default function LodgeDetailPage() {
                 <button
                   key={idx}
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border-2 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none ${
-                    idx === activeImageIndex
-                      ? 'border-slate-900 dark:border-white shadow-md scale-102'
-                      : 'border-transparent opacity-70 hover:opacity-100'
-                  }`}
+                  className={`relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border-2 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none ${idx === activeImageIndex
+                    ? 'border-slate-900 dark:border-white shadow-md scale-102'
+                    : 'border-transparent opacity-70 hover:opacity-100'
+                    }`}
                 >
                   <img src={img} alt={`${lodge.title} thumbnail preview ${idx + 1}`} className="h-full w-full object-cover" />
                 </button>
@@ -361,21 +357,19 @@ export default function LodgeDetailPage() {
                     return (
                       <div
                         key={room.id}
-                        className={`rounded-xl border p-4 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
-                          isAvailable
-                            ? 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-850 dark:hover:border-slate-700'
-                            : 'border-slate-100 bg-slate-50/70 opacity-75 dark:border-slate-850 dark:bg-slate-900/50'
-                        }`}
+                        className={`rounded-xl border p-4 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${isAvailable
+                          ? 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-850 dark:hover:border-slate-700'
+                          : 'border-slate-100 bg-slate-50/70 opacity-75 dark:border-slate-850 dark:bg-slate-900/50'
+                          }`}
                       >
                         <div className="space-y-1">
                           <div className="flex items-center gap-2">
                             <h4 className="text-sm font-bold text-slate-900 dark:text-white">{room.room_number}</h4>
                             <span
-                              className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
-                                isAvailable
-                                  ? 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200'
-                                  : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
-                              }`}
+                              className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${isAvailable
+                                ? 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200'
+                                : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
+                                }`}
                             >
                               {isAvailable ? 'Vacant / Ready' : 'Occupied'}
                             </span>
@@ -455,18 +449,16 @@ export default function LodgeDetailPage() {
                       return (
                         <div
                           key={cat.key}
-                          className={`flex items-center gap-3 rounded-xl border p-3 ${
-                            isIncluded
-                              ? 'border-slate-200 bg-slate-50/70 text-slate-900 font-medium dark:border-slate-800 dark:bg-slate-850/60 dark:text-slate-100'
-                              : 'border-slate-100 bg-slate-50/50 text-slate-400 dark:border-slate-800 dark:bg-slate-850/30 dark:text-slate-500'
-                          }`}
+                          className={`flex items-center gap-3 rounded-xl border p-3 ${isIncluded
+                            ? 'border-slate-200 bg-slate-50/70 text-slate-900 font-medium dark:border-slate-800 dark:bg-slate-850/60 dark:text-slate-100'
+                            : 'border-slate-100 bg-slate-50/50 text-slate-400 dark:border-slate-800 dark:bg-slate-850/30 dark:text-slate-500'
+                            }`}
                         >
                           <div
-                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
-                              isIncluded
-                                ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
-                                : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
-                            }`}
+                            className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${isIncluded
+                              ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
+                              : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
+                              }`}
                           >
                             <Icon className="h-4 w-4" />
                           </div>

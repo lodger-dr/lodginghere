@@ -22,11 +22,20 @@ import { getLodges, fetchLodges, getInspections, fetchInspections } from '@/lib/
 import { Lodge, Inspection } from '@/types/database';
 import { Accordion, AccordionItem } from '@/components/ui/accordion';
 import { WinningCTA } from '@/components/ui/winning-cta';
+import { useAuth } from '@/context/auth-context';
 
 export default function LandlordOverviewPage() {
+  const { user, profile } = useAuth();
   const [lodges, setLodges] = useState<Lodge[]>([]);
   const [inspections, setInspections] = useState<Inspection[]>([]);
   const [currentDate, setCurrentDate] = useState('Saturday, 14 November 2026');
+
+  const landlordDisplayName =
+    profile?.full_name ||
+    user?.user_metadata?.full_name ||
+    user?.user_metadata?.name ||
+    user?.email?.split('@')[0] ||
+    'Property Owner';
 
   useEffect(() => {
     try {
@@ -94,7 +103,7 @@ export default function LandlordOverviewPage() {
       <div data-tour="primary-action" className="glass-card rounded-2xl p-6 shadow-xs space-y-6">
         <div>
           <h2 className="text-base font-bold text-slate-900 dark:text-white">
-            Welcome to LodgeHere, Chief Adebayo
+            Welcome to LodgeHere, {landlordDisplayName}
           </h2>
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             Complete these steps to manage your properties and receive student bookings
@@ -106,7 +115,7 @@ export default function LandlordOverviewPage() {
           {/* Step 1: Provider Profile Ready */}
           <div className="flex items-center justify-between py-3.5 first:pt-0">
             <div className="flex items-start gap-3.5">
-              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-500 text-white mt-0.5">
+              <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white mt-0.5">
                 <CheckCircle2 className="h-4 w-4" />
               </div>
               <div className="space-y-0.5">
@@ -116,7 +125,7 @@ export default function LandlordOverviewPage() {
                 </p>
               </div>
             </div>
-            <span className="text-[11px] font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 rounded">
+            <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
               Verified
             </span>
           </div>
@@ -179,10 +188,10 @@ export default function LandlordOverviewPage() {
           </div>
         </div>
 
-        {/* Progress Bar (Green bar with 1 of 4 complete) */}
+        {/* Progress Bar (Blue bar with 1 of 4 complete) */}
         <div className="pt-2">
           <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
-            <div className="h-full bg-emerald-500 rounded-full" style={{ width: '25%' }} />
+            <div className="h-full bg-blue-600 rounded-full" style={{ width: '25%' }} />
           </div>
           <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-2 font-medium">
             1 of 4 complete
@@ -211,9 +220,9 @@ export default function LandlordOverviewPage() {
 
           <Link
             href="/landlord/rooms"
-            className="group glass-card rounded-2xl p-4 hover:border-emerald-500/50 dark:hover:border-emerald-500/50 hover:shadow-xs transition-all flex items-center gap-3"
+            className="group glass-card rounded-2xl p-4 hover:border-slate-400 dark:hover:border-slate-600 hover:shadow-xs transition-all flex items-center gap-3"
           >
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 group-hover:scale-105 transition-transform">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200 group-hover:scale-105 transition-transform">
               <BedDouble className="h-4 w-4" />
             </div>
             <div>
@@ -265,9 +274,9 @@ export default function LandlordOverviewPage() {
         <div className="glass-card rounded-2xl p-5 shadow-xs flex items-center justify-between">
           <div className="space-y-1">
             <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Available Vacancies</span>
-            <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{totalAvailable}</p>
+            <p className="text-2xl font-black text-slate-900 dark:text-white">{totalAvailable}</p>
           </div>
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
             <BedDouble className="h-5 w-5" />
           </div>
         </div>
@@ -339,7 +348,7 @@ export default function LandlordOverviewPage() {
             title="Physical Inspection Code & Landlord SLA"
             subtitle="24-hour response window, zero unannounced entry, and compound access standards"
             badge="Standard"
-            icon={<ShieldCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />}
+            icon={<ShieldCheck className="h-4 w-4 text-blue-600 dark:text-blue-400" />}
           >
             <div className="py-2 space-y-3 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">

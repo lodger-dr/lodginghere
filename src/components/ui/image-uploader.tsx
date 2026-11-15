@@ -10,6 +10,7 @@ interface ImageUploaderProps {
   onChange: (urls: string[]) => void;
   maxFiles?: number;
   bucketName?: string;
+  folder?: string;
   className?: string;
 }
 
@@ -17,7 +18,8 @@ export function ImageUploader({
   value = [],
   onChange,
   maxFiles = 6,
-  bucketName = 'property-media',
+  bucketName = 'lodge-images',
+  folder = 'lodges',
   className = '',
 }: ImageUploaderProps) {
   const [isUploading, setIsUploading] = useState(false);
@@ -57,7 +59,7 @@ export function ImageUploader({
       try {
         const fileExt = file.name.split('.').pop() || 'jpg';
         const fileName = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
-        const filePath = `lodges/${fileName}`;
+        const filePath = `${folder}/${fileName}`;
 
         const { data, error } = await supabase.storage
           .from(bucketName)

@@ -513,14 +513,15 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
 
       const { error: profileError } = await dbClient
         .from('profiles')
-        .update({
+        .upsert({
+          id: user.id,
+          email: user.email || '',
           full_name: fullName,
           role: 'student',
           phone: phone,
           onboarding_completed: true,
           updated_at: new Date().toISOString(),
-        })
-        .eq('id', user.id);
+        });
 
       if (profileError) {
         console.error('Error updating student profile in onboarding:', profileError);
@@ -547,10 +548,12 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
             app_metadata: { role: 'student' },
             user_metadata: {
               full_name: fullName,
+              phone: phone,
               role: 'student',
               onboarding_completed: true,
               campus_name: campusName || null,
               university_slug: universityId,
+              department: department || null,
             },
           });
         } catch (adminErr) {
@@ -569,14 +572,15 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
 
       const { error: profileError } = await dbClient
         .from('profiles')
-        .update({
+        .upsert({
+          id: user.id,
+          email: user.email || '',
           full_name: fullName,
           role: 'landlord',
           phone: phone,
           onboarding_completed: true,
           updated_at: new Date().toISOString(),
-        })
-        .eq('id', user.id);
+        });
 
       if (profileError) {
         console.error('Error updating landlord profile in onboarding:', profileError);
@@ -604,9 +608,12 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
             app_metadata: { role: 'landlord' },
             user_metadata: {
               full_name: fullName,
+              phone: phone,
               role: 'landlord',
               onboarding_completed: true,
               business_name: businessName,
+              provider_type: providerType,
+              operating_area: operatingArea,
             },
           });
         } catch (adminErr) {
@@ -625,6 +632,206 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
     return {
       success: false,
       message: msg || 'An unexpected error occurred while completing onboarding. Please try again.',
+    };
+  }
+}
+
+export async function updateStudentProfileAction(formData: FormData): Promise<ActionResponse> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return {
+        success: false,
+        message: 'Your session has expired. Please sign in again.',
+        redirectTo: '/login',
+      };
+    }
+
+    const fullName = (formData.get('fullName') as string)?.trim();
+    const phone = (formData.get('phone') as string)?.trim() || null;
+    const universitySlug = (formData.get('universitySlug') as string)?.trim() || null;
+    const department = (formData.get('department') as string)?.trim() || null;
+
+    if (!fullName || fullName.length < 2) {
+      return {
+        success: false,
+        errors: { fullName: ['Please enter your full name (at least 2 characters)'] },
+      };
+    }
+
+    let adminClient: ReturnType<typeof createAdminClient> | null = null;
+    try {
+      adminClient = createAdminClient();
+    } catch {}
+    const dbClient = adminClient || supabase;
+
+    // 1. Update/Upsert profile
+    await dbClient.from('profiles').upsert({
+      id: user.id,
+      email: user.email || '',
+      full_name: fullName,
+      phone: phone,
+      role: 'student',
+      updated_at: new Date().toISOString(),
+    });
+
+    // 2. Resolve university ID
+    let universityIdValue: string | null = null;
+    if (universitySlug) {
+      const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(universitySlug);
+      if (isUuid) {
+        universityIdValue = universitySlug;
+      } else {
+        const { data: uni } = await supabase
+          .from('universities')
+          .select('id')
+          .eq('slug', universitySlug)
+          .single();
+        universityIdValue = uni?.id || null;
+      }
+    }
+
+    // 3. Upsert student subprofile
+    try {
+      await dbClient.from('student_profiles').upsert({
+        user_id: user.id,
+        university_id: universityIdValue,
+        department: department,
+        updated_at: new Date().toISOString(),
+      });
+    } catch (spErr) {
+      console.warn('Student subprofile upsert warning:', spErr);
+    }
+
+    // 4. Update auth user metadata
+    if (adminClient) {
+      try {
+        await adminClient.auth.admin.updateUserById(user.id, {
+          user_metadata: {
+            full_name: fullName,
+            phone: phone,
+            university_slug: universitySlug,
+            department: department,
+          },
+        });
+      } catch {}
+    } else {
+      try {
+        await supabase.auth.updateUser({
+          data: {
+            full_name: fullName,
+            phone: phone,
+            university_slug: universitySlug,
+            department: department,
+          },
+        });
+      } catch {}
+    }
+
+    return {
+      success: true,
+      message: 'Student profile updated successfully.',
+    };
+  } catch (err) {
+    console.error('Update student profile error:', err);
+    return {
+      success: false,
+      message: 'Failed to update profile details. Please try again.',
+    };
+  }
+}
+
+export async function updateLandlordProfileAction(formData: FormData): Promise<ActionResponse> {
+  try {
+    const supabase = await createClient();
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
+
+    if (authError || !user) {
+      return {
+        success: false,
+        message: 'Your session has expired. Please sign in again.',
+        redirectTo: '/login',
+      };
+    }
+
+    const fullName = (formData.get('fullName') as string)?.trim();
+    const phone = (formData.get('phone') as string)?.trim() || null;
+    const businessName = (formData.get('businessName') as string)?.trim() || null;
+
+    if (!fullName || fullName.length < 2) {
+      return {
+        success: false,
+        errors: { fullName: ['Please enter your full name (at least 2 characters)'] },
+      };
+    }
+
+    let adminClient: ReturnType<typeof createAdminClient> | null = null;
+    try {
+      adminClient = createAdminClient();
+    } catch {}
+    const dbClient = adminClient || supabase;
+
+    // 1. Update/Upsert profile
+    await dbClient.from('profiles').upsert({
+      id: user.id,
+      email: user.email || '',
+      full_name: fullName,
+      phone: phone,
+      role: 'landlord',
+      updated_at: new Date().toISOString(),
+    });
+
+    // 2. Upsert landlord subprofile
+    try {
+      await dbClient.from('landlord_profiles').upsert({
+        user_id: user.id,
+        business_name: businessName,
+        updated_at: new Date().toISOString(),
+      });
+    } catch (lpErr) {
+      console.warn('Landlord subprofile upsert warning:', lpErr);
+    }
+
+    // 3. Update auth user metadata
+    if (adminClient) {
+      try {
+        await adminClient.auth.admin.updateUserById(user.id, {
+          user_metadata: {
+            full_name: fullName,
+            phone: phone,
+            business_name: businessName,
+          },
+        });
+      } catch {}
+    } else {
+      try {
+        await supabase.auth.updateUser({
+          data: {
+            full_name: fullName,
+            phone: phone,
+            business_name: businessName,
+          },
+        });
+      } catch {}
+    }
+
+    return {
+      success: true,
+      message: 'Provider profile updated successfully.',
+    };
+  } catch (err) {
+    console.error('Update landlord profile error:', err);
+    return {
+      success: false,
+      message: 'Failed to update provider profile. Please try again.',
     };
   }
 }

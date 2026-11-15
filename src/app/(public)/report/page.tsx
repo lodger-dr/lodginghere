@@ -37,10 +37,10 @@ export default function ReportPage() {
         </CardHeader>
         <CardContent>
           {submitted ? (
-            <div className="rounded-lg bg-emerald-50 border border-emerald-200 p-6 text-center space-y-3 text-emerald-800">
-              <CheckCircle2 className="mx-auto h-8 w-8 text-emerald-600" />
+            <div className="rounded-lg bg-slate-100 border border-slate-200 p-6 text-center space-y-3 text-slate-800 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
+              <CheckCircle2 className="mx-auto h-8 w-8 text-blue-600 dark:text-blue-400" />
               <h3 className="font-bold text-base">Report Submitted</h3>
-              <p className="text-xs text-emerald-700">
+              <p className="text-xs text-slate-600 dark:text-slate-400">
                 Thank you for your vigilance. Our moderation team will investigate this report and take appropriate action.
               </p>
               <div className="pt-2">
@@ -74,7 +74,7 @@ export default function ReportPage() {
                   rows={4}
                   required
                   placeholder="Please describe what happened, dates, and any relevant communication..."
-                  className="w-full rounded-md border border-slate-300 p-3 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none"
+                  className="w-full rounded-md border border-slate-300 p-3 text-xs text-slate-800 focus:border-blue-500 focus:outline-none"
                 />
               </div>
 
@@ -94,7 +94,7 @@ export default function ReportPage() {
                 />
                 <label htmlFor="report-consent" className="text-xs text-slate-700 dark:text-slate-300 leading-snug cursor-pointer">
                   I confirm that this report is submitted in good faith and the details provided are accurate in accordance with the{' '}
-                  <Link href="/terms" className="text-emerald-700 underline dark:text-emerald-400 font-semibold">
+                  <Link href="/terms" className="text-blue-600 underline dark:text-blue-400 font-semibold">
                     Terms of Service
                   </Link>
                   .

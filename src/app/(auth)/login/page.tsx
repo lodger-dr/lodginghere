@@ -146,11 +146,10 @@ function LoginForm() {
                     placeholder="Enter your password"
                     required
                     autoComplete="current-password"
-                    className={`flex h-10 w-full rounded-md border bg-white px-3 py-2 pr-10 text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:outline-none transition-colors dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-400 ${
-                      fieldErrors.password?.[0]
+                    className={`flex h-10 w-full rounded-md border bg-white px-3 py-2 pr-10 text-sm text-slate-900 placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-600 focus-visible:ring-2 focus-visible:ring-blue-600 focus-visible:outline-none transition-colors dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-400 ${fieldErrors.password?.[0]
                         ? 'border-rose-500 focus:ring-rose-500'
                         : 'border-slate-300 dark:border-slate-700'
-                    }`}
+                      }`}
                   />
                   <button
                     type="button"

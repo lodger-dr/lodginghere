@@ -1,35 +1,108 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useTransition } from 'react';
 import Link from 'next/link';
-import { User, GraduationCap, Phone, Mail, Save, CheckCircle2, Trash2, BellOff, ShieldCheck, ArrowRight } from 'lucide-react';
+import {
+  User,
+  GraduationCap,
+  Phone,
+  Mail,
+  Save,
+  CheckCircle2,
+  Trash2,
+  BellOff,
+  ShieldCheck,
+  ArrowRight,
+  AlertCircle,
+  Loader2,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { NIGERIAN_UNIVERSITIES } from '@/lib/data/nigerian-universities';
+import { useAuth } from '@/context/auth-context';
+import { updateStudentProfileAction } from '@/app/(auth)/actions';
 
 export default function StudentProfilePage() {
-  const [selectedUniSlug, setSelectedUniSlug] = useState('university-of-lagos');
-  const [saved, setSaved] = useState(false);
+  const { user, profile, refreshProfile, updateProfileState } = useAuth();
+  const [isPending, startTransition] = useTransition();
 
+  const [fullName, setFullName] = useState('');
+  const [phone, setPhone] = useState('');
+  const [selectedUniSlug, setSelectedUniSlug] = useState('university-of-lagos');
+  const [department, setDepartment] = useState('');
+
+  const [saved, setSaved] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
+
+  // Sync state from authenticated user and profile
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const stored = localStorage.getItem('lodgehere_user_university');
-      if (stored) setSelectedUniSlug(stored);
+    if (user || profile) {
+      const meta = user?.user_metadata || {};
+      const resolvedName = profile?.full_name || meta.full_name || meta.name || '';
+      const resolvedPhone = profile?.phone || meta.phone || '';
+      const resolvedUni =
+        profile?.student_profile?.university_slug ||
+        meta.university_slug ||
+        (typeof window !== 'undefined' ? localStorage.getItem('lodgehere_user_university') : null) ||
+        'university-of-lagos';
+      const resolvedDept = profile?.student_profile?.department || meta.department || '';
+
+      if (resolvedName && !fullName) setFullName(resolvedName);
+      if (resolvedPhone && !phone) setPhone(resolvedPhone);
+      if (resolvedUni) setSelectedUniSlug(resolvedUni);
+      if (resolvedDept && !department) setDepartment(resolvedDept);
     }
-  }, []);
+  }, [user, profile]);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
-    if (typeof window !== 'undefined' && selectedUniSlug) {
+    setErrorMessage(null);
+    setFieldErrors({});
+
+    const formData = new FormData();
+    formData.append('fullName', fullName);
+    formData.append('phone', phone);
+    formData.append('universitySlug', selectedUniSlug);
+    formData.append('department', department);
+
+    startTransition(async () => {
       try {
-        localStorage.setItem('lodgehere_user_university', selectedUniSlug);
-      } catch { }
-    }
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+        const response = await updateStudentProfileAction(formData);
+
+        if (!response.success) {
+          if (response.errors) setFieldErrors(response.errors);
+          if (response.message) setErrorMessage(response.message);
+          return;
+        }
+
+        if (typeof window !== 'undefined' && selectedUniSlug) {
+          try {
+            localStorage.setItem('lodgehere_user_university', selectedUniSlug);
+          } catch {}
+        }
+
+        updateProfileState({
+          full_name: fullName,
+          phone: phone,
+          student_profile: {
+            university_slug: selectedUniSlug,
+            department: department,
+          },
+        });
+
+        await refreshProfile();
+        setSaved(true);
+        setTimeout(() => setSaved(false), 3500);
+      } catch {
+        setErrorMessage('Failed to save profile. Please check your network and try again.');
+      }
+    });
   };
+
+  const displayEmail = user?.email || profile?.email || '';
 
   return (
     <div className="space-y-6">
@@ -50,35 +123,47 @@ export default function StudentProfilePage() {
         <CardContent>
           <form onSubmit={handleSave} className="space-y-4">
             {saved && (
-              <div className="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 flex items-center gap-2 text-xs text-slate-800 dark:text-slate-200">
-                <CheckCircle2 className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
+              <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 p-3 flex items-center gap-2 text-xs text-emerald-800 dark:text-emerald-300">
+                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                 <span>Profile details saved successfully.</span>
+              </div>
+            )}
+
+            {errorMessage && (
+              <div className="rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800 p-3 flex items-center gap-2 text-xs text-rose-800 dark:text-rose-300">
+                <AlertCircle className="h-4 w-4 text-rose-600 dark:text-rose-400 shrink-0" />
+                <span>{errorMessage}</span>
               </div>
             )}
 
             <Input
               label="Full name"
               name="fullName"
-              defaultValue="Daniel Okafor"
+              value={fullName}
+              onChange={(e) => setFullName(e.target.value)}
+              placeholder="e.g. John Doe"
               required
+              error={fieldErrors.fullName?.[0]}
             />
 
             <Input
               label="Email address"
               name="email"
               type="email"
-              defaultValue="daniel.student@example.com"
+              value={displayEmail}
               disabled
-              helperText="Email cannot be changed directly"
+              helperText="Managed by authentication"
             />
 
             <Input
               label="WhatsApp Phone Number"
               name="phone"
               type="tel"
-              defaultValue="08149901234"
-              placeholder="08149901234"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="e.g. 08123456789"
               helperText="For landlords to coordinate inspection arrival"
+              error={fieldErrors.phone?.[0]}
             />
 
             <Select
@@ -86,7 +171,7 @@ export default function StudentProfilePage() {
               value={selectedUniSlug}
               onChange={(e) => setSelectedUniSlug(e.target.value)}
             >
-              {NIGERIAN_UNIVERSITIES.slice(0, 15).map((u) => (
+              {NIGERIAN_UNIVERSITIES.slice(0, 30).map((u) => (
                 <option key={u.slug} value={u.slug}>
                   {u.name} ({u.acronym})
                 </option>
@@ -96,13 +181,23 @@ export default function StudentProfilePage() {
             <Input
               label="Department / Faculty"
               name="department"
-              defaultValue="Computer Science"
-              placeholder="e.g. Computer Science"
+              value={department}
+              onChange={(e) => setDepartment(e.target.value)}
+              placeholder="e.g. Computer Science, Faculty of Science"
             />
 
-            <Button type="submit" className="gap-2">
-              <Save className="h-4 w-4" />
-              <span>Save Changes</span>
+            <Button type="submit" disabled={isPending} className="gap-2">
+              {isPending ? (
+                <>
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <span>Saving...</span>
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4" />
+                  <span>Save Changes</span>
+                </>
+              )}
             </Button>
           </form>
         </CardContent>
@@ -130,7 +225,7 @@ export default function StudentProfilePage() {
                 Manage granular subscriptions or unsubscribe from all promotional campus digests.
               </p>
             </div>
-            <Link href="/unsubscribe?email=daniel.student@example.com">
+            <Link href={`/unsubscribe?email=${encodeURIComponent(displayEmail)}`}>
               <Button variant="outline" size="sm" className="text-xs gap-1.5 shrink-0">
                 <span>Manage Notifications</span>
                 <ArrowRight className="h-3 w-3" />

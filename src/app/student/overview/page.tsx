@@ -22,11 +22,16 @@ import { getInspections, getLodges } from '@/lib/data/lodges-data';
 import { Inspection, Lodge } from '@/types/database';
 import { WinningCTA } from '@/components/ui/winning-cta';
 import { Accordion, AccordionItem } from '@/components/ui/accordion';
+import { useAuth } from '@/context/auth-context';
 
 export default function StudentOverviewPage() {
+  const { user, profile } = useAuth();
   const [inspections, setInspections] = useState<Inspection[]>([]);
   const [lodges, setLodges] = useState<Lodge[]>([]);
   const [currentDate, setCurrentDate] = useState('Saturday, 14 November 2026');
+
+  const rawName = profile?.full_name || user?.user_metadata?.full_name || user?.email?.split('@')[0] || '';
+  const firstName = rawName ? rawName.trim().split(' ')[0] : 'there';
 
   useEffect(() => {
     try {
@@ -90,7 +95,7 @@ export default function StudentOverviewPage() {
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 max-w-xl">
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
-              Ready to secure your campus lodge, Daniel?
+              Ready to secure your campus lodge{firstName ? `, ${firstName}` : ''}?
             </h2>
             <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 leading-relaxed">
               Never commit rent blindly. Explore verified accommodations around your university and request

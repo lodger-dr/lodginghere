@@ -12,10 +12,6 @@ export default function CookiePolicyPage() {
       <div className="mx-auto max-w-4xl space-y-10">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3.5 py-1 text-xs font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border dark:border-emerald-800">
-            <Cookie className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
-            <span>Transparency Center</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             Cookie Policy
           </h1>
@@ -25,10 +21,10 @@ export default function CookiePolicyPage() {
         </div>
 
         {/* Interactive Preferences Action Box */}
-        <div className="rounded-3xl border border-emerald-200 bg-white p-6 sm:p-8 shadow-sm dark:border-emerald-900/60 dark:bg-slate-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
+        <div className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 shadow-sm dark:border-slate-800 dark:bg-slate-900 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-5">
           <div className="space-y-1 max-w-xl">
             <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
-              <SlidersHorizontal className="h-4 w-4 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
+              <SlidersHorizontal className="h-4 w-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
               <span>Your Current Consent Settings</span>
             </h2>
             <p className="text-xs text-slate-600 dark:text-slate-300">
@@ -39,7 +35,7 @@ export default function CookiePolicyPage() {
           <Button
             type="button"
             onClick={openCookiePreferencesModal}
-            className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-5 py-2.5 rounded-full shrink-0 gap-2 shadow-xs"
+            className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-white font-semibold text-xs px-5 py-2.5 rounded-full shrink-0 gap-2 shadow-xs"
           >
             <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
             <span>Manage Cookie Preferences</span>
@@ -78,7 +74,7 @@ export default function CookiePolicyPage() {
                   <tr>
                     <td className="p-3 font-mono font-bold text-slate-900 dark:text-white">sb-*-auth-token</td>
                     <td className="p-3">
-                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-800 dark:bg-slate-800 dark:text-slate-200">
                         Essential
                       </span>
                     </td>
@@ -88,7 +84,7 @@ export default function CookiePolicyPage() {
                   <tr>
                     <td className="p-3 font-mono font-bold text-slate-900 dark:text-white">lodgehere_theme</td>
                     <td className="p-3">
-                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-800 dark:bg-slate-800 dark:text-slate-200">
                         Essential
                       </span>
                     </td>
@@ -98,7 +94,7 @@ export default function CookiePolicyPage() {
                   <tr>
                     <td className="p-3 font-mono font-bold text-slate-900 dark:text-white">lodgehere_cookie_consent</td>
                     <td className="p-3">
-                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-800 dark:bg-slate-800 dark:text-slate-200">
                         Essential
                       </span>
                     </td>
@@ -145,7 +141,7 @@ export default function CookiePolicyPage() {
               <button
                 type="button"
                 onClick={openCookiePreferencesModal}
-                className="text-emerald-700 font-semibold underline dark:text-emerald-400 cursor-pointer"
+                className="text-blue-600 font-semibold underline dark:text-blue-400 cursor-pointer"
               >
                 Preferences Center
               </button>,
@@ -166,10 +162,10 @@ export default function CookiePolicyPage() {
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">5. Further Inquiries</h2>
             <p>
               For further details regarding how we protect your personal data, read our{' '}
-              <Link href="/privacy" className="text-emerald-700 font-semibold underline dark:text-emerald-400">
+              <Link href="/privacy" className="text-blue-600 font-semibold underline dark:text-blue-400">
                 Privacy Policy
               </Link>{' '}
-              or reach our privacy team at <a href="mailto:privacy@lodgehere.ng" className="text-emerald-700 underline dark:text-emerald-400 font-semibold">privacy@lodgehere.ng</a>.
+              or reach our privacy team at <a href="mailto:privacy@lodgehere.ng" className="text-blue-600 underline dark:text-blue-400 font-semibold">privacy@lodgehere.ng</a>.
             </p>
           </section>
         </div>

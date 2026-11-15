@@ -13,9 +13,9 @@ export function Footer() {
   // The footer appears on all public views, excluded from student/landlord/admin dashboard views
   const isDashboard = Boolean(
     pathname &&
-      (pathname.startsWith('/student') ||
-        pathname.startsWith('/landlord') ||
-        pathname.startsWith('/admin'))
+    (pathname.startsWith('/student') ||
+      pathname.startsWith('/landlord') ||
+      pathname.startsWith('/admin'))
   );
 
   if (isDashboard) {

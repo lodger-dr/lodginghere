@@ -122,10 +122,10 @@ export default function LandlordInspectionsPage() {
         <Card>
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">Confirmed & Scheduled</span>
-              <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{acceptedCount}</p>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Confirmed & Scheduled</span>
+              <p className="text-2xl font-black text-slate-900 dark:text-white">{acceptedCount}</p>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <CheckCircle2 className="h-5 w-5" />
             </div>
           </CardContent>
@@ -149,7 +149,7 @@ export default function LandlordInspectionsPage() {
         <button
           onClick={() => setActiveTab('all')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'all'
-            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            ? 'border-slate-900 text-slate-900 dark:border-white dark:text-white font-bold'
             : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
@@ -158,7 +158,7 @@ export default function LandlordInspectionsPage() {
         <button
           onClick={() => setActiveTab('pending')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'pending'
-            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            ? 'border-slate-900 text-slate-900 dark:border-white dark:text-white font-bold'
             : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
@@ -167,7 +167,7 @@ export default function LandlordInspectionsPage() {
         <button
           onClick={() => setActiveTab('accepted')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'accepted'
-            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            ? 'border-slate-900 text-slate-900 dark:border-white dark:text-white font-bold'
             : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
@@ -176,7 +176,7 @@ export default function LandlordInspectionsPage() {
         <button
           onClick={() => setActiveTab('completed')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'completed'
-            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            ? 'border-slate-900 text-slate-900 dark:border-white dark:text-white font-bold'
             : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
@@ -219,7 +219,7 @@ export default function LandlordInspectionsPage() {
                           </span>
                         )}
                         {isAccepted && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400">
+                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                             <CheckCircle2 className="h-3 w-3" />
                             <span>Confirmed & Scheduled</span>
                           </span>
@@ -236,7 +236,7 @@ export default function LandlordInspectionsPage() {
                             <span>Visit Finished</span>
                           </span>
                         )}
-                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md dark:bg-emerald-950/60 dark:text-emerald-400">
+                        <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md dark:bg-slate-800 dark:text-slate-300">
                           {insp.property_title}
                         </span>
                       </div>
@@ -261,7 +261,7 @@ export default function LandlordInspectionsPage() {
 
                       {/* Appointment Time */}
                       <div className="flex items-center gap-2 text-xs font-semibold text-slate-800 dark:text-slate-200 pt-1">
-                        <CalendarCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                        <CalendarCheck className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                         <span>
                           Requested for {insp.requested_date} ({insp.time_slot} slot)
                         </span>
@@ -274,8 +274,8 @@ export default function LandlordInspectionsPage() {
                       )}
 
                       {insp.landlord_notes && (
-                        <div className="text-xs text-emerald-800 dark:text-emerald-300 bg-emerald-50/60 dark:bg-emerald-950/30 p-2 rounded-lg border border-emerald-100 dark:border-emerald-900/50">
-                          <strong className="text-emerald-950 dark:text-white">Your Caretaker Instructions:</strong> {insp.landlord_notes}
+                        <div className="text-xs text-slate-800 dark:text-slate-200 bg-slate-100/70 dark:bg-slate-800/60 p-2 rounded-lg border border-slate-200/60 dark:border-slate-700/60">
+                          <strong className="text-slate-900 dark:text-white">Your Caretaker Instructions:</strong> {insp.landlord_notes}
                         </div>
                       )}
                     </div>
@@ -288,7 +288,7 @@ export default function LandlordInspectionsPage() {
                         <Button
                           size="sm"
                           onClick={() => setAcceptTarget(insp)}
-                          className="bg-emerald-600 hover:bg-emerald-700 text-xs h-8 px-3 gap-1 shadow-xs"
+                          className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-xs h-8 px-3 gap-1 shadow-xs"
                         >
                           <CheckCircle2 className="h-3.5 w-3.5" />
                           <span>Accept & Confirm</span>
@@ -320,9 +320,9 @@ export default function LandlordInspectionsPage() {
                       <Button
                         size="sm"
                         onClick={() => handleMarkCompleted(insp.id)}
-                        className="bg-slate-900 hover:bg-slate-800 dark:bg-emerald-600 dark:hover:bg-emerald-700 text-xs h-8 px-3 gap-1 text-white"
+                        className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-xs h-8 px-3 gap-1 text-white"
                       >
-                        <CheckCircle2 className="h-3.5 w-3.5 text-emerald-400 dark:text-white" />
+                        <CheckCircle2 className="h-3.5 w-3.5 text-slate-400 dark:text-slate-900" />
                         <span>Mark Inspection Completed</span>
                       </Button>
                     )}
@@ -379,7 +379,7 @@ export default function LandlordInspectionsPage() {
                 value={acceptNote}
                 onChange={(e) => setAcceptNote(e.target.value)}
                 rows={3}
-                className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
               />
             </div>
 
@@ -387,7 +387,7 @@ export default function LandlordInspectionsPage() {
               <Button size="sm" variant="outline" onClick={() => setAcceptTarget(null)}>
                 Cancel
               </Button>
-              <Button size="sm" onClick={handleConfirmAccept} className="bg-emerald-600 hover:bg-emerald-700">
+              <Button size="sm" onClick={handleConfirmAccept} className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100">
                 Confirm & Notify Student
               </Button>
             </div>
@@ -431,7 +431,7 @@ export default function LandlordInspectionsPage() {
                 <select
                   value={rescheduleSlot}
                   onChange={(e) => setRescheduleSlot(e.target.value as InspectionTimeSlot)}
-                  className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 >
                   <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
                   <option value="afternoon">Afternoon (12:00 PM - 4:00 PM)</option>
@@ -446,7 +446,7 @@ export default function LandlordInspectionsPage() {
                   onChange={(e) => setRescheduleNote(e.target.value)}
                   placeholder="e.g. I will be out of town on your requested date. Can we do this day instead?"
                   rows={2}
-                  className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 />
               </div>
             </div>

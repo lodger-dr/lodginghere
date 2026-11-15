@@ -1,5 +1,4 @@
 import React from 'react';
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   ShieldCheck,
@@ -9,19 +8,7 @@ import {
   Building2,
   AlertTriangle,
   ArrowRight,
-  HelpCircle,
 } from 'lucide-react';
-import { FaqJsonLd } from '@/components/shared/json-ld';
-import { AccordionItem } from '@/components/ui/accordion';
-
-export const metadata: Metadata = {
-  title: 'How It Works — Zero Agent Fees & Verified Inspections',
-  description:
-    'Learn how LodgeHere eliminates student housing scams in Nigeria with direct landlord verification, zero agent fees, and physical in-person inspection scheduling.',
-  alternates: {
-    canonical: 'https://lodginghere.vercel.app/how-it-works',
-  },
-};
 
 export default function HowItWorksPage() {
   return (
@@ -96,7 +83,7 @@ export default function HowItWorksPage() {
         </div>
       </div>
 
-      {/* Three Layers of Listing Verification */}
+      {/* Verification Model Detail */}
       <div id="verification" className="rounded-3xl border border-slate-200 bg-white p-8 sm:p-10 space-y-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
         <div className="space-y-2">
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Three Layers of Listing Verification</h2>
@@ -126,74 +113,6 @@ export default function HowItWorksPage() {
               The landlord reconfirms active room vacancies periodically. Stale listings are automatically delisted.
             </p>
           </div>
-        </div>
-      </div>
-
-      {/* Frequently Asked Questions (AEO & SEO) */}
-      <div className="space-y-6">
-        <FaqJsonLd />
-        <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Frequently Asked Questions</h2>
-          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
-            Everything you need to know about finding verified student accommodation in Nigeria without middlemen.
-          </p>
-        </div>
-
-        <div className="space-y-3 max-w-3xl mx-auto">
-          <AccordionItem
-            title="How do I find verified off-campus student accommodation in Nigeria?"
-            defaultOpen={true}
-            icon={<HelpCircle className="h-4 w-4" />}
-          >
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              LodgeHere allows Nigerian university students to discover verified off-campus lodges with transparent pricing, direct landlord contacts, zero agent fees, and mandatory physical inspection scheduling before making any payment.
-            </p>
-          </AccordionItem>
-
-          <AccordionItem
-            title="Are there middleman or agent fees on LodgeHere?"
-            icon={<HelpCircle className="h-4 w-4" />}
-          >
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              No. LodgeHere operates on a 100% zero agent fee model. Students connect directly with verified property owners and caretakers, avoiding middleman agency and agreement fees typically charged near Nigerian campuses.
-            </p>
-          </AccordionItem>
-
-          <AccordionItem
-            title="How does LodgeHere prevent student accommodation scams in Nigeria?"
-            icon={<HelpCircle className="h-4 w-4" />}
-          >
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              LodgeHere protects students by verifying landlord identities, verifying property locations near accredited institutions, providing upfront itemized fee breakdowns (rent, caution deposit, service charge), and enforcing in-person physical inspections prior to booking.
-            </p>
-          </AccordionItem>
-
-          <AccordionItem
-            title="Can I physically inspect a student lodge before paying rent?"
-            icon={<HelpCircle className="h-4 w-4" />}
-          >
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              Yes. Every listing on LodgeHere has an integrated physical inspection scheduler. Students can select convenient date and time slots to meet the caretaker at the property and inspect water, power, security, and room conditions in person.
-            </p>
-          </AccordionItem>
-
-          <AccordionItem
-            title="Which Nigerian universities does LodgeHere support?"
-            icon={<HelpCircle className="h-4 w-4" />}
-          >
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              LodgeHere covers all major Nigerian tertiary institutions including University of Lagos (UNILAG), University of Ibadan (UI), Obafemi Awolowo University (OAU), University of Nigeria Nsukka (UNN), University of Benin (UNIBEN), Federal University of Technology Akure (FUTA), University of Ilorin (UNILORIN), Ahmadu Bello University (ABU), and Lagos State University (LASU).
-            </p>
-          </AccordionItem>
-
-          <AccordionItem
-            title="What amenities are essential in a Nigerian off-campus student lodge?"
-            icon={<HelpCircle className="h-4 w-4" />}
-          >
-            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
-              Crucial amenities include constant borehole running water, individual prepaid electricity meters, backup power (solar inverter or generator), secure gated perimeter fencing, and close proximity (walkable or single shuttle) to the campus gate.
-            </p>
-          </AccordionItem>
         </div>
       </div>
 

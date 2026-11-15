@@ -17,7 +17,6 @@ import { LodgeCard } from '@/components/lodges/lodge-card';
 import { InspectionModal } from '@/components/lodges/inspection-modal';
 import { Lodge } from '@/types/database';
 import { Button } from '@/components/ui/button';
-import { FaqJsonLd } from '@/components/shared/json-ld';
 
 const CURATED_SHOWCASE_LODGES: Lodge[] = [
   {
@@ -270,7 +269,6 @@ export default function HomePage() {
 
   return (
     <div className="space-y-16 sm:space-y-24 pb-20">
-      <FaqJsonLd />
       {/* ======================================================== */}
       {/* 1. MINIMALIST HERO SECTION */}
       {/* ======================================================== */}
@@ -364,8 +362,8 @@ export default function HomePage() {
                   type="button"
                   onClick={() => setActiveCampusTab(tab.slug)}
                   className={`rounded-full px-3.5 py-1.5 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${isActive
-                      ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold'
-                      : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold'
+                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
                     }`}
                 >
                   {tab.label}

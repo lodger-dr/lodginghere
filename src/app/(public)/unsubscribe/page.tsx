@@ -95,11 +95,10 @@ function UnsubscribeContent() {
         {/* Message Banner */}
         {message && (
           <div
-            className={`rounded-2xl p-4 text-xs flex items-start gap-3 border ${
-              message.type === 'success'
-                ? 'bg-emerald-50 border-emerald-200 text-emerald-900 dark:bg-emerald-950/40 dark:border-emerald-800 dark:text-emerald-300'
+            className={`rounded-2xl p-4 text-xs flex items-start gap-3 border ${message.type === 'success'
+                ? 'bg-slate-100 border-slate-200 text-slate-800 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200'
                 : 'bg-rose-50 border-rose-200 text-rose-900 dark:bg-rose-950/40 dark:border-rose-800 dark:text-rose-300'
-            }`}
+              }`}
           >
             <CheckCircle2 className="h-4 w-4 shrink-0 mt-0.5" aria-hidden="true" />
             <p className="font-medium leading-relaxed">{message.text}</p>
@@ -126,7 +125,7 @@ function UnsubscribeContent() {
                   placeholder="student@example.com"
                   required
                 />
-                <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700">
+                <Button type="submit" className="w-full">
                   Lookup Preferences
                 </Button>
               </form>
@@ -170,7 +169,7 @@ function UnsubscribeContent() {
                           Critical transactional updates when a landlord accepts, declines, or reschedules an inspection.
                         </span>
                       </div>
-                      <span className="rounded-full bg-emerald-100 px-2 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 shrink-0">
+                      <span className="rounded-full bg-slate-100 px-2 py-0.5 text-[10px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300 shrink-0">
                         Transactional
                       </span>
                     </div>
@@ -194,7 +193,7 @@ function UnsubscribeContent() {
                           }
                           className="sr-only peer"
                         />
-                        <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600"></div>
+                        <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-blue-600"></div>
                       </label>
                     </div>
 
@@ -217,7 +216,7 @@ function UnsubscribeContent() {
                           }
                           className="sr-only peer"
                         />
-                        <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600"></div>
+                        <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-blue-600"></div>
                       </label>
                     </div>
                   </div>
@@ -234,7 +233,7 @@ function UnsubscribeContent() {
                     <Button
                       type="submit"
                       size="sm"
-                      className="bg-emerald-600 hover:bg-emerald-700 font-semibold"
+                      className="font-semibold"
                     >
                       Save Preferences
                     </Button>

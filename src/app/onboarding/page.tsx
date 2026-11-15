@@ -28,7 +28,7 @@ import { completeOnboardingAction } from '../(auth)/actions';
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const { user, profile, isLoading: isAuthLoading, refreshProfile } = useAuth();
+  const { user, profile, isLoading: isAuthLoading, refreshProfile, updateProfileState } = useAuth();
 
   const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
   const [role, setRole] = useState<'student' | 'landlord'>('student');
@@ -166,10 +166,34 @@ export default function OnboardingPage() {
           return;
         }
 
-        if (role === 'student' && universitySlug && typeof window !== 'undefined') {
-          try {
-            localStorage.setItem('lodgehere_user_university', universitySlug);
-          } catch {}
+        if (role === 'student') {
+          if (universitySlug && typeof window !== 'undefined') {
+            try {
+              localStorage.setItem('lodgehere_user_university', universitySlug);
+            } catch {}
+          }
+          updateProfileState({
+            full_name: fullName.trim(),
+            phone: phone.trim(),
+            role: 'student',
+            onboarding_completed: true,
+            student_profile: {
+              university_slug: universitySlug,
+              department: department.trim(),
+            },
+          });
+        } else {
+          updateProfileState({
+            full_name: fullName.trim(),
+            phone: phone.trim(),
+            role: 'landlord',
+            onboarding_completed: true,
+            landlord_profile: {
+              business_name: businessName.trim(),
+              provider_type: providerType,
+              operating_area: operatingArea.trim(),
+            },
+          });
         }
 
         await refreshProfile();

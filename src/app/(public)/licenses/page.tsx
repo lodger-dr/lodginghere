@@ -10,10 +10,6 @@ export default function LicensesPage() {
       <div className="mx-auto max-w-4xl space-y-10">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3.5 py-1 text-xs font-bold text-slate-800 dark:bg-slate-800 dark:text-slate-200">
-            <FileCode2 className="h-3.5 w-3.5 text-slate-600 dark:text-slate-300" aria-hidden="true" />
-            <span>Open Source &amp; Media Credits</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             Licenses &amp; Attributions
           </h1>
@@ -28,7 +24,7 @@ export default function LicensesPage() {
           <section className="space-y-3 border-b border-slate-200 dark:border-slate-800 pb-8">
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-bold text-slate-900 dark:text-white">1. Typography: Inter Font Family</h2>
-              <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+              <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                 SIL Open Font License 1.1
               </span>
             </div>

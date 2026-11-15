@@ -46,10 +46,10 @@ export default function LandlordVerificationPage() {
         </CardHeader>
         <CardContent>
           {submitted ? (
-            <div className="rounded-lg bg-emerald-50 border border-emerald-200 p-6 text-center space-y-3 text-emerald-800 dark:bg-emerald-950/50 dark:border-emerald-800 dark:text-emerald-300">
-              <CheckCircle2 className="mx-auto h-8 w-8 text-emerald-600 dark:text-emerald-400" />
+            <div className="rounded-lg bg-slate-100 border border-slate-200 p-6 text-center space-y-3 text-slate-800 dark:bg-slate-800 dark:border-slate-700 dark:text-slate-200">
+              <CheckCircle2 className="mx-auto h-8 w-8 text-blue-600 dark:text-blue-400" />
               <h3 className="font-bold text-base">Documents Submitted for Admin Review</h3>
-              <p className="text-xs text-emerald-700 dark:text-emerald-300 max-w-md mx-auto">
+              <p className="text-xs text-slate-600 dark:text-slate-400 max-w-md mx-auto">
                 Your verification documents have been safely received. Platform administrators review submissions
                 within 24-48 hours. You will receive an in-app notification once reviewed.
               </p>
@@ -64,9 +64,9 @@ export default function LandlordVerificationPage() {
                 <p className="text-xs text-slate-500 dark:text-slate-400">
                   Accepted: National Identification Number (NIN) Slip, Driver&apos;s License, International Passport, or Voter&apos;s Card.
                 </p>
-                <div className="rounded-lg border-2 border-dashed border-slate-300 p-4 text-center hover:border-emerald-500 transition-colors cursor-pointer bg-slate-50/50 dark:border-slate-700 dark:bg-slate-800/50">
+                <div className="rounded-lg border-2 border-dashed border-slate-300 p-4 text-center hover:border-slate-400 transition-colors cursor-pointer bg-slate-50/50 dark:border-slate-700 dark:bg-slate-800/50">
                   <Upload className="mx-auto h-6 w-6 text-slate-400 mb-1" />
-                  <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">Choose file or drag & drop</span>
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Choose file or drag & drop</span>
                   <p className="text-[10px] text-slate-400">PDF, JPG, or PNG up to 10MB</p>
                   <input type="file" className="hidden" accept=".pdf,.jpg,.jpeg,.png" />
                 </div>
@@ -82,9 +82,9 @@ export default function LandlordVerificationPage() {
                   <br />
                   Accepted for Representatives: Signed and dated Letter of Authority or Management Agreement from the owner.
                 </p>
-                <div className="rounded-lg border-2 border-dashed border-slate-300 p-4 text-center hover:border-emerald-500 transition-colors cursor-pointer bg-slate-50/50 dark:border-slate-700 dark:bg-slate-800/50">
+                <div className="rounded-lg border-2 border-dashed border-slate-300 p-4 text-center hover:border-slate-400 transition-colors cursor-pointer bg-slate-50/50 dark:border-slate-700 dark:bg-slate-800/50">
                   <Upload className="mx-auto h-6 w-6 text-slate-400 mb-1" />
-                  <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">Choose file or drag & drop</span>
+                  <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">Choose file or drag & drop</span>
                   <p className="text-[10px] text-slate-400">PDF, JPG, or PNG up to 15MB</p>
                   <input type="file" className="hidden" accept=".pdf,.jpg,.jpeg,.png" />
                 </div>
@@ -96,18 +96,18 @@ export default function LandlordVerificationPage() {
                   id="verification-consent"
                   type="checkbox"
                   required
-                  className="h-4 w-4 mt-0.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
+                  className="h-4 w-4 mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
                 />
                 <label htmlFor="verification-consent" className="text-xs text-slate-700 dark:text-slate-300 leading-snug cursor-pointer">
                   I consent to the collection and verification of my submitted identity and property documentation strictly for administrator verification in accordance with the{' '}
-                  <a href="/privacy" target="_blank" className="text-emerald-700 underline dark:text-emerald-400 font-semibold">
+                  <a href="/privacy" target="_blank" className="text-blue-600 underline dark:text-blue-400 font-semibold">
                     Privacy Policy
                   </a>
                   . I confirm that I am legally authorized to list this accommodation.
                 </label>
               </div>
 
-              <Button type="submit" className="w-full bg-emerald-600 hover:bg-emerald-700">
+              <Button type="submit" className="w-full">
                 Submit Documents for Review
               </Button>
             </form>

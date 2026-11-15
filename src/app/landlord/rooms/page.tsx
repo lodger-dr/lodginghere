@@ -30,6 +30,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+import { ImageUploader } from '@/components/ui/image-uploader';
 
 function RoomsContent() {
   const searchParams = useSearchParams();
@@ -47,6 +48,7 @@ function RoomsContent() {
   const [annualRent, setAnnualRent] = useState('450000');
   const [featuresStr, setFeaturesStr] = useState('Private Bathroom, Kitchenette, Fitted Wardrobe, Prepaid Meter');
   const [status, setStatus] = useState<RoomAvailabilityStatus>('available');
+  const [roomImages, setRoomImages] = useState<string[]>([]);
   const [formError, setFormError] = useState<string | null>(null);
 
   const loadData = () => {
@@ -100,7 +102,7 @@ function RoomsContent() {
       available_units: status === 'available' ? 1 : 0,
       status,
       features,
-      images: [],
+      images: roomImages,
       created_at: new Date().toISOString(),
     };
 
@@ -108,6 +110,7 @@ function RoomsContent() {
     setIsAddModalOpen(false);
     setFormError(null);
     setRoomNumber('');
+    setRoomImages([]);
   };
 
   const handleToggleStatus = (room: Room) => {
@@ -138,7 +141,7 @@ function RoomsContent() {
         <Button
           size="sm"
           onClick={() => setIsAddModalOpen(true)}
-          className="bg-emerald-600 hover:bg-emerald-700 gap-1.5 shadow-xs"
+          className="gap-1.5 shadow-xs"
           disabled={lodges.length === 0}
         >
           <Plus className="h-4 w-4" />
@@ -163,10 +166,10 @@ function RoomsContent() {
         <Card>
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
-              <span className="text-xs font-semibold text-emerald-700 dark:text-emerald-400">Live Vacancies (Ready)</span>
-              <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{availableCount}</p>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Live Vacancies (Ready)</span>
+              <p className="text-2xl font-black text-slate-900 dark:text-white">{availableCount}</p>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-950/60 dark:text-blue-400">
               <CheckCircle2 className="h-5 w-5" />
             </div>
           </CardContent>
@@ -196,7 +199,7 @@ function RoomsContent() {
             <select
               value={selectedPropertyId}
               onChange={(e) => setSelectedPropertyId(e.target.value)}
-              className="rounded-lg border border-slate-300 bg-white py-1.5 px-3 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none min-w-[220px] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+              className="rounded-lg border border-slate-300 bg-white py-1.5 px-3 text-xs text-slate-800 focus:border-blue-500 focus:outline-none min-w-[220px] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
             >
               <option value="">All Lodges ({lodges.length})</option>
               {lodges.map((l) => (
@@ -232,14 +235,14 @@ function RoomsContent() {
                 <div
                   key={room.id}
                   className={`rounded-2xl border p-5 transition-all shadow-xs flex flex-col justify-between space-y-4 ${isAvailable
-                      ? 'border-emerald-200 bg-white hover:border-emerald-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-emerald-500/50'
+                      ? 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700'
                       : 'border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-850/60'
                     }`}
                 >
                   <div className="space-y-2">
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-0.5">
-                        <span className="text-[10px] font-bold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-800">
+                        <span className="text-[10px] font-bold text-slate-700 bg-slate-100 px-2 py-0.5 rounded-md border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
                           {parentLodge?.title || 'Lodge'}
                         </span>
                         <h3 className="text-base font-bold text-slate-900 dark:text-white pt-1">
@@ -250,13 +253,31 @@ function RoomsContent() {
 
                       <span
                         className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${isAvailable
-                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400'
+                            ? 'bg-slate-100 text-slate-800 border border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700'
                             : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
                           }`}
                       >
                         {isAvailable ? 'Vacant / Available' : 'Occupied'}
                       </span>
                     </div>
+
+                    {/* Room Pictures Preview */}
+                    {room.images && room.images.length > 0 && (
+                      <div className="flex gap-2 overflow-x-auto py-1">
+                        {room.images.map((imgUrl, imgIdx) => (
+                          <div
+                            key={imgIdx}
+                            className="relative h-14 w-20 shrink-0 overflow-hidden rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-100"
+                          >
+                            <img
+                              src={imgUrl}
+                              alt={`${room.room_number} picture ${imgIdx + 1}`}
+                              className="h-full w-full object-cover"
+                            />
+                          </div>
+                        ))}
+                      </div>
+                    )}
 
                     {/* Features Chips */}
                     {room.features && room.features.length > 0 && (
@@ -290,7 +311,7 @@ function RoomsContent() {
                         onClick={() => handleToggleStatus(room)}
                         className={`text-xs h-8 px-2.5 ${isAvailable
                             ? 'hover:border-amber-500 hover:text-amber-700'
-                            : 'bg-emerald-50 text-emerald-700 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:text-emerald-400'
+                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
                           }`}
                       >
                         {isAvailable ? 'Mark Occupied' : 'Mark Available'}
@@ -326,14 +347,14 @@ function RoomsContent() {
               <Button
                 size="sm"
                 onClick={() => setIsAddModalOpen(true)}
-                className="bg-emerald-600 hover:bg-emerald-700 gap-1.5"
+                className="gap-1.5"
               >
                 <Plus className="h-4 w-4" />
                 <span>Add First Room</span>
               </Button>
             ) : (
               <Link href="/landlord/properties">
-                <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 gap-1.5">
+                <Button size="sm" className="gap-1.5">
                   <Building2 className="h-4 w-4" />
                   <span>Create a Property First</span>
                 </Button>
@@ -374,7 +395,7 @@ function RoomsContent() {
                 <select
                   value={selectedPropertyId || lodges[0]?.id || ''}
                   onChange={(e) => setSelectedPropertyId(e.target.value)}
-                  className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                   required
                 >
                   {lodges.map((l) => (
@@ -402,7 +423,7 @@ function RoomsContent() {
                   <select
                     value={accommodationType}
                     onChange={(e) => setAccommodationType(e.target.value as AccommodationType)}
-                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                   >
                     <option value="self_contained">Self-Contained</option>
                     <option value="single_room">Single Room</option>
@@ -431,7 +452,7 @@ function RoomsContent() {
                   <select
                     value={status}
                     onChange={(e) => setStatus(e.target.value as RoomAvailabilityStatus)}
-                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                   >
                     <option value="available">Vacant & Ready</option>
                     <option value="occupied">Currently Occupied</option>
@@ -460,6 +481,20 @@ function RoomsContent() {
                 />
               </div>
 
+              {/* Room Pictures Upload to lodge-images */}
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                  Room Pictures (Uploads to lodge-images bucket)
+                </label>
+                <ImageUploader
+                  value={roomImages}
+                  onChange={setRoomImages}
+                  maxFiles={4}
+                  bucketName="lodge-images"
+                  folder="rooms"
+                />
+              </div>
+
               <div className="flex items-center justify-end gap-2 pt-2">
                 <Button
                   type="button"
@@ -469,7 +504,7 @@ function RoomsContent() {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+                <Button type="submit" size="sm">
                   Save Room Unit
                 </Button>
               </div>

@@ -36,8 +36,8 @@ export function NavbarRoleSelector() {
           type="button"
           onClick={() => handleSelectRole('student')}
           className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 transition-all duration-200 ${role === 'student'
-              ? 'bg-slate-900 text-white font-semibold shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 font-medium'
+            ? 'bg-slate-900 text-white font-semibold shadow-xs'
+            : 'text-slate-600 hover:text-slate-900 font-medium'
             }`}
           title="Switch to Student view"
         >
@@ -49,8 +49,8 @@ export function NavbarRoleSelector() {
           type="button"
           onClick={() => handleSelectRole('landlord')}
           className={`flex items-center gap-1.5 rounded-full px-3.5 py-1.5 transition-all duration-200 ${role === 'landlord'
-              ? 'bg-slate-900 text-white font-semibold shadow-xs'
-              : 'text-slate-600 hover:text-slate-900 font-medium'
+            ? 'bg-slate-900 text-white font-semibold shadow-xs'
+            : 'text-slate-600 hover:text-slate-900 font-medium'
             }`}
           title="Switch to Landlord view"
         >
@@ -106,8 +106,8 @@ export function MobileRoleSelector({ onSelect }: { onSelect?: () => void }) {
           type="button"
           onClick={() => handleSelectRole('student')}
           className={`flex items-center justify-center gap-2 rounded-xl p-3 text-xs font-semibold border transition-all ${role === 'student'
-              ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
-              : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+            ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
+            : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
             }`}
         >
           <User className="h-4 w-4" />
@@ -119,8 +119,8 @@ export function MobileRoleSelector({ onSelect }: { onSelect?: () => void }) {
           type="button"
           onClick={() => handleSelectRole('landlord')}
           className={`flex items-center justify-center gap-2 rounded-xl p-3 text-xs font-semibold border transition-all ${role === 'landlord'
-              ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
-              : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
+            ? 'border-slate-900 bg-slate-900 text-white shadow-xs'
+            : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
             }`}
         >
           <Building2 className="h-4 w-4" />

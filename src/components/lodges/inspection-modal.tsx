@@ -18,6 +18,7 @@ import { Lodge, InspectionTimeSlot } from '@/types/database';
 import { saveInspection } from '@/lib/data/lodges-data';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { useAuth } from '@/context/auth-context';
 
 interface InspectionModalProps {
   lodge: Lodge | null;
@@ -27,9 +28,11 @@ interface InspectionModalProps {
 }
 
 export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: InspectionModalProps) {
-  const [studentName, setStudentName] = useState('Daniel Okafor');
-  const [studentPhone, setStudentPhone] = useState('+234 814 990 1234');
-  const [studentEmail, setStudentEmail] = useState('daniel.student@example.com');
+  const { user, profile } = useAuth();
+
+  const [studentName, setStudentName] = useState(() => profile?.full_name || user?.user_metadata?.full_name || '');
+  const [studentPhone, setStudentPhone] = useState(() => profile?.phone || user?.user_metadata?.phone || '');
+  const [studentEmail, setStudentEmail] = useState(() => user?.email || profile?.email || '');
   // Default to tomorrow's date
   const tomorrow = new Date();
   tomorrow.setDate(tomorrow.getDate() + 1);
@@ -45,6 +48,20 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
     setError(null);
     onClose();
   };
+
+  // Populate with authenticated user data when opened
+  useEffect(() => {
+    if (isOpen && (user || profile)) {
+      const meta = user?.user_metadata || {};
+      const resolvedName = profile?.full_name || meta.full_name || meta.name || '';
+      const resolvedPhone = profile?.phone || meta.phone || '';
+      const resolvedEmail = user?.email || profile?.email || '';
+
+      if (resolvedName && !studentName) setStudentName(resolvedName);
+      if (resolvedPhone && !studentPhone) setStudentPhone(resolvedPhone);
+      if (resolvedEmail && !studentEmail) setStudentEmail(resolvedEmail);
+    }
+  }, [isOpen, user, profile, studentName, studentPhone, studentEmail]);
 
   // Keyboard navigation: Escape key closes modal
   useEffect(() => {

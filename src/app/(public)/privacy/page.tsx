@@ -21,10 +21,6 @@ export default function PrivacyPolicyPage() {
       <div className="mx-auto max-w-4xl space-y-10">
         {/* Header */}
         <div className="text-center space-y-3">
-          <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3.5 py-1 text-xs font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border dark:border-emerald-800">
-            <ShieldCheck className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
-            <span>NDPA & GDPR Compliant</span>
-          </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white">
             Privacy Policy
           </h1>
@@ -34,35 +30,35 @@ export default function PrivacyPolicyPage() {
         </div>
 
         {/* Quick Highlights Box */}
-        <div className="rounded-3xl border border-emerald-200 bg-emerald-50/40 p-6 sm:p-8 dark:border-emerald-900/60 dark:bg-emerald-950/20 space-y-4">
-          <h2 className="text-base font-bold text-emerald-950 dark:text-emerald-300 flex items-center gap-2">
-            <Lock className="h-4 w-4 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
+        <div className="rounded-3xl border border-slate-200 bg-white p-6 sm:p-8 dark:border-slate-800 dark:bg-slate-900 space-y-4">
+          <h2 className="text-base font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <Lock className="h-4 w-4 text-blue-600 dark:text-blue-400" aria-hidden="true" />
             <span>Our Core Data Privacy Guarantees</span>
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs text-slate-700 dark:text-slate-200">
             <div className="flex items-start gap-2.5">
-              <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" aria-hidden="true" />
+              <CheckCircle2 className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" aria-hidden="true" />
               <div>
                 <strong className="block text-slate-900 dark:text-white">Strict Data Minimization</strong>
                 We only request what is strictly necessary to arrange student inspections and verify properties.
               </div>
             </div>
             <div className="flex items-start gap-2.5">
-              <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" aria-hidden="true" />
+              <CheckCircle2 className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" aria-hidden="true" />
               <div>
                 <strong className="block text-slate-900 dark:text-white">Zero Third-Party Data Sales</strong>
                 We never sell, rent, or monetize student or landlord contact info with data brokers or advertisers.
               </div>
             </div>
             <div className="flex items-start gap-2.5">
-              <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" aria-hidden="true" />
+              <CheckCircle2 className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" aria-hidden="true" />
               <div>
                 <strong className="block text-slate-900 dark:text-white">Encrypted Private Documents</strong>
                 Landlord government identity and proof of authority are stored in encrypted, isolated administrative buckets.
               </div>
             </div>
             <div className="flex items-start gap-2.5">
-              <CheckCircle2 className="h-4 w-4 text-emerald-700 dark:text-emerald-400 shrink-0 mt-0.5" aria-hidden="true" />
+              <CheckCircle2 className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" aria-hidden="true" />
               <div>
                 <strong className="block text-slate-900 dark:text-white">Self-Service Erasure Option</strong>
                 You can submit a complete account and personal data deletion request anytime.
@@ -139,7 +135,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <p>
               To inspect, modify, or withdraw your cookie choices at any time, visit our{' '}
-              <Link href="/cookies" className="text-emerald-700 font-semibold underline dark:text-emerald-400">
+              <Link href="/cookies" className="text-blue-600 font-semibold underline dark:text-blue-400">
                 Cookie Policy & Preferences Center
               </Link>.
             </p>
@@ -172,7 +168,7 @@ export default function PrivacyPolicyPage() {
             <h2 className="text-lg font-bold text-slate-900 dark:text-white">7. Email Communication & Unsubscribe Rights</h2>
             <p>
               We only send essential transactional emails regarding inspection appointments and security resets. Promotional campus digests are optional. Every email includes a clear one-click unsubscribe mechanism. You can also manage notification preferences at any time on our{' '}
-              <Link href="/unsubscribe" className="text-emerald-700 font-semibold underline dark:text-emerald-400">
+              <Link href="/unsubscribe" className="text-blue-600 font-semibold underline dark:text-blue-400">
                 Email Unsubscribe Portal
               </Link>.
             </p>
@@ -185,7 +181,7 @@ export default function PrivacyPolicyPage() {
             </p>
             <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-800 dark:bg-slate-850 text-xs space-y-1">
               <p><strong>Data Protection Officer (DPO)</strong> — LodgeHere Technology Services</p>
-              <p>Email: <a href="mailto:privacy@lodgehere.ng" className="text-emerald-700 underline dark:text-emerald-400 font-semibold">privacy@lodgehere.ng</a></p>
+              <p>Email: <a href="mailto:privacy@lodgehere.ng" className="text-blue-600 underline dark:text-blue-400 font-semibold">privacy@lodgehere.ng</a></p>
               <p>Location: Yaba, Lagos State, Nigeria</p>
             </div>
           </section>

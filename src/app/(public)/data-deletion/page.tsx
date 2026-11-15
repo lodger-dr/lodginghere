@@ -109,8 +109,8 @@ export default function DataDeletionRequestPage() {
           <CardContent>
             {submittedRequest ? (
               <div className="space-y-5 text-center py-4">
-                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
-                  <CheckCircle2 className="h-8 w-8" aria-hidden="true" />
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
+                  <CheckCircle2 className="h-8 w-8 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                 </div>
                 <div className="space-y-2 max-w-md mx-auto">
                   <h3 className="text-lg font-bold text-slate-900 dark:text-white">
@@ -149,7 +149,7 @@ export default function DataDeletionRequestPage() {
                     </Button>
                   </Link>
                   <Link href="/privacy">
-                    <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+                    <Button size="sm">
                       Read Privacy Policy
                     </Button>
                   </Link>
@@ -206,7 +206,7 @@ export default function DataDeletionRequestPage() {
                     value={details}
                     onChange={(e) => setDetails(e.target.value)}
                     placeholder="Specify any specific records or questions you have regarding your data..."
-                    className="w-full rounded-md border border-slate-300 p-2.5 text-xs text-slate-900 placeholder-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                    className="w-full rounded-md border border-slate-300 p-2.5 text-xs text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
                   />
                 </div>
 

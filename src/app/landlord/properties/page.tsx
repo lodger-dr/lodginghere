@@ -26,8 +26,10 @@ import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
 import { ImageUploader } from '@/components/ui/image-uploader';
+import { useAuth } from '@/context/auth-context';
 
 export default function LandlordPropertiesPage() {
+  const { user, profile } = useAuth();
   const [lodges, setLodges] = useState<Lodge[]>([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
@@ -89,9 +91,9 @@ export default function LandlordPropertiesPage() {
       title: title.trim(),
       slug,
       description: description.trim(),
-      landlord_id: 'landlord-current',
-      landlord_name: 'Chief Adebayo Olanrewaju (You)',
-      landlord_phone: '+234 803 234 5678',
+      landlord_id: user?.id || 'landlord-current',
+      landlord_name: profile?.full_name || user?.user_metadata?.full_name || 'Verified Landlord (You)',
+      landlord_phone: profile?.phone || user?.user_metadata?.phone || '',
       landlord_verified: true,
       university_slug: universitySlug,
       university_name: selectedUni?.name || 'University of Lagos',
@@ -150,7 +152,7 @@ export default function LandlordPropertiesPage() {
         <Button
           size="sm"
           onClick={() => setIsAddModalOpen(true)}
-          className="bg-emerald-600 hover:bg-emerald-700 gap-1.5 shadow-xs"
+          className="gap-1.5 shadow-xs"
         >
           <Plus className="h-4 w-4" />
           <span>Add New Property</span>
@@ -165,7 +167,7 @@ export default function LandlordPropertiesPage() {
               <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Active Lodges</span>
               <p className="text-2xl font-black text-slate-900 dark:text-white">{lodges.length}</p>
             </div>
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
               <Building2 className="h-5 w-5" />
             </div>
           </CardContent>
@@ -187,7 +189,7 @@ export default function LandlordPropertiesPage() {
           <CardContent className="pt-6 flex items-center justify-between">
             <div className="space-y-1">
               <span className="text-xs font-semibold text-slate-500 dark:text-slate-400">Available Vacancies</span>
-              <p className="text-2xl font-black text-emerald-600 dark:text-emerald-400">{totalAvailable}</p>
+              <p className="text-2xl font-black text-slate-900 dark:text-white">{totalAvailable}</p>
             </div>
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400">
               <CheckCircle2 className="h-5 w-5" />
@@ -222,8 +224,8 @@ export default function LandlordPropertiesPage() {
                       className="h-full w-full object-cover"
                     />
                     <div className="absolute top-3 left-3 flex items-center gap-1.5">
-                      <span className="inline-flex items-center gap-1 rounded-full bg-emerald-600 px-2.5 py-0.5 text-[10px] font-bold text-white shadow-xs">
-                        <ShieldCheck className="h-3 w-3" />
+                      <span className="inline-flex items-center gap-1 rounded-full bg-slate-900/90 dark:bg-slate-800/90 px-2.5 py-0.5 text-[10px] font-bold text-white shadow-xs backdrop-blur-md">
+                        <ShieldCheck className="h-3 w-3 text-blue-400" />
                         <span>Active Listing</span>
                       </span>
                     </div>
@@ -236,7 +238,7 @@ export default function LandlordPropertiesPage() {
 
                   <div className="p-5 flex-1 flex flex-col space-y-3">
                     <div className="space-y-1">
-                      <span className="text-[11px] font-semibold text-emerald-700 dark:text-emerald-400 flex items-center gap-1 truncate">
+                      <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 flex items-center gap-1 truncate">
                         <MapPin className="h-3 w-3 shrink-0" />
                         {lodge.distance_to_campus}
                       </span>
@@ -273,7 +275,7 @@ export default function LandlordPropertiesPage() {
                           </Button>
                         </Link>
                         <Link href={`/lodges/${lodge.slug}`}>
-                          <Button size="sm" variant="ghost" className="text-xs h-8 px-2 gap-1 text-emerald-700 dark:text-emerald-400 hover:bg-emerald-50 dark:hover:bg-emerald-950/40">
+                          <Button size="sm" variant="ghost" className="text-xs h-8 px-2 gap-1 text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800">
                             <ExternalLink className="h-3.5 w-3.5" />
                             <span>Preview</span>
                           </Button>
@@ -297,7 +299,7 @@ export default function LandlordPropertiesPage() {
           </div>
         ) : (
           <div className="rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center space-y-4 dark:border-slate-800 dark:bg-slate-900">
-            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+            <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
               <Building2 className="h-7 w-7" />
             </div>
             <div className="space-y-1 max-w-sm mx-auto">
@@ -309,7 +311,7 @@ export default function LandlordPropertiesPage() {
             <Button
               size="sm"
               onClick={() => setIsAddModalOpen(true)}
-              className="bg-emerald-600 hover:bg-emerald-700 gap-1.5"
+              className="gap-1.5"
             >
               <Plus className="h-4 w-4" />
               <span>Create Your First Listing</span>
@@ -361,7 +363,7 @@ export default function LandlordPropertiesPage() {
                   <select
                     value={universitySlug}
                     onChange={(e) => setUniversitySlug(e.target.value)}
-                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                   >
                     {NIGERIAN_UNIVERSITIES.map((u) => (
                       <option key={u.slug} value={u.slug}>
@@ -455,7 +457,7 @@ export default function LandlordPropertiesPage() {
                     />
                   </div>
                 </div>
-                <p className="text-[10px] text-emerald-800 dark:text-emerald-300 font-medium">
+                <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
                   Zero middleman agency commission: LodgeHere direct landlord model is designed to eliminate unauthorized agent markups.
                 </p>
               </div>
@@ -471,8 +473,8 @@ export default function LandlordPropertiesPage() {
                         key={a.key}
                         type="button"
                         onClick={() => toggleAmenity(a.key)}
-                        className={`rounded-full px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none ${isSelected
-                          ? 'bg-emerald-600 text-white border-emerald-600'
+                        className={`rounded-full px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none ${isSelected
+                          ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-slate-900 dark:border-white'
                           : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-750'
                           }`}
                       >
@@ -492,6 +494,8 @@ export default function LandlordPropertiesPage() {
                   value={images}
                   onChange={setImages}
                   maxFiles={6}
+                  bucketName="lodge-images"
+                  folder="lodges"
                 />
               </div>
 
@@ -502,7 +506,7 @@ export default function LandlordPropertiesPage() {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   rows={3}
-                  className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                 />
               </div>
 
@@ -512,11 +516,11 @@ export default function LandlordPropertiesPage() {
                   id="landlord-listing-consent"
                   type="checkbox"
                   required
-                  className="h-4 w-4 mt-0.5 rounded border-slate-300 text-emerald-600 focus:ring-emerald-500 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
+                  className="h-4 w-4 mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
                 />
                 <label htmlFor="landlord-listing-consent" className="text-xs text-slate-700 dark:text-slate-300 leading-snug cursor-pointer">
                   I confirm that all stated rents and fees are transparent with zero unadvertised charges, and that I have legal authority to list this property in accordance with the{' '}
-                  <a href="/terms" target="_blank" className="text-emerald-700 underline dark:text-emerald-400 font-semibold">
+                  <a href="/terms" target="_blank" className="text-blue-600 underline dark:text-blue-400 font-semibold">
                     Terms of Service
                   </a>.
                 </label>
@@ -532,7 +536,7 @@ export default function LandlordPropertiesPage() {
                 >
                   Cancel
                 </Button>
-                <Button type="submit" size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+                <Button type="submit" size="sm">
                   Save & Publish Property
                 </Button>
               </div>
