@@ -105,7 +105,7 @@ export function Navbar() {
             >
               <Search className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors shrink-0" />
               <span className="text-slate-400 dark:text-slate-400 text-xs truncate max-w-[140px] lg:max-w-[180px]">
-                Search lodges...
+                {isDashboard ? 'Search lodges...' : 'Search lodges, campuses...'}
               </span>
               <kbd className="ml-1 inline-flex items-center gap-0.5 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-mono text-slate-500 dark:border-slate-700 dark:bg-slate-900 shadow-2xs shrink-0">
                 ⌘K

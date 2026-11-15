@@ -64,8 +64,8 @@ export default function StudentOverviewPage() {
             <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
               Student Dashboard
             </h1>
-            <span className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-200/50 dark:border-emerald-800/60">
-              <span className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+            <span className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-slate-700 bg-slate-100 dark:bg-slate-800 dark:text-slate-300 px-2.5 py-0.5 rounded-full border border-slate-200 dark:border-slate-700">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-600 dark:bg-blue-400" />
               Live Workspace
             </span>
           </div>
@@ -79,7 +79,7 @@ export default function StudentOverviewPage() {
               className="flex items-center gap-1.5 rounded-xl border border-slate-200/80 bg-white/80 px-3.5 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800/80 dark:bg-slate-900/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs backdrop-blur-md cursor-pointer"
             >
               <SlidersHorizontal className="h-3.5 w-3.5 text-slate-500" />
-              <span>Campus Filters</span>
+              <span>Lodge Filters</span>
             </button>
           </Link>
         </div>
@@ -274,7 +274,7 @@ export default function StudentOverviewPage() {
 
             <Link href="/student/bookings">
               <div className="flex items-center gap-3.5 p-3.5 rounded-2xl border border-slate-200/70 bg-white/80 hover:bg-white hover:border-slate-300 dark:border-slate-800/70 dark:bg-slate-900/80 dark:hover:bg-slate-850 backdrop-blur-md transition-all shadow-2xs group cursor-pointer">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400 group-hover:scale-105 transition-transform">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400 group-hover:scale-105 transition-transform">
                   <BookmarkCheck className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
@@ -316,7 +316,7 @@ export default function StudentOverviewPage() {
             title="Step-by-Step Student Accommodation Checklist"
             subtitle="Follow these 4 lifecycle milestones to verify and move in safely"
             badge="Checklist"
-            icon={<CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />}
+            icon={<CheckCircle2 className="h-4 w-4 text-slate-600 dark:text-slate-400" />}
           >
             <div className="py-2 space-y-3 text-xs">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
