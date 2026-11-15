@@ -50,32 +50,62 @@ export async function updateSession(request: NextRequest) {
   const isStudentRoute = pathname.startsWith('/student');
   const isLandlordRoute = pathname.startsWith('/landlord');
   const isAdminRoute = pathname.startsWith('/admin');
+  const isOnboardingRoute = pathname === '/onboarding';
   // Exclude /reset-password so recovery sessions can access password reset form
   const isAuthRoute = pathname === '/login' || pathname === '/register';
 
-  // If user is unauthenticated and attempting to access protected dashboards:
-  if (!user && (isStudentRoute || isLandlordRoute || isAdminRoute)) {
+  // If user is unauthenticated and attempting to access protected dashboards or onboarding:
+  if (!user && (isStudentRoute || isLandlordRoute || isAdminRoute || isOnboardingRoute)) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     url.searchParams.set('next', pathname);
     return createRedirect(url, supabaseResponse);
   }
 
-  // Determine verified user role securely from server-controlled app_metadata or database query
+  // Determine verified user role and onboarding status
   let verifiedRole: string | null = null;
-  if (user) {
-    if (user.app_metadata && typeof user.app_metadata.role === 'string') {
-      verifiedRole = user.app_metadata.role;
-    } else {
-      // Query database profile to ensure role is authentic and avoid client-writable user_metadata spoofing
-      const { data: profile } = await supabase
-        .from('profiles')
-        .select('role')
-        .eq('id', user.id)
-        .single();
+  let onboardingCompleted: boolean = true;
 
-      verifiedRole = profile?.role || 'student';
+  if (user) {
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('role, onboarding_completed')
+      .eq('id', user.id)
+      .single();
+
+    verifiedRole = (user.app_metadata?.role as string) || profile?.role || 'student';
+    if (profile) {
+      onboardingCompleted = profile.onboarding_completed ?? true;
+    } else {
+      onboardingCompleted = (user.user_metadata?.onboarding_completed as boolean) ?? false;
     }
+  }
+
+  // If authenticated user has not completed onboarding yet:
+  if (user && !onboardingCompleted) {
+    if (!isOnboardingRoute) {
+      const url = request.nextUrl.clone();
+      url.pathname = '/onboarding';
+      url.searchParams.delete('next');
+      url.searchParams.delete('error');
+      url.searchParams.delete('registered');
+      return createRedirect(url, supabaseResponse);
+    }
+    // Allow user on /onboarding
+    return supabaseResponse;
+  }
+
+  // If user has already completed onboarding and tries to visit /onboarding:
+  if (user && onboardingCompleted && isOnboardingRoute) {
+    const url = request.nextUrl.clone();
+    if (verifiedRole === 'admin') {
+      url.pathname = '/admin/dashboard';
+    } else if (verifiedRole === 'landlord') {
+      url.pathname = '/landlord/overview';
+    } else {
+      url.pathname = '/student/overview';
+    }
+    return createRedirect(url, supabaseResponse);
   }
 
   // If user is already authenticated and navigating to login/register:
