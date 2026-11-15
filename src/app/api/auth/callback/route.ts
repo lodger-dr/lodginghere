@@ -39,36 +39,30 @@ export async function GET(request: NextRequest) {
         // Query existing profile
         const { data: profile } = await adminClient
           .from('profiles')
-          .select('role')
+          .select('role, onboarding_completed')
           .eq('id', data.user.id)
           .single();
 
         let userRole = profile?.role;
+        let onboardingCompleted = profile?.onboarding_completed;
 
-        // If profile does not exist yet, create it with the requested role
-        if (!userRole) {
+        // If profile does not exist yet, create it with Google details and onboarding_completed = false
+        if (!profile) {
           const meta = data.user.user_metadata || {};
           const assignedRole = roleParam === 'landlord' ? 'landlord' : 'student';
+          const nameFromGoogle = meta.full_name || meta.name || data.user.email?.split('@')[0] || 'User';
 
           await adminClient.from('profiles').upsert({
             id: data.user.id,
             role: assignedRole,
-            full_name: meta.full_name || meta.name || data.user.email?.split('@')[0] || 'User',
+            full_name: nameFromGoogle,
             email: data.user.email || '',
             avatar_path: meta.avatar_url || meta.picture || null,
+            onboarding_completed: false,
           });
 
-          if (assignedRole === 'landlord') {
-            await adminClient.from('landlord_profiles').upsert({
-              user_id: data.user.id,
-              provider_type: 'owner',
-            });
-          } else {
-            await adminClient.from('student_profiles').upsert({
-              user_id: data.user.id,
-            });
-          }
           userRole = assignedRole;
+          onboardingCompleted = false;
         }
 
         // Store the verified role in server-only app_metadata for tamper-proof middleware checks
@@ -78,6 +72,11 @@ export async function GET(request: NextRequest) {
           });
         } catch (updateErr) {
           console.warn('Could not update app_metadata:', updateErr);
+        }
+
+        // If onboarding has not been completed, redirect immediately to card-by-card onboarding flow
+        if (onboardingCompleted === false) {
+          return NextResponse.redirect(`${baseUrl}/onboarding`);
         }
 
         // Handle explicit next redirection if provided and validated safe
