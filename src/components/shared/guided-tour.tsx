@@ -11,7 +11,6 @@ import {
   HelpCircle,
   Lightbulb,
   MousePointerClick,
-  Sparkles,
 } from 'lucide-react';
 
 interface ElementRect {
@@ -193,7 +192,7 @@ export function GuidedTour() {
       {/* Target Pulsing Highlight Ring */}
       {targetRect && (
         <div
-          className="fixed pointer-events-none rounded-2xl ring-2 ring-emerald-500/80 ring-offset-2 ring-offset-slate-900 transition-all duration-300 animate-pulse"
+          className="fixed pointer-events-none rounded-2xl ring-2 ring-blue-500/80 ring-offset-2 ring-offset-slate-900 transition-all duration-300 animate-pulse"
           style={{
             zIndex: 52,
             top: targetRect.top,
@@ -218,8 +217,8 @@ export function GuidedTour() {
         {/* Top Header & Step Progress */}
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800/80 px-2.5 py-0.5 text-[11px] font-bold text-emerald-700 dark:text-emerald-400">
-              <Compass className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2.5 py-0.5 text-[11px] font-bold text-slate-700 dark:text-slate-300">
+              <Compass className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
               <span>{currentStep.badge || `Step ${currentStepIndex + 1} of ${totalSteps}`}</span>
             </div>
 
@@ -236,7 +235,7 @@ export function GuidedTour() {
           {/* Progress Bar */}
           <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
             <div
-              className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-300"
+              className="h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-300"
               style={{ width: `${progressPct}%` }}
             />
           </div>
@@ -264,7 +263,7 @@ export function GuidedTour() {
 
           {/* What to do */}
           <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800">
-            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-emerald-100 text-emerald-700 dark:bg-emerald-900/60 dark:text-emerald-300">
+            <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-md bg-slate-200 text-slate-700 dark:bg-slate-700 dark:text-slate-200">
               <MousePointerClick className="h-3 w-3" />
             </div>
             <div className="space-y-0.5 min-w-0">
@@ -315,7 +314,7 @@ export function GuidedTour() {
             <button
               type="button"
               onClick={nextStep}
-              className="flex items-center gap-1.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400 px-4 py-1.5 text-xs font-bold shadow-sm transition-all active:scale-97 cursor-pointer"
+              className="flex items-center gap-1.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 px-4 py-1.5 text-xs font-bold shadow-sm transition-all active:scale-97 cursor-pointer"
             >
               <span>{isLastStep ? 'Got it — Finish Tour' : 'Next Step'}</span>
               {isLastStep ? (

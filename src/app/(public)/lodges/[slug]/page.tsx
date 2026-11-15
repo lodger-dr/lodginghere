@@ -36,6 +36,7 @@ import { Badge } from '@/components/ui/badge';
 import { InspectionModal } from '@/components/lodges/inspection-modal';
 import { WinningCTA } from '@/components/ui/winning-cta';
 import { Accordion, AccordionItem } from '@/components/ui/accordion';
+import { AccommodationJsonLd } from '@/components/shared/json-ld';
 
 const AMENITY_ICONS: Record<AmenityKey, React.ComponentType<{ className?: string }>> = {
   running_water: Droplets,
@@ -98,7 +99,7 @@ export default function LodgeDetailPage() {
           The lodge you are searching for may have been archived or is awaiting physical verification review.
         </p>
         <Link href="/explore">
-          <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700">
+          <Button size="sm" className="bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100">
             Browse All Verified Lodges
           </Button>
         </Link>
@@ -126,11 +127,12 @@ export default function LodgeDetailPage() {
 
   return (
     <div className="min-h-screen bg-slate-50/50 pb-28 lg:pb-20 dark:bg-slate-950">
+      <AccommodationJsonLd lodge={lodge} />
       {/* Breadcrumb Navigation */}
       <div className="border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
           <div className="flex items-center gap-2 truncate">
-            <Link href="/explore" className="flex items-center gap-1 hover:text-emerald-600 dark:hover:text-emerald-400">
+            <Link href="/explore" className="flex items-center gap-1 hover:text-blue-600 dark:hover:text-blue-400">
               <ChevronLeft className="h-3.5 w-3.5" />
               <span>Back to Lodges</span>
             </Link>
@@ -171,15 +173,15 @@ export default function LodgeDetailPage() {
           <div className="space-y-2">
             <div className="flex flex-wrap items-center gap-2">
               {lodge.landlord_verified && (
-                <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-100 px-3 py-1 text-xs font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400">
-                  <ShieldCheck className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
+                <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-100 px-3 py-1 text-xs font-semibold text-slate-800 dark:bg-slate-800 dark:text-slate-200">
+                  <ShieldCheck className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                   <span>Verified Landlord & Property Surveyed</span>
                 </span>
               )}
               <span className="rounded-full bg-slate-900 px-3 py-1 text-xs font-semibold text-white dark:bg-slate-800">
                 {lodge.accommodation_type.replace(/_/g, ' ').toUpperCase()}
               </span>
-              <span className="rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1 text-xs font-bold dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-800">
+              <span className="rounded-full bg-slate-100 text-slate-700 border border-slate-200 px-3 py-1 text-xs font-semibold dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
                 {lodge.available_rooms > 0
                   ? `${lodge.available_rooms} Room${lodge.available_rooms > 1 ? 's' : ''} Vacant`
                   : 'Fully Occupied'}
@@ -191,8 +193,8 @@ export default function LodgeDetailPage() {
             </h1>
 
             <div className="flex flex-wrap items-center gap-3 text-xs text-slate-600 dark:text-slate-400">
-              <span className="flex items-center gap-1 font-semibold text-emerald-700 dark:text-emerald-400">
-                <MapPin className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span className="flex items-center gap-1 font-semibold text-slate-800 dark:text-slate-200">
+                <MapPin className="h-4 w-4 text-slate-500 dark:text-slate-400 shrink-0" />
                 {lodge.distance_to_campus}
               </span>
               <span>•</span>
@@ -211,7 +213,7 @@ export default function LodgeDetailPage() {
               </span>
               <span className="text-sm text-slate-500 dark:text-slate-400 font-normal">/ year</span>
             </div>
-            <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400 block">
+            <span className="text-xs font-semibold text-slate-600 dark:text-slate-400 block">
               Direct Landlord • ₦0 Agent Fee
             </span>
           </div>
@@ -236,9 +238,9 @@ export default function LodgeDetailPage() {
                 <button
                   key={idx}
                   onClick={() => setActiveImageIndex(idx)}
-                  className={`relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border-2 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none ${
+                  className={`relative h-20 w-32 shrink-0 overflow-hidden rounded-xl border-2 transition-all cursor-pointer focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none ${
                     idx === activeImageIndex
-                      ? 'border-emerald-600 shadow-md scale-102'
+                      ? 'border-slate-900 dark:border-white shadow-md scale-102'
                       : 'border-transparent opacity-70 hover:opacity-100'
                   }`}
                 >
@@ -277,23 +279,23 @@ export default function LodgeDetailPage() {
             </div>
 
             {/* Transparent Fees Breakdown (Strict Zero Hidden Fees) */}
-            <div className="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-6 shadow-xs space-y-4 dark:border-emerald-900/60 dark:bg-emerald-950/20">
+            <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 shadow-xs space-y-4 dark:border-slate-800 dark:bg-slate-900/60">
               <div className="flex items-center justify-between">
                 <div className="space-y-0.5">
-                  <h2 className="text-lg font-bold text-emerald-950 dark:text-emerald-300 flex items-center gap-2">
-                    <ShieldCheck className="h-5 w-5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <ShieldCheck className="h-5 w-5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
                     <span>Strict Transparent Pricing</span>
                   </h2>
-                  <p className="text-xs text-emerald-900 dark:text-emerald-300">
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
                     No hidden agency fees, no sudden commissions, 100% itemized move-in costs.
                   </p>
                 </div>
-                <Badge variant="outline" className="border-emerald-300 bg-white text-emerald-800 font-bold dark:border-emerald-800 dark:bg-slate-900 dark:text-emerald-300">
+                <Badge variant="outline" className="border-slate-300 bg-white text-slate-800 font-bold dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200">
                   Verified Standard
                 </Badge>
               </div>
 
-              <div className="rounded-xl border border-emerald-200 bg-white p-4 space-y-3 text-xs dark:border-slate-800 dark:bg-slate-900">
+              <div className="rounded-xl border border-slate-200 bg-white p-4 space-y-3 text-xs dark:border-slate-800 dark:bg-slate-900">
                 <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-800">
                   <span className="text-slate-700 dark:text-slate-300">Base Annual Rent</span>
                   <span className="font-bold text-slate-900 dark:text-white">{formatNaira(lodge.pricing.min_price)}</span>
@@ -315,10 +317,10 @@ export default function LodgeDetailPage() {
 
                 <div className="flex items-center justify-between py-1 border-b border-slate-100 dark:border-slate-800">
                   <div>
-                    <span className="text-emerald-700 dark:text-emerald-400 font-semibold block">Middleman Agency Commission</span>
-                    <span className="text-[10px] text-emerald-700 dark:text-emerald-400">0% Direct Landlord Policy</span>
+                    <span className="text-slate-900 dark:text-white font-semibold block">Middleman Agency Commission</span>
+                    <span className="text-[10px] text-slate-500 dark:text-slate-400">0% Direct Landlord Policy</span>
                   </div>
-                  <span className="font-bold text-emerald-700 dark:text-emerald-400">₦0 (FREE)</span>
+                  <span className="font-bold text-blue-600 dark:text-blue-400">₦0 (FREE)</span>
                 </div>
 
                 {lodge.pricing.legal_agency_fee > 0 && (
@@ -333,7 +335,7 @@ export default function LodgeDetailPage() {
 
                 <div className="flex items-center justify-between pt-2 text-sm font-black text-slate-900 dark:text-white">
                   <span>Total Itemized Move-in Cost</span>
-                  <span className="text-emerald-700 dark:text-emerald-400 text-base">{formatNaira(totalMoveIn)}</span>
+                  <span className="text-slate-900 dark:text-white text-base">{formatNaira(totalMoveIn)}</span>
                 </div>
               </div>
             </div>
@@ -347,7 +349,7 @@ export default function LodgeDetailPage() {
                     Specific rooms in this lodge with live availability status.
                   </p>
                 </div>
-                <span className="text-xs font-semibold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-400 px-2.5 py-1 rounded-full">
+                <span className="text-xs font-semibold text-slate-700 bg-slate-100 dark:bg-slate-800 dark:text-slate-300 px-2.5 py-1 rounded-full">
                   {rooms.length} Room{rooms.length === 1 ? '' : 's'} Configured
                 </span>
               </div>
@@ -361,7 +363,7 @@ export default function LodgeDetailPage() {
                         key={room.id}
                         className={`rounded-xl border p-4 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
                           isAvailable
-                            ? 'border-slate-200 bg-white hover:border-emerald-300 dark:border-slate-800 dark:bg-slate-850 dark:hover:border-emerald-500/50'
+                            ? 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-850 dark:hover:border-slate-700'
                             : 'border-slate-100 bg-slate-50/70 opacity-75 dark:border-slate-850 dark:bg-slate-900/50'
                         }`}
                       >
@@ -371,7 +373,7 @@ export default function LodgeDetailPage() {
                             <span
                               className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${
                                 isAvailable
-                                  ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400'
+                                  ? 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200'
                                   : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
                               }`}
                             >
@@ -405,7 +407,7 @@ export default function LodgeDetailPage() {
                             <Button
                               size="sm"
                               onClick={() => setIsInspectionModalOpen(true)}
-                              className="bg-emerald-600 hover:bg-emerald-700 text-xs h-8 px-3 gap-1"
+                              className="bg-slate-900 hover:bg-slate-800 text-white dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 text-xs h-8 px-3 gap-1"
                             >
                               <CalendarCheck className="h-3.5 w-3.5" />
                               <span>Inspect This Room</span>
@@ -443,7 +445,7 @@ export default function LodgeDetailPage() {
                   title="Full Amenities & Utilities Catalog"
                   subtitle={`${lodge.amenities.length} amenities verified on-premises`}
                   badge="Verified"
-                  icon={<Droplets className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />}
+                  icon={<Droplets className="h-4 w-4 text-blue-600 dark:text-blue-400" />}
                   defaultOpen={true}
                 >
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-2">
@@ -455,14 +457,14 @@ export default function LodgeDetailPage() {
                           key={cat.key}
                           className={`flex items-center gap-3 rounded-xl border p-3 ${
                             isIncluded
-                              ? 'border-emerald-200 bg-emerald-50/30 text-slate-900 font-medium dark:border-emerald-900/50 dark:bg-emerald-950/20 dark:text-slate-200'
+                              ? 'border-slate-200 bg-slate-50/70 text-slate-900 font-medium dark:border-slate-800 dark:bg-slate-850/60 dark:text-slate-100'
                               : 'border-slate-100 bg-slate-50/50 text-slate-400 dark:border-slate-800 dark:bg-slate-850/30 dark:text-slate-500'
                           }`}
                         >
                           <div
                             className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${
                               isIncluded
-                                ? 'bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400'
+                                ? 'bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300'
                                 : 'bg-slate-100 text-slate-400 dark:bg-slate-800 dark:text-slate-500'
                             }`}
                           >
@@ -475,7 +477,7 @@ export default function LodgeDetailPage() {
                             </span>
                           </div>
                           {isIncluded ? (
-                            <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                            <CheckCircle2 className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
                           ) : (
                             <XCircle className="h-4 w-4 text-slate-300 dark:text-slate-600 shrink-0" />
                           )}
@@ -532,8 +534,8 @@ export default function LodgeDetailPage() {
                   </span>
                   <span className="text-xs text-slate-500 dark:text-slate-400">/ yr</span>
                 </div>
-                <div className="flex items-center gap-1.5 text-xs text-emerald-700 dark:text-emerald-400 font-semibold pt-1">
-                  <CheckCircle2 className="h-3.5 w-3.5" />
+                <div className="flex items-center gap-1.5 text-xs text-slate-700 dark:text-slate-300 font-semibold pt-1">
+                  <CheckCircle2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                   <span>{lodge.available_rooms} Room{lodge.available_rooms > 1 ? 's' : ''} currently vacant</span>
                 </div>
               </div>
@@ -557,13 +559,13 @@ export default function LodgeDetailPage() {
               <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 space-y-3 text-xs dark:border-slate-800 dark:bg-slate-800/50">
                 <span className="font-bold text-slate-900 dark:text-white block">Verified Property Owner</span>
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-400 font-bold">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300 font-bold">
                     <User className="h-5 w-5" />
                   </div>
                   <div className="space-y-0.5 min-w-0">
                     <p className="font-bold text-slate-900 dark:text-white truncate">{lodge.landlord_name}</p>
-                    <span className="inline-flex items-center gap-1 text-[11px] text-emerald-700 dark:text-emerald-400 font-semibold">
-                      <ShieldCheck className="h-3 w-3" />
+                    <span className="inline-flex items-center gap-1 text-[11px] text-slate-600 dark:text-slate-400 font-semibold">
+                      <ShieldCheck className="h-3 w-3 text-blue-600 dark:text-blue-400" />
                       <span>Verified Landlord</span>
                     </span>
                   </div>
@@ -609,7 +611,7 @@ export default function LodgeDetailPage() {
         <Button
           size="sm"
           onClick={() => setIsInspectionModalOpen(true)}
-          className="bg-slate-900 hover:bg-black dark:bg-emerald-500 dark:hover:bg-emerald-400 dark:text-slate-950 font-bold text-xs h-10 px-5 gap-1.5 shadow-sm rounded-full"
+          className="bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 font-bold text-xs h-10 px-5 gap-1.5 shadow-sm rounded-full"
         >
           <CalendarCheck className="h-4 w-4" />
           <span>Schedule Inspection</span>

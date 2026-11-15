@@ -237,7 +237,7 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
                   className="w-full flex items-center justify-between rounded-xl px-3 py-2 text-left text-xs transition-colors hover:bg-slate-100 dark:hover:bg-slate-800 group cursor-pointer"
                 >
                   <div className="flex items-center gap-3 min-w-0">
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                       <Building2 className="h-3.5 w-3.5" />
                     </div>
                     <div className="min-w-0">

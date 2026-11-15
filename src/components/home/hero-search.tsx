@@ -88,7 +88,7 @@ export function HeroSearch() {
 
         {/* Room Type Selector */}
         <div className="flex-1 flex items-center gap-2.5 px-3 py-2 sm:py-1 rounded-xl sm:rounded-full hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-          <Home className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+          <Home className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
           <div className="flex-1 min-w-0">
             <label htmlFor="hero-type" className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
               Room Type

@@ -50,8 +50,8 @@ export default function StudentProfilePage() {
         <CardContent>
           <form onSubmit={handleSave} className="space-y-4">
             {saved && (
-              <div className="rounded-lg bg-emerald-50 dark:bg-emerald-950/50 border border-emerald-200 dark:border-emerald-800 p-3 flex items-center gap-2 text-xs text-emerald-800 dark:text-emerald-300">
-                <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <div className="rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-3 flex items-center gap-2 text-xs text-slate-800 dark:text-slate-200">
+                <CheckCircle2 className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
                 <span>Profile details saved successfully.</span>
               </div>
             )}
@@ -100,7 +100,7 @@ export default function StudentProfilePage() {
               placeholder="e.g. Computer Science"
             />
 
-            <Button type="submit" className="gap-2 bg-emerald-600 hover:bg-emerald-700">
+            <Button type="submit" className="gap-2">
               <Save className="h-4 w-4" />
               <span>Save Changes</span>
             </Button>
@@ -112,7 +112,7 @@ export default function StudentProfilePage() {
       <Card className="border-slate-200 dark:border-slate-800">
         <CardHeader>
           <CardTitle className="text-base text-slate-900 dark:text-white flex items-center gap-2">
-            <ShieldCheck className="h-4 w-4 text-emerald-700 dark:text-emerald-400" />
+            <ShieldCheck className="h-4 w-4 text-blue-600 dark:text-blue-400" />
             <span>Privacy, Communications &amp; Data Rights</span>
           </CardTitle>
           <CardDescription className="text-xs text-slate-500 dark:text-slate-400">

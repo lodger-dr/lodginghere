@@ -11,7 +11,6 @@ import {
   Mail,
   Lock,
   ArrowRight,
-  Sparkles,
 } from 'lucide-react';
 import { GoogleAuthButton } from '@/components/auth/google-auth-button';
 import { Button } from '@/components/ui/button';
@@ -82,10 +81,6 @@ function RegisterForm() {
       <div className="w-full max-w-md space-y-6">
         <Card className="rounded-3xl border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl dark:shadow-2xl overflow-hidden">
           <CardHeader className="text-center pb-2 pt-8">
-            <div className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/40 px-3.5 py-1 text-xs font-semibold text-emerald-800 dark:text-emerald-300 mb-3 shadow-2xs">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-              <span>Verified Student Accommodation</span>
-            </div>
             <CardTitle className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
               Create your account
             </CardTitle>
@@ -113,9 +108,8 @@ function RegisterForm() {
                 onError={(err) => setErrorMessage(err)}
                 className="w-full h-12 rounded-2xl font-bold shadow-xs hover:shadow-md transition-all text-sm border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
               />
-              <p className="text-[11px] text-center text-slate-400 dark:text-slate-500 flex items-center justify-center gap-1">
-                <Sparkles className="h-3 w-3 text-amber-500 shrink-0" />
-                <span>Fastest setup: your name & email are pre-filled</span>
+              <p className="text-[11px] text-center text-slate-400 dark:text-slate-500">
+                Fastest setup: your name and email are pre-filled
               </p>
             </div>
 
@@ -286,7 +280,7 @@ function RegisterForm() {
         {/* TRUST BADGES */}
         <div className="grid grid-cols-3 gap-2 text-center text-[10px] text-slate-400 dark:text-slate-500 px-2">
           <div className="flex items-center justify-center gap-1">
-            <span className="h-1.5 w-1.5 rounded-full bg-emerald-500"></span>
+            <span className="h-1.5 w-1.5 rounded-full bg-blue-600"></span>
             <span>Verified Lodges</span>
           </div>
           <div className="flex items-center justify-center gap-1">

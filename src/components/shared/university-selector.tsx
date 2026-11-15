@@ -49,7 +49,7 @@ export function UniversitySelector({
           placeholder="Search by university name, acronym (e.g. UNILAG, UI, UNIBEN), or city..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="block w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
+          className="block w-full rounded-lg border border-slate-300 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 placeholder:text-slate-400 focus:border-slate-400 focus:outline-none focus:ring-1 focus:ring-slate-400 shadow-sm dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
         />
       </div>
 
@@ -59,7 +59,7 @@ export function UniversitySelector({
           <select
             value={stateFilter}
             onChange={(e) => setStateFilter(e.target.value)}
-            className="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-slate-700 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+            className="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-slate-700 focus:border-slate-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
           >
             <option value="">All States ({NIGERIAN_STATES.length})</option>
             {NIGERIAN_STATES.map((s) => (
@@ -72,7 +72,7 @@ export function UniversitySelector({
           <select
             value={typeFilter}
             onChange={(e) => setTypeFilter(e.target.value)}
-            className="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-slate-700 focus:border-emerald-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+            className="rounded-md border border-slate-300 bg-white px-2.5 py-1.5 text-slate-700 focus:border-slate-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
           >
             <option value="">All Types</option>
             <option value="federal">Federal Universities</option>
@@ -87,7 +87,7 @@ export function UniversitySelector({
                 setStateFilter('');
                 setTypeFilter('');
               }}
-              className="text-xs font-medium text-emerald-600 hover:text-emerald-700 dark:text-emerald-400 underline self-center px-1"
+              className="text-xs font-medium text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white underline self-center px-1"
             >
               Reset filters
             </button>
@@ -118,8 +118,8 @@ export function UniversitySelector({
                 onClick={() => onSelect && onSelect(uni)}
                 className={`flex items-center justify-between p-3 rounded-lg border transition-all cursor-pointer ${
                   isSelected
-                    ? 'border-emerald-500 bg-emerald-50 shadow-xs dark:bg-emerald-950/40 dark:border-emerald-500'
-                    : 'border-slate-200 bg-white hover:border-emerald-300 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-800 dark:hover:border-emerald-500/50 dark:hover:bg-slate-800/80'
+                    ? 'border-slate-900 bg-slate-100 shadow-xs dark:bg-slate-800 dark:border-white'
+                    : 'border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-800 dark:hover:border-slate-700 dark:hover:bg-slate-800/80'
                 }`}
               >
                 <div className="space-y-1">
@@ -150,11 +150,11 @@ export function UniversitySelector({
 
                 <div className="flex items-center">
                   {isSelected ? (
-                    <span className="text-xs font-semibold text-emerald-700 bg-emerald-100 px-2.5 py-1 rounded-full dark:bg-emerald-900/60 dark:text-emerald-300">
+                    <span className="text-xs font-semibold text-white bg-slate-900 px-2.5 py-1 rounded-full dark:bg-white dark:text-slate-900">
                       Selected
                     </span>
                   ) : (
-                    <span className="text-xs text-slate-400 hover:text-emerald-600 dark:hover:text-emerald-400 font-medium">
+                    <span className="text-xs text-slate-400 hover:text-slate-900 dark:hover:text-white font-medium">
                       Select
                     </span>
                   )}

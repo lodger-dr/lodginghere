@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/shared/navbar';
@@ -7,14 +7,69 @@ import { CookieConsentBanner } from '@/components/shared/cookie-consent-banner';
 import { TourProvider } from '@/context/tour-context';
 import { AuthProvider } from '@/context/auth-context';
 import { GuidedTour } from '@/components/shared/guided-tour';
+import { WebsiteJsonLd, OrganizationJsonLd } from '@/components/shared/json-ld';
 
 const inter = Inter({ subsets: ['latin'] });
 
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#020617' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+};
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://lodginghere.vercel.app'),
-  title: 'LodgeHere — Verified Student Accommodation Across Nigerian Campuses',
+  title: {
+    default: 'LodgeHere — Verified Student Accommodation Across Nigerian Campuses',
+    template: '%s | LodgeHere — Student Accommodation Nigeria',
+  },
   description:
-    'Find genuine student accommodation near your university. Verified landlords, 100% transparent upfront pricing, and direct physical inspections.',
+    'Find genuine student accommodation near Nigerian universities. Verified landlords, 100% transparent upfront pricing, zero agent fees, and direct physical inspections.',
+  applicationName: 'LodgeHere',
+  authors: [{ name: 'LodgeHere Team', url: 'https://lodginghere.vercel.app' }],
+  generator: 'Next.js',
+  keywords: [
+    'student accommodation Nigeria',
+    'off-campus student lodges',
+    'UNILAG hostels and lodges',
+    'University of Ibadan student housing',
+    'OAU Ile-Ife student accommodation',
+    'UNN Nsukka student apartments',
+    'UNIBEN student flats',
+    'FUTA Akure student lodges',
+    'verified student landlords Nigeria',
+    'zero agent fee student housing',
+    'campus accommodation booking Nigeria',
+    'Nigerian university hostels',
+  ],
+  referrer: 'origin-when-cross-origin',
+  creator: 'LodgeHere',
+  publisher: 'LodgeHere',
+  formatDetection: {
+    email: false,
+    address: true,
+    telephone: false,
+  },
+  alternates: {
+    canonical: 'https://lodginghere.vercel.app',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
   icons: {
     icon: [
       { url: '/favicon.ico', sizes: '32x32' },
@@ -28,26 +83,28 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'LodgeHere — Verified Student Accommodation Across Nigerian Campuses',
     description:
-      'Find genuine student accommodation near your university. Verified landlords, 100% transparent upfront pricing, and direct physical inspections.',
+      'Find genuine student accommodation near your university. Verified landlords, 100% transparent upfront pricing, zero agent fees, and direct physical inspections.',
     url: 'https://lodginghere.vercel.app',
     siteName: 'LodgeHere',
+    locale: 'en_NG',
+    type: 'website',
     images: [
       {
         url: '/og-image.png',
         width: 1200,
         height: 630,
-        alt: 'LodgeHere Logo and Student Housing',
+        alt: 'LodgeHere — Verified Student Accommodation Across Nigerian Campuses',
       },
     ],
-    locale: 'en_NG',
-    type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'LodgeHere — Verified Student Accommodation Across Nigerian Campuses',
     description:
-      'Find genuine student accommodation near your university. Verified landlords, 100% transparent upfront pricing, and direct physical inspections.',
-    images: ['og-image.png'],
+      'Find genuine student accommodation near your university with zero agent fees, verified landlords, and physical inspections.',
+    site: '@lodgehere',
+    creator: '@lodgehere',
+    images: ['/og-image.png'],
   },
 };
 
@@ -59,6 +116,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full" suppressHydrationWarning>
       <head>
+        <WebsiteJsonLd />
+        <OrganizationJsonLd />
         <script
           dangerouslySetInnerHTML={{
             __html: `

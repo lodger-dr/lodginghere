@@ -125,8 +125,8 @@ export function ImageUploader({
         onClick={() => fileInputRef.current?.click()}
         className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 text-center cursor-pointer transition-colors ${
           isDragOver
-            ? 'border-emerald-500 bg-emerald-50/50'
-            : 'border-slate-300 bg-slate-50/50 hover:border-emerald-400 hover:bg-slate-50'
+            ? 'border-blue-500 bg-blue-50/50'
+            : 'border-slate-300 bg-slate-50/50 hover:border-slate-400 hover:bg-slate-50'
         }`}
       >
         <input
@@ -144,12 +144,12 @@ export function ImageUploader({
 
         {isUploading ? (
           <div className="flex flex-col items-center gap-2 text-xs text-slate-500 py-2">
-            <Loader2 className="h-7 w-7 text-emerald-600 animate-spin" />
+            <Loader2 className="h-7 w-7 text-blue-600 animate-spin" />
             <span>Uploading real photos to storage...</span>
           </div>
         ) : (
           <div className="flex flex-col items-center gap-2 text-xs text-slate-600">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 text-slate-700">
               <Upload className="h-5 w-5" />
             </div>
             <div>
@@ -176,7 +176,7 @@ export function ImageUploader({
         <div className="space-y-1.5">
           <div className="flex items-center justify-between text-xs text-slate-500">
             <span>Uploaded Photos ({value.length}/{maxFiles})</span>
-            <span className="text-[11px] text-emerald-600 font-semibold">
+            <span className="text-[11px] text-slate-500 font-semibold">
               First image is the cover photo
             </span>
           </div>
@@ -205,7 +205,7 @@ export function ImageUploader({
                     e.stopPropagation();
                     handleRemove(idx);
                   }}
-                  className="absolute top-1 right-1 rounded-full bg-slate-900/80 p-1 text-white hover:bg-red-600 transition-colors opacity-90 group-hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500"
+                  className="absolute top-1 right-1 rounded-full bg-slate-900/80 p-1 text-white hover:bg-red-600 transition-colors opacity-90 group-hover:opacity-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
                   title="Remove image"
                   aria-label={`Remove photo preview ${idx + 1}`}
                 >

@@ -1,4 +1,5 @@
 import React from 'react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   ShieldCheck,
@@ -8,17 +9,25 @@ import {
   Building2,
   AlertTriangle,
   ArrowRight,
+  HelpCircle,
 } from 'lucide-react';
+import { FaqJsonLd } from '@/components/shared/json-ld';
+import { AccordionItem } from '@/components/ui/accordion';
+
+export const metadata: Metadata = {
+  title: 'How It Works — Zero Agent Fees & Verified Inspections',
+  description:
+    'Learn how LodgeHere eliminates student housing scams in Nigeria with direct landlord verification, zero agent fees, and physical in-person inspection scheduling.',
+  alternates: {
+    canonical: 'https://lodginghere.vercel.app/how-it-works',
+  },
+};
 
 export default function HowItWorksPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10 sm:space-y-16">
       {/* Title */}
       <div className="text-center space-y-3">
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border dark:border-emerald-800">
-          <ShieldCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
-          <span>LodgeHere Standards</span>
-        </span>
         <h1 className="text-3xl sm:text-4xl font-black tracking-tight text-slate-900 dark:text-white">
           How LodgeHere Works
         </h1>
@@ -31,7 +40,7 @@ export default function HowItWorksPage() {
       {/* 4 Core Principles */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="rounded-3xl border border-slate-200/80 bg-white p-7 space-y-3 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-400">
+          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300">
             <CalendarCheck className="h-5 w-5" />
           </div>
           <h3 className="text-lg font-bold text-slate-900 dark:text-white">1. Physical In-Person Inspection Policy</h3>
@@ -87,16 +96,12 @@ export default function HowItWorksPage() {
         </div>
       </div>
 
-      {/* Verification Model Detail */}
+      {/* Three Layers of Listing Verification */}
       <div id="verification" className="rounded-3xl border border-slate-200 bg-white p-8 sm:p-10 space-y-6 shadow-xs dark:border-slate-800 dark:bg-slate-900">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-400 px-3 py-1 rounded-full">
-            <ShieldCheck className="h-4 w-4" />
-            <span>Verification Model</span>
-          </div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Three Layers of Listing Verification</h2>
           <p className="text-xs text-slate-500 dark:text-slate-400">
-            What each badge means across our listings:
+            What each verification standard means across our listings:
           </p>
         </div>
 
@@ -124,6 +129,74 @@ export default function HowItWorksPage() {
         </div>
       </div>
 
+      {/* Frequently Asked Questions (AEO & SEO) */}
+      <div className="space-y-6">
+        <FaqJsonLd />
+        <div className="text-center space-y-2">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Frequently Asked Questions</h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400 max-w-xl mx-auto">
+            Everything you need to know about finding verified student accommodation in Nigeria without middlemen.
+          </p>
+        </div>
+
+        <div className="space-y-3 max-w-3xl mx-auto">
+          <AccordionItem
+            title="How do I find verified off-campus student accommodation in Nigeria?"
+            defaultOpen={true}
+            icon={<HelpCircle className="h-4 w-4" />}
+          >
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              LodgeHere allows Nigerian university students to discover verified off-campus lodges with transparent pricing, direct landlord contacts, zero agent fees, and mandatory physical inspection scheduling before making any payment.
+            </p>
+          </AccordionItem>
+
+          <AccordionItem
+            title="Are there middleman or agent fees on LodgeHere?"
+            icon={<HelpCircle className="h-4 w-4" />}
+          >
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              No. LodgeHere operates on a 100% zero agent fee model. Students connect directly with verified property owners and caretakers, avoiding middleman agency and agreement fees typically charged near Nigerian campuses.
+            </p>
+          </AccordionItem>
+
+          <AccordionItem
+            title="How does LodgeHere prevent student accommodation scams in Nigeria?"
+            icon={<HelpCircle className="h-4 w-4" />}
+          >
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              LodgeHere protects students by verifying landlord identities, verifying property locations near accredited institutions, providing upfront itemized fee breakdowns (rent, caution deposit, service charge), and enforcing in-person physical inspections prior to booking.
+            </p>
+          </AccordionItem>
+
+          <AccordionItem
+            title="Can I physically inspect a student lodge before paying rent?"
+            icon={<HelpCircle className="h-4 w-4" />}
+          >
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              Yes. Every listing on LodgeHere has an integrated physical inspection scheduler. Students can select convenient date and time slots to meet the caretaker at the property and inspect water, power, security, and room conditions in person.
+            </p>
+          </AccordionItem>
+
+          <AccordionItem
+            title="Which Nigerian universities does LodgeHere support?"
+            icon={<HelpCircle className="h-4 w-4" />}
+          >
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              LodgeHere covers all major Nigerian tertiary institutions including University of Lagos (UNILAG), University of Ibadan (UI), Obafemi Awolowo University (OAU), University of Nigeria Nsukka (UNN), University of Benin (UNIBEN), Federal University of Technology Akure (FUTA), University of Ilorin (UNILORIN), Ahmadu Bello University (ABU), and Lagos State University (LASU).
+            </p>
+          </AccordionItem>
+
+          <AccordionItem
+            title="What amenities are essential in a Nigerian off-campus student lodge?"
+            icon={<HelpCircle className="h-4 w-4" />}
+          >
+            <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">
+              Crucial amenities include constant borehole running water, individual prepaid electricity meters, backup power (solar inverter or generator), secure gated perimeter fencing, and close proximity (walkable or single shuttle) to the campus gate.
+            </p>
+          </AccordionItem>
+        </div>
+      </div>
+
       {/* Safety Notice */}
       <div className="rounded-2xl border border-slate-200 bg-white p-6 flex items-start gap-4 text-xs text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-300">
         <AlertTriangle className="h-5 w-5 shrink-0 text-amber-500 mt-0.5" />
@@ -141,7 +214,7 @@ export default function HowItWorksPage() {
         <Link href="/explore">
           <button
             type="button"
-            className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-8 py-4 text-sm font-semibold text-white shadow-md transition-all hover:bg-black dark:bg-emerald-500 dark:text-slate-950 dark:hover:bg-emerald-400 cursor-pointer"
+            className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-8 py-4 text-sm font-semibold text-white shadow-md transition-all hover:bg-black dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 cursor-pointer"
           >
             <span>Start Exploring Lodges</span>
             <ArrowRight className="h-4 w-4" />

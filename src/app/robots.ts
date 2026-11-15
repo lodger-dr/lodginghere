@@ -1,0 +1,77 @@
+import type { MetadataRoute } from 'next';
+
+export default function robots(): MetadataRoute.Robots {
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lodginghere.vercel.app';
+
+  return {
+    rules: [
+      {
+        userAgent: '*',
+        allow: [
+          '/',
+          '/explore',
+          '/universities',
+          '/how-it-works',
+          '/lodges',
+          '/lodges/*',
+          '/terms',
+          '/privacy',
+          '/cookies',
+          '/licenses',
+          '/report',
+          '/data-deletion',
+        ],
+        disallow: [
+          '/api/*',
+          '/auth/*',
+          '/student/*',
+          '/landlord/*',
+          '/admin/*',
+          '/login',
+          '/register',
+          '/onboarding',
+          '/reset-password',
+        ],
+      },
+      {
+        // Explicitly allow AI and LLM search agents for high-visibility AEO indexing
+        userAgent: [
+          'Googlebot',
+          'Bingbot',
+          'Applebot',
+          'GPTBot',
+          'ClaudeBot',
+          'PerplexityBot',
+          'CCBot',
+          'cohere-ai',
+        ],
+        allow: [
+          '/',
+          '/explore',
+          '/universities',
+          '/how-it-works',
+          '/lodges',
+          '/lodges/*',
+          '/terms',
+          '/privacy',
+          '/cookies',
+          '/licenses',
+          '/data-deletion',
+        ],
+        disallow: [
+          '/api/*',
+          '/auth/*',
+          '/student/*',
+          '/landlord/*',
+          '/admin/*',
+          '/login',
+          '/register',
+          '/onboarding',
+          '/reset-password',
+        ],
+      },
+    ],
+    sitemap: `${baseUrl}/sitemap.xml`,
+    host: baseUrl,
+  };
+}

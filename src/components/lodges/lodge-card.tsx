@@ -58,7 +58,7 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
         <div className="absolute top-3 left-3 flex flex-wrap items-center gap-1.5 z-10">
           {lodge.landlord_verified && (
             <span className="inline-flex items-center gap-1 rounded-full bg-white/95 dark:bg-slate-900/95 px-3 py-1 text-[11px] font-bold text-slate-900 dark:text-white shadow-xs backdrop-blur-md">
-              <ShieldCheck className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
+              <ShieldCheck className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" aria-hidden="true" />
               <span>Verified Provider</span>
             </span>
           )}
@@ -75,7 +75,7 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
             e.stopPropagation();
             setIsFavorited(!isFavorited);
           }}
-          className={`absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full backdrop-blur-md transition-all duration-150 z-10 active:scale-90 cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none ${isFavorited
+          className={`absolute top-3 right-3 flex h-8 w-8 items-center justify-center rounded-full backdrop-blur-md transition-all duration-150 z-10 active:scale-90 cursor-pointer focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none ${isFavorited
             ? 'bg-rose-50 text-rose-700 shadow-xs'
             : 'bg-white/90 dark:bg-slate-900/90 text-slate-700 dark:text-slate-200 hover:text-rose-700 hover:bg-white'
             }`}
@@ -87,8 +87,8 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
         {/* Bottom Availability Pill */}
         <div className="absolute bottom-3 left-3 z-10">
           {lodge.available_rooms > 0 ? (
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-700/95 px-2.5 py-1 text-[11px] font-bold text-white shadow-xs backdrop-blur-md">
-              <span className="h-1.5 w-1.5 rounded-full bg-white animate-pulse" aria-hidden="true" />
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-slate-900/90 dark:bg-slate-800/90 px-2.5 py-1 text-[11px] font-semibold text-white shadow-xs backdrop-blur-md">
+              <span className="h-1.5 w-1.5 rounded-full bg-blue-400 animate-pulse" aria-hidden="true" />
               <span>{lodge.available_rooms} room{lodge.available_rooms > 1 ? 's' : ''} vacant</span>
             </span>
           ) : (
@@ -105,9 +105,9 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
         <div className="flex items-start justify-between gap-2">
           <Link
             href={`/lodges/${lodge.slug}`}
-            className="flex-1 min-w-0 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none rounded"
+            className="flex-1 min-w-0 focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none rounded"
           >
-            <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-emerald-700 dark:group-hover:text-emerald-400 transition-colors truncate">
+            <h3 className="font-bold text-base text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors truncate">
               {lodge.title}
             </h3>
           </Link>
@@ -149,7 +149,7 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
               </div>
             ) : (
               <div className="flex items-center gap-1.5 text-xs text-slate-600 dark:text-slate-300">
-                <ShieldCheck className="h-3.5 w-3.5 text-emerald-700 dark:text-emerald-400" aria-hidden="true" />
+                <ShieldCheck className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" aria-hidden="true" />
                 <span className="font-semibold text-slate-700 dark:text-slate-300">Verified Listing</span>
               </div>
             )}
@@ -159,14 +159,14 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
             <button
               type="button"
               onClick={() => onBookInspection?.(lodge)}
-              className="inline-flex items-center gap-1 rounded-full bg-slate-900 hover:bg-black dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white px-3 sm:px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all active:scale-[0.96] cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none focus-visible:ring-offset-2"
+              className="inline-flex items-center gap-1 rounded-full bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 px-3 sm:px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all active:scale-[0.96] cursor-pointer focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none focus-visible:ring-offset-2"
             >
               <CalendarCheck className="h-3 w-3" aria-hidden="true" />
               <span>Inspect</span>
             </button>
             <Link
               href={`/lodges/${lodge.slug}`}
-              className="inline-flex items-center gap-1 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none focus-visible:ring-offset-2"
+              className="inline-flex items-center gap-1 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:outline-none focus-visible:ring-offset-2"
             >
               <span>Details</span>
               <ArrowRight className="h-3 w-3" aria-hidden="true" />

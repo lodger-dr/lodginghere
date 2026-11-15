@@ -1,0 +1,30 @@
+# LodgeHere
+
+> Verified student accommodation across Nigerian campuses with zero agent fees, transparent upfront pricing, and mandatory in-person physical inspections.
+
+LodgeHere connects tertiary students across Nigeria directly with verified landlords and caretakers, replacing exploitative roadside middlemen with accountable, transparent tenancy.
+
+## Core Features
+- **Zero Agent Fees**: 100% direct landlord rentals with no 10-20% agent commission or agreement extortion.
+- **Physical In-Person Inspections**: Students schedule inspection dates and times before committing or transferring any rent.
+- **Room-Level Accuracy**: Track exact room codes, private bathroom status, and current occupancy.
+- **Itemized Pricing**: Total upfront move-in costs clearly stated (rent, caution deposit, service charge).
+- **Landlord Verification**: Multi-tier vetting of host identity and property letting rights.
+
+## Key Links & Endpoints
+- [Explore Lodges](https://lodginghere.vercel.app/explore): Search and filter student lodges by campus, price, and amenities.
+- [Campus Directory](https://lodginghere.vercel.app/universities): Browse accredited Nigerian universities (UNILAG, UI, OAU, UNN, UNIBEN, FUTA, and more).
+- [How It Works & Verification Policy](https://lodginghere.vercel.app/how-it-works): Comprehensive guide on the 3 layers of listing verification and physical inspection rules.
+- [Terms of Service](https://lodginghere.vercel.app/terms): Student and landlord accommodation rules and caution deposit guidelines.
+- [Privacy Policy](https://lodginghere.vercel.app/privacy): Data protection practices compliant with NDPR.
+
+## Universities Covered
+- University of Lagos (UNILAG) - Akoka, Yaba, Lagos
+- University of Ibadan (UI) - Agbowo, Bodija, Ibadan
+- Obafemi Awolowo University (OAU) - Mayfair, Asherifa, Ile-Ife
+- University of Nigeria Nsukka (UNN) - Nsukka, Enugu State
+- University of Benin (UNIBEN) - Ugbowo, Ekosodin, Benin City
+- Federal University of Technology Akure (FUTA) - South & West Gate, Akure
+- University of Ilorin (UNILORIN) - Tanke, Fate, Ilorin
+- Ahmadu Bello University (ABU) - Samaru, Zaria
+- Lagos State University (LASU) - Ojo, Lagos

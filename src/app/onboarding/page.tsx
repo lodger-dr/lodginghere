@@ -12,7 +12,6 @@ import {
   Phone,
   ArrowRight,
   ArrowLeft,
-  Sparkles,
   School,
   MapPin,
   BookOpen,
@@ -312,14 +311,14 @@ export default function OnboardingPage() {
                 }}
                 className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${
                   role === 'landlord'
-                    ? 'border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/30 shadow-md ring-2 ring-emerald-500/20'
+                    ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30 shadow-md ring-2 ring-blue-500/20'
                     : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900'
                 }`}
               >
                 <div
                   className={`p-3 rounded-2xl shrink-0 ${
                     role === 'landlord'
-                      ? 'bg-emerald-600 text-white'
+                      ? 'bg-blue-600 text-white'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
                   }`}
                 >
@@ -331,14 +330,14 @@ export default function OnboardingPage() {
                       I am an Accommodation Provider
                     </h4>
                     {role === 'landlord' && (
-                      <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400" />
+                      <CheckCircle2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
                     )}
                   </div>
                   <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
                     List properties, manage room vacancies, and connect directly with verified university students.
                   </p>
                   <div className="flex flex-wrap gap-1.5 pt-2">
-                    <span className="inline-flex items-center text-[10px] font-semibold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-300 px-2.5 py-0.5 rounded-full">
+                    <span className="inline-flex items-center text-[10px] font-semibold bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 px-2.5 py-0.5 rounded-full">
                       Direct Student Reach
                     </span>
                     <span className="inline-flex items-center text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-0.5 rounded-full">
@@ -386,7 +385,7 @@ export default function OnboardingPage() {
               {/* Google Autofill Badge */}
               {isPreFilledFromGoogle && (
                 <div className="flex items-center gap-2 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-900/60 p-3 text-xs text-amber-800 dark:text-amber-300 shadow-2xs">
-                  <Sparkles className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+                  <CheckCircle2 className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
                   <span>
                     Your name and email have been automatically populated from your Google account.
                   </span>
@@ -429,7 +428,7 @@ export default function OnboardingPage() {
                   >
                     Email Address
                   </label>
-                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-600 dark:text-emerald-400">
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 dark:text-blue-400">
                     <CheckCircle2 className="h-3 w-3" />
                     <span>Verified</span>
                   </span>
@@ -518,7 +517,7 @@ export default function OnboardingPage() {
                 {role === 'student' ? (
                   <School className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                 ) : (
-                  <Building2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                  <Building2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                 )}
                 <span>{role === 'student' ? 'Academic Profile' : 'Property Operations'}</span>
               </div>
@@ -649,7 +648,7 @@ export default function OnboardingPage() {
                         onClick={() => setProviderType('owner')}
                         className={`p-4 rounded-2xl border-2 text-left transition-all ${
                           providerType === 'owner'
-                            ? 'border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/30'
+                            ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30'
                             : 'border-slate-200 dark:border-slate-800'
                         }`}
                       >
@@ -666,7 +665,7 @@ export default function OnboardingPage() {
                         onClick={() => setProviderType('authorized_representative')}
                         className={`p-4 rounded-2xl border-2 text-left transition-all ${
                           providerType === 'authorized_representative'
-                            ? 'border-emerald-600 bg-emerald-50/50 dark:bg-emerald-950/30'
+                            ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30'
                             : 'border-slate-200 dark:border-slate-800'
                         }`}
                       >
@@ -737,7 +736,7 @@ export default function OnboardingPage() {
                       id="portfolioSize"
                       value={portfolioSize}
                       onChange={(e) => setPortfolioSize(e.target.value)}
-                      className="flex h-11 w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 px-3.5 py-2 text-xs text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-emerald-500 transition-colors"
+                      className="flex h-11 w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 px-3.5 py-2 text-xs text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
                     >
                       <option value="1_to_5">1 - 5 rooms</option>
                       <option value="6_to_15">6 - 15 rooms</option>
@@ -778,8 +777,8 @@ export default function OnboardingPage() {
         {step === 4 && (
           <Card className="rounded-3xl border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl dark:shadow-2xl overflow-hidden animate-in fade-in duration-300">
             <CardHeader className="text-center pb-2 pt-8">
-              <div className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-emerald-200 dark:border-emerald-800/60 bg-emerald-50 dark:bg-emerald-950/40 px-3.5 py-1 text-xs font-semibold text-emerald-800 dark:text-emerald-300 mb-3 shadow-2xs">
-                <CheckCircle2 className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              <div className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-blue-200 dark:border-blue-800/60 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1 text-xs font-semibold text-blue-800 dark:text-blue-300 mb-3 shadow-2xs">
+                <CheckCircle2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
                 <span>Ready to Launch</span>
               </div>
               <CardTitle className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
@@ -811,7 +810,7 @@ export default function OnboardingPage() {
                     className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold ${
                       role === 'student'
                         ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300'
-                        : 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300'
+                        : 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200'
                     }`}
                   >
                     {role === 'student' ? 'Student' : 'Accommodation Provider'}
@@ -872,7 +871,7 @@ export default function OnboardingPage() {
                     <span className="block text-[10px] font-semibold text-slate-400 uppercase">
                       Account Status
                     </span>
-                    <span className="inline-flex items-center gap-1 font-semibold text-emerald-600 dark:text-emerald-400">
+                    <span className="inline-flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400">
                       <CheckCircle2 className="h-3 w-3" />
                       <span>Ready for Activation</span>
                     </span>
@@ -914,7 +913,7 @@ export default function OnboardingPage() {
                   type="button"
                   disabled={isPending}
                   onClick={handleCompleteOnboarding}
-                  className="flex-1 h-11 rounded-2xl font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-500/20 transition-all text-xs flex items-center justify-center gap-2"
+                  className="flex-1 h-11 rounded-2xl font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 transition-all text-xs flex items-center justify-center gap-2"
                 >
                   {isPending ? (
                     <span>Completing onboarding...</span>

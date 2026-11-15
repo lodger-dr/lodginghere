@@ -100,7 +100,7 @@ export function CookieConsentBanner() {
           {/* Header Row */}
           <div className="flex items-start justify-between gap-3 sm:gap-4">
             <div className="flex items-start sm:items-center gap-2.5 sm:gap-3">
-              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+              <div className="flex h-9 w-9 sm:h-10 sm:w-10 shrink-0 items-center justify-center rounded-xl sm:rounded-2xl bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-200">
                 <Cookie className="h-4 w-4 sm:h-5 sm:w-5" aria-hidden="true" />
               </div>
               <div>
@@ -117,7 +117,7 @@ export function CookieConsentBanner() {
             <button
               type="button"
               onClick={handleRejectNonEssential}
-              className="rounded-full p-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none shrink-0"
+              className="rounded-full p-1.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none shrink-0"
               aria-label="Close cookie banner and use essential only"
             >
               <X className="h-4 w-4" aria-hidden="true" />
@@ -134,7 +134,7 @@ export function CookieConsentBanner() {
                     Required for account authentication, role switching, and security. Cannot be switched off.
                   </span>
                 </div>
-                <span className="rounded-full bg-emerald-100 px-2.5 py-0.5 text-[11px] font-bold text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300">
+                <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-[11px] font-bold text-slate-700 dark:bg-slate-800 dark:text-slate-300">
                   Always Active
                 </span>
               </div>
@@ -156,7 +156,7 @@ export function CookieConsentBanner() {
                     className="sr-only peer"
                     aria-label="Toggle Functional and Preference Cookies"
                   />
-                  <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600"></div>
+                  <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-blue-600"></div>
                 </label>
               </div>
 
@@ -177,7 +177,7 @@ export function CookieConsentBanner() {
                     className="sr-only peer"
                     aria-label="Toggle Anonymous Analytics Cookies"
                   />
-                  <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-emerald-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-emerald-600"></div>
+                  <div className="w-10 h-5 bg-slate-300 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-blue-500 rounded-full peer dark:bg-slate-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all dark:border-slate-600 peer-checked:bg-blue-600"></div>
                 </label>
               </div>
             </div>
@@ -188,14 +188,14 @@ export function CookieConsentBanner() {
             <div className="flex items-center justify-center sm:justify-start gap-2 text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">
               <Link
                 href="/cookies"
-                className="underline hover:text-slate-900 dark:hover:text-white focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none rounded"
+                className="underline hover:text-slate-900 dark:hover:text-white focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none rounded"
               >
                 Cookie Policy
               </Link>
               <span>•</span>
               <Link
                 href="/privacy"
-                className="underline hover:text-slate-900 dark:hover:text-white focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none rounded"
+                className="underline hover:text-slate-900 dark:hover:text-white focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none rounded"
               >
                 Privacy Notice
               </Link>
@@ -206,7 +206,7 @@ export function CookieConsentBanner() {
                 <button
                   type="button"
                   onClick={() => setShowPreferences(true)}
-                  className="order-2 sm:order-1 inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none cursor-pointer"
+                  className="order-2 sm:order-1 inline-flex items-center justify-center gap-1.5 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs font-semibold text-slate-700 dark:text-slate-200 hover:bg-slate-50 dark:hover:bg-slate-750 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none cursor-pointer"
                 >
                   <SlidersHorizontal className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Customize</span>
@@ -215,7 +215,7 @@ export function CookieConsentBanner() {
                 <button
                   type="button"
                   onClick={handleSavePreferences}
-                  className="order-2 sm:order-1 col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-1.5 rounded-full border border-emerald-600 bg-emerald-50 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 px-3.5 py-2 text-xs font-semibold hover:bg-emerald-100 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none cursor-pointer"
+                  className="order-2 sm:order-1 col-span-2 sm:col-span-1 inline-flex items-center justify-center gap-1.5 rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-3.5 py-2 text-xs font-semibold hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none cursor-pointer"
                 >
                   <Check className="h-3.5 w-3.5" aria-hidden="true" />
                   <span>Save Preferences</span>
@@ -225,7 +225,7 @@ export function CookieConsentBanner() {
               <button
                 type="button"
                 onClick={handleRejectNonEssential}
-                className="order-3 sm:order-2 inline-flex items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none cursor-pointer"
+                className="order-3 sm:order-2 inline-flex items-center justify-center rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 px-3.5 py-2 text-xs font-semibold text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none cursor-pointer"
               >
                 Reject Non-Essential
               </button>
@@ -233,7 +233,7 @@ export function CookieConsentBanner() {
               <button
                 type="button"
                 onClick={handleAcceptAll}
-                className="order-1 sm:order-3 col-span-2 sm:col-span-1 inline-flex items-center justify-center rounded-full bg-slate-900 text-white dark:bg-emerald-600 dark:hover:bg-emerald-500 hover:bg-black px-5 py-2 text-xs font-semibold shadow-xs transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none cursor-pointer"
+                className="order-1 sm:order-3 col-span-2 sm:col-span-1 inline-flex items-center justify-center rounded-full bg-slate-900 text-white dark:bg-white dark:text-slate-900 hover:bg-slate-800 dark:hover:bg-slate-100 px-5 py-2 text-xs font-semibold shadow-xs transition-colors focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none cursor-pointer"
               >
                 Accept All
               </button>

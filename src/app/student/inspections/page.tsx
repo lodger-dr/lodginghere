@@ -89,11 +89,11 @@ export default function StudentInspectionsPage() {
       </div>
 
       {/* Trust Reminder Banner */}
-      <div className="rounded-xl border border-emerald-200 bg-emerald-50/70 p-4 text-xs text-emerald-950 dark:border-emerald-900/60 dark:bg-emerald-950/20 dark:text-emerald-300 flex items-start gap-3">
-        <ShieldCheck className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+      <div className="rounded-xl border border-slate-200 dark:border-slate-800 bg-slate-50/80 dark:bg-slate-900/60 p-4 text-xs text-slate-800 dark:text-slate-200 flex items-start gap-3">
+        <ShieldCheck className="h-5 w-5 text-slate-600 dark:text-slate-400 shrink-0 mt-0.5" />
         <div className="space-y-0.5">
-          <span className="font-bold">Zero-Payment Rule Before Inspection</span>
-          <p className="text-[11px] text-emerald-800 dark:text-emerald-400/90 leading-relaxed">
+          <span className="font-bold text-slate-900 dark:text-white">Zero-Payment Rule Before Inspection</span>
+          <p className="text-[11px] text-slate-600 dark:text-slate-400 leading-relaxed">
             Never transfer rent, legal fees, or caution deposits before personally walking into the room, testing water taps, and confirming the lock security.
           </p>
         </div>
@@ -104,7 +104,7 @@ export default function StudentInspectionsPage() {
         <button
           onClick={() => setActiveTab('all')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'all'
-            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            ? 'border-slate-900 text-slate-900 dark:border-white dark:text-white'
             : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
@@ -113,7 +113,7 @@ export default function StudentInspectionsPage() {
         <button
           onClick={() => setActiveTab('accepted')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'accepted'
-            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            ? 'border-slate-900 text-slate-900 dark:border-white dark:text-white'
             : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
@@ -122,7 +122,7 @@ export default function StudentInspectionsPage() {
         <button
           onClick={() => setActiveTab('pending')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'pending'
-            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            ? 'border-slate-900 text-slate-900 dark:border-white dark:text-white'
             : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
@@ -131,7 +131,7 @@ export default function StudentInspectionsPage() {
         <button
           onClick={() => setActiveTab('rescheduled')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'rescheduled'
-            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            ? 'border-slate-900 text-slate-900 dark:border-white dark:text-white'
             : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
@@ -140,7 +140,7 @@ export default function StudentInspectionsPage() {
         <button
           onClick={() => setActiveTab('completed')}
           className={`px-3 py-2 font-semibold border-b-2 transition-colors whitespace-nowrap cursor-pointer ${activeTab === 'completed'
-            ? 'border-emerald-600 text-emerald-700 dark:border-emerald-400 dark:text-emerald-400'
+            ? 'border-slate-900 text-slate-900 dark:border-white dark:text-white'
             : 'border-transparent text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
             }`}
         >
@@ -178,8 +178,8 @@ export default function StudentInspectionsPage() {
                     <div className="space-y-1.5 min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         {isAccepted && (
-                          <span className="inline-flex items-center gap-1 rounded-full bg-emerald-100 px-2.5 py-0.5 text-[10px] font-bold text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-400">
-                            <CheckCircle2 className="h-3 w-3" />
+                          <span className="inline-flex items-center gap-1 rounded-full bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold text-slate-800 dark:bg-slate-800 dark:text-slate-200">
+                            <CheckCircle2 className="h-3 w-3 text-slate-700 dark:text-slate-300" />
                             <span>Confirmed by Landlord</span>
                           </span>
                         )}
@@ -210,7 +210,7 @@ export default function StudentInspectionsPage() {
                       </div>
 
                       <Link href={`/lodges/${insp.property_slug}`}>
-                        <h3 className="font-bold text-base text-slate-900 hover:text-emerald-600 dark:text-white dark:hover:text-emerald-400 transition-colors truncate">
+                        <h3 className="font-bold text-base text-slate-900 hover:text-blue-600 dark:text-white dark:hover:text-blue-400 transition-colors truncate">
                           {insp.property_title}
                         </h3>
                       </Link>
@@ -222,7 +222,7 @@ export default function StudentInspectionsPage() {
 
                       <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-slate-400 pt-1">
                         <span className="flex items-center gap-1 font-semibold text-slate-800 dark:text-slate-200">
-                          <CalendarCheck className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+                          <CalendarCheck className="h-3.5 w-3.5 text-slate-500 dark:text-slate-400" />
                           <span>{insp.requested_date}</span>
                         </span>
                         <span>•</span>
@@ -267,7 +267,7 @@ export default function StudentInspectionsPage() {
 
                       {/* Landlord notes on acceptance */}
                       {isAccepted && insp.landlord_notes && (
-                        <div className="mt-1 text-xs text-emerald-800 dark:text-emerald-300 bg-emerald-50/60 dark:bg-emerald-950/30 rounded-md p-2 border border-emerald-100 dark:border-emerald-900/50">
+                        <div className="mt-1 text-xs text-slate-800 dark:text-slate-200 bg-slate-100 dark:bg-slate-800/60 rounded-md p-2 border border-slate-200 dark:border-slate-700">
                           <strong>Caretaker Note:</strong> {insp.landlord_notes}
                         </div>
                       )}
@@ -310,7 +310,7 @@ export default function StudentInspectionsPage() {
               </p>
             </div>
             <Link href="/explore">
-              <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 gap-1.5">
+              <Button size="sm" className="gap-1.5 bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100">
                 <Search className="h-4 w-4" />
                 <span>Explore Approved Lodges</span>
               </Button>
