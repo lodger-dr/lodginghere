@@ -23,7 +23,7 @@ export default function StudentFavouritesPage() {
             Click the heart icon on any approved lodge in the marketplace to keep track of your choices.
           </p>
         </div>
-        <Link href="/explore">
+        <Link href="/student/explore">
           <Button size="sm" variant="outline" className="gap-2">
             <Search className="h-4 w-4" />
             <span>Browse Lodges</span>

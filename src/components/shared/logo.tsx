@@ -24,9 +24,13 @@ export function Logo({ className = '', inverted = false, size = 'md' }: LogoProp
   );
 
   const href = isDashboard
-    ? role === 'student'
+    ? pathname?.startsWith('/student')
       ? '/student/overview'
-      : '/landlord/overview'
+      : pathname?.startsWith('/landlord')
+        ? '/landlord/overview'
+        : role === 'student'
+          ? '/student/overview'
+          : '/landlord/overview'
     : '/';
 
   const heightClasses = {

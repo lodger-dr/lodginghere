@@ -133,8 +133,8 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
         </div>
 
         {/* Row 3: Reviews Status & Actions (Honest, strictly eliminating fake reviews) */}
-        <div className="flex items-center justify-between pt-2 border-t border-slate-200/80 dark:border-slate-800">
-          <div>
+        <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-2 pt-2 border-t border-slate-200/80 dark:border-slate-800">
+          <div className="shrink-0">
             {hasReviews ? (
               <div className="flex items-center gap-1">
                 <div className="flex items-center text-amber-500">
@@ -155,18 +155,18 @@ export function LodgeCard({ lodge, onBookInspection }: LodgeCardProps) {
             )}
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 sm:gap-2 ml-auto">
             <button
               type="button"
               onClick={() => onBookInspection?.(lodge)}
-              className="inline-flex items-center gap-1 rounded-full bg-slate-900 hover:bg-black dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all active:scale-[0.96] cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none focus-visible:ring-offset-2"
+              className="inline-flex items-center gap-1 rounded-full bg-slate-900 hover:bg-black dark:bg-emerald-600 dark:hover:bg-emerald-500 text-white px-3 sm:px-3.5 py-1.5 text-xs font-semibold shadow-xs transition-all active:scale-[0.96] cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none focus-visible:ring-offset-2"
             >
               <CalendarCheck className="h-3 w-3" aria-hidden="true" />
               <span>Inspect</span>
             </button>
             <Link
               href={`/lodges/${lodge.slug}`}
-              className="inline-flex items-center gap-1 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none focus-visible:ring-offset-2"
+              className="inline-flex items-center gap-1 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-800 dark:text-slate-200 px-2.5 sm:px-3 py-1.5 text-xs font-semibold transition-colors focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none focus-visible:ring-offset-2"
             >
               <span>Details</span>
               <ArrowRight className="h-3 w-3" aria-hidden="true" />

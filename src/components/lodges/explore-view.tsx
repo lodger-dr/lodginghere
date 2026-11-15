@@ -438,12 +438,6 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
                 <RotateCcw className="h-4 w-4" />
                 <span>Clear All Filters</span>
               </Button>
-              <Link href="/landlord/properties">
-                <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 gap-1.5">
-                  <Building2 className="h-4 w-4" />
-                  <span>List a Lodge Around Here</span>
-                </Button>
-              </Link>
             </div>
           </div>
         )}

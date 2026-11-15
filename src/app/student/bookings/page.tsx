@@ -24,7 +24,7 @@ export default function StudentBookingsPage() {
             request for a specific available room.
           </p>
         </div>
-        <Link href="/explore">
+        <Link href="/student/explore">
           <Button size="sm" variant="outline" className="gap-2">
             <Search className="h-4 w-4" />
             <span>Discover Lodges</span>

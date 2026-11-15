@@ -3,16 +3,18 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Building2, Search } from 'lucide-react';
+import { Menu, X, Building2, Search, Compass } from 'lucide-react';
 import { Logo } from './logo';
 import { ThemeToggle } from './theme-toggle';
 import { CommandMenu } from './command-menu';
 import { useDevRole } from '@/lib/dev-role';
+import { useTour } from '@/context/tour-context';
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const { role } = useDevRole();
+  const { startTour } = useTour();
   const pathname = usePathname();
 
   // Listen for Command+K / Ctrl+K keyboard shortcut
@@ -87,7 +89,7 @@ export function Navbar() {
           </div>
 
           {/* Center: Sleek Compact Command K Search Widget */}
-          <div className="flex-1 max-w-sm hidden sm:block">
+          <div data-tour="command-search" className="flex-1 max-w-sm hidden sm:block">
             <button
               type="button"
               onClick={() => setCommandOpen(true)}
@@ -107,6 +109,17 @@ export function Navbar() {
 
           {/* Right Header Controls */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+            {/* Interactive Tour Guide Button */}
+            <button
+              type="button"
+              onClick={() => startTour()}
+              className="flex items-center gap-1.5 rounded-md border border-emerald-200/80 bg-emerald-50/70 hover:bg-emerald-100/90 dark:border-emerald-800/80 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/60 px-2 sm:px-2.5 py-1 text-xs font-bold text-emerald-800 dark:text-emerald-300 transition-colors cursor-pointer shadow-2xs"
+              title="Start 6-step guided walkthrough"
+            >
+              <Compass className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span className="hidden sm:inline">Tour Guide</span>
+            </button>
+
             {/* Action Button: ONLY shown on public website pages */}
             {!isDashboard && (
               <Link href={role === 'student' ? '/student/overview' : '/landlord/overview'}>
@@ -122,6 +135,7 @@ export function Navbar() {
             {/* Account Role Badge: automatically carries the role selected at signup */}
             <Link
               href={role === 'student' ? '/student/profile' : '/landlord/profile'}
+              data-tour="role-badge"
               className="flex items-center gap-1.5 rounded-md border border-slate-200 bg-slate-50 px-2 sm:px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
               title={`Account role: ${role === 'student' ? 'Student' : 'Landlord'}`}
             >
@@ -159,6 +173,24 @@ export function Navbar() {
               <kbd className="rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-mono dark:border-slate-700 dark:bg-slate-900">
                 ⌘K
               </kbd>
+            </button>
+
+            {/* Mobile Tour Guide Button */}
+            <button
+              type="button"
+              onClick={() => {
+                setMobileMenuOpen(false);
+                startTour();
+              }}
+              className="w-full flex items-center justify-between rounded-xl border border-emerald-200/80 bg-emerald-50/70 p-2.5 text-xs font-bold text-emerald-800 dark:border-emerald-800/80 dark:bg-emerald-950/40 dark:text-emerald-300"
+            >
+              <div className="flex items-center gap-2">
+                <Compass className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                <span>Interactive Tour Guide</span>
+              </div>
+              <span className="text-[10px] bg-emerald-200/60 dark:bg-emerald-900/60 px-2 py-0.5 rounded-full">
+                6 Steps
+              </span>
             </button>
 
             <div className="flex items-center justify-between pb-2 border-b border-slate-100 dark:border-slate-800">

@@ -81,7 +81,7 @@ export default function StudentInspectionsPage() {
           </p>
         </div>
         <WinningCTA
-          href="/explore"
+          href="/student/explore"
           idleText="Find Another Lodge"
           winText="Lock In Your Next Spot — Win!"
           size="sm"

@@ -131,3 +131,14 @@ html.dark body {
   opacity: 1;
 }
 
+/* Mobile Scrollbar Hide Utility */
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+

@@ -91,7 +91,7 @@ export default function LandlordOverviewPage() {
       </div>
 
       {/* STAGE 1: Onboarding Lifecycle Checklist Card (Directly following Dojah reference screenshot with Frosted Glass) */}
-      <div className="glass-card rounded-2xl p-6 shadow-xs space-y-6">
+      <div data-tour="primary-action" className="glass-card rounded-2xl p-6 shadow-xs space-y-6">
         <div>
           <h2 className="text-base font-bold text-slate-900 dark:text-white">
             Welcome to LodgeHere, Chief Adebayo
@@ -191,7 +191,7 @@ export default function LandlordOverviewPage() {
       </div>
 
       {/* STAGE 2: Quick Actions & Key Portfolio Metrics */}
-      <div className="space-y-3">
+      <div data-tour="quick-actions" className="space-y-3">
         <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
           Quick Actions
         </h3>
@@ -323,7 +323,7 @@ export default function LandlordOverviewPage() {
       </div>
 
       {/* STAGE 4: FOLD SECONDARY COMPLIANCE & PROTOCOLS INTO ACCORDIONS */}
-      <div className="space-y-4 pt-2">
+      <div data-tour="accordions-help" className="space-y-4 pt-2">
         <div className="space-y-0.5">
           <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
             Landlord Compliance & Operating Standards

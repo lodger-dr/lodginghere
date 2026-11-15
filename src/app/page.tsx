@@ -279,42 +279,43 @@ export default function HomePage() {
   };
 
   return (
-    <div className="space-y-20 sm:space-y-28 pb-28">
+    <div className="space-y-12 sm:space-y-20 lg:space-y-28 pb-20 sm:pb-28">
       {/* ======================================================== */}
       {/* 1. HERO SECTION (Elevated Architectural Perspective) */}
       {/* ======================================================== */}
-      <section className="relative px-3 sm:px-6 lg:px-8 pt-3 sm:pt-5">
-        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl sm:rounded-[2.75rem] bg-slate-950 min-h-[600px] sm:min-h-[660px] flex flex-col justify-between p-6 sm:p-12 text-center shadow-2xl ring-1 ring-black/10">
+      <section className="relative px-3 sm:px-6 lg:px-8 pt-2 sm:pt-5">
+        <div className="relative mx-auto max-w-7xl rounded-2xl sm:rounded-3xl md:rounded-[2.75rem] bg-slate-950 min-h-[500px] sm:min-h-[620px] flex flex-col justify-between p-4 sm:p-8 md:p-12 text-center shadow-2xl ring-1 ring-black/10">
 
-          {/* Architectural Street Perspective Background */}
-          <div
-            className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out scale-100 hover:scale-105"
-            style={{
-              backgroundImage: `url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=2400&q=85')`,
-            }}
-          />
-
-          {/* Balanced Editorial Dark Vignette Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/45 to-slate-950/35" />
+          {/* Architectural Street Perspective Background (Clipped safely without breaking popovers) */}
+          <div className="absolute inset-0 overflow-hidden rounded-2xl sm:rounded-3xl md:rounded-[2.75rem] pointer-events-none">
+            <div
+              className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 ease-out scale-100 hover:scale-105"
+              style={{
+                backgroundImage: `url('https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?auto=format&fit=crop&w=2400&q=85')`,
+              }}
+            />
+            {/* Balanced Editorial Dark Vignette Overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-slate-950/35" />
+          </div>
 
           {/* Centered Headline & Badge */}
-          <div className="relative z-10 mx-auto max-w-4xl pt-10 sm:pt-16 space-y-4">
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white drop-shadow-md text-balance leading-tight">
+          <div className="relative z-10 mx-auto max-w-4xl pt-6 sm:pt-12 md:pt-16 space-y-3 sm:space-y-4">
+            <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white drop-shadow-md text-balance leading-tight">
               Browse Homes, Apartments <br className="hidden sm:inline" />
               & Rentals with Ease
             </h1>
 
             {/* Translucent Glass Pill Badge */}
-            <div className="pt-1">
-              <span className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-4 py-1.5 text-xs font-semibold text-white backdrop-blur-md shadow-xs">
-                <Sparkles className="h-3.5 w-3.5 text-emerald-300" />
+            <div className="pt-0.5">
+              <span className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-white/20 bg-white/10 px-3 sm:px-4 py-1 sm:py-1.5 text-[11px] sm:text-xs font-semibold text-white backdrop-blur-md shadow-xs">
+                <Sparkles className="h-3 sm:h-3.5 w-3 sm:w-3.5 text-emerald-300 shrink-0" />
                 <span>Verified Student Accommodation • Nigerian Campuses</span>
               </span>
             </div>
           </div>
 
           {/* Bottom Floating Search Capsule Bar */}
-          <div className="relative z-20 pt-10 pb-2 w-full">
+          <div className="relative z-20 pt-6 sm:pt-8 md:pt-10 pb-2 w-full">
             <HeroSearch />
           </div>
         </div>
@@ -322,66 +323,66 @@ export default function HomePage() {
         {/* ======================================================== */}
         {/* 2. FLOATING 4-FEATURE HIGHLIGHTS BAR */}
         {/* ======================================================== */}
-        <div className="relative z-30 mx-auto max-w-6xl -mt-6 sm:-mt-8 px-2 sm:px-4">
-          <div className="rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-5 sm:p-7 shadow-xl shadow-slate-950/5 ring-1 ring-black/5 dark:ring-white/5">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-4 lg:divide-x lg:divide-slate-100 dark:lg:divide-slate-800">
+        <div className="relative z-30 mx-auto max-w-6xl mt-4 sm:-mt-8 px-2 sm:px-4">
+          <div className="rounded-2xl sm:rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 p-4 sm:p-7 shadow-xl shadow-slate-950/5 ring-1 ring-black/5 dark:ring-white/5">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 lg:divide-x lg:divide-slate-100 dark:lg:divide-slate-800">
 
               {/* Feature 1 */}
-              <div className="flex items-center gap-3.5 lg:px-4 group">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-200">
-                  <ShieldCheck className="h-6 w-6" />
+              <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2 sm:gap-3.5 lg:px-4 group">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-200">
+                  <ShieldCheck className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                <div className="min-w-0">
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-snug">
                     Direct Landlords
                   </h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-300">
-                    0% middleman agent fees
+                  <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
+                    0% agent fees
                   </p>
                 </div>
               </div>
 
               {/* Feature 2 */}
-              <div className="flex items-center gap-3.5 lg:px-4 group">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-200">
-                  <FileCheck2 className="h-6 w-6" aria-hidden="true" />
+              <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2 sm:gap-3.5 lg:px-4 group">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-200">
+                  <FileCheck2 className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
-                    Itemized Upfront Costs
+                <div className="min-w-0">
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                    Itemized Costs
                   </h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-300">
-                    Clear rent & caution fees
+                  <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
+                    Clear rent & caution
                   </p>
                 </div>
               </div>
 
               {/* Feature 3 */}
-              <div className="flex items-center gap-3.5 lg:px-4 group">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-200">
-                  <CalendarCheck className="h-6 w-6" aria-hidden="true" />
+              <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2 sm:gap-3.5 lg:px-4 group">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-200">
+                  <CalendarCheck className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                <div className="min-w-0">
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-snug">
                     Physical Inspection
                   </h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-300">
-                    Inspect room before paying
+                  <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
+                    Inspect before paying
                   </p>
                 </div>
               </div>
 
               {/* Feature 4 */}
-              <div className="flex items-center gap-3.5 lg:px-4 group">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-200">
-                  <MapPin className="h-6 w-6" aria-hidden="true" />
+              <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-2 sm:gap-3.5 lg:px-4 group">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 shrink-0 shadow-xs group-hover:scale-105 transition-transform duration-200">
+                  <MapPin className="h-5 w-5 sm:h-6 sm:w-6" aria-hidden="true" />
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold text-slate-900 dark:text-white leading-snug">
+                <div className="min-w-0">
+                  <h4 className="text-xs sm:text-sm font-bold text-slate-900 dark:text-white leading-snug">
                     Campus Proximity
                   </h4>
-                  <p className="text-xs text-slate-600 dark:text-slate-300">
-                    Walking distance to gates
+                  <p className="text-[11px] sm:text-xs text-slate-600 dark:text-slate-300">
+                    Walking to gates
                   </p>
                 </div>
               </div>
@@ -394,19 +395,19 @@ export default function HomePage() {
       {/* ======================================================== */}
       {/* 3. SECTION 1: "Browse Verified Accommodations" */}
       {/* ======================================================== */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-4">
-          <div className="space-y-2">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white text-balance">
+      <section className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-3 sm:gap-4">
+          <div className="space-y-1 sm:space-y-2">
+            <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white text-balance">
               Browse Verified Accommodations
             </h2>
-            <p className="text-sm text-slate-600 dark:text-slate-300 max-w-xl text-pretty">
+            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 max-w-xl text-pretty">
               Verified student accommodations with running water, power amenities, and 0% agent markups.
             </p>
           </div>
 
-          {/* Quick Campus Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
+          {/* Quick Campus Filter Pills with smooth edge-to-edge mobile swipe */}
+          <div className="-mx-3 px-3 sm:mx-0 sm:px-0 flex items-center gap-1.5 overflow-x-auto pb-2 scrollbar-none touch-pan-x">
             {CAMPUS_FILTER_TABS.map((tab) => {
               const isActive = activeCampusTab === tab.slug;
               return (
@@ -414,7 +415,7 @@ export default function HomePage() {
                   key={tab.label}
                   type="button"
                   onClick={() => setActiveCampusTab(tab.slug)}
-                  className={`rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-150 active:scale-[0.96] cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none ${isActive
+                  className={`rounded-full px-3.5 sm:px-4 py-1.5 sm:py-2 text-xs font-semibold whitespace-nowrap transition-all duration-150 active:scale-[0.96] cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none ${isActive
                       ? 'bg-slate-900 text-white shadow-xs dark:bg-emerald-500 dark:text-slate-950'
                       : 'bg-white text-slate-700 hover:bg-slate-100 hover:text-slate-900 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 dark:hover:text-white border border-slate-300/80 dark:border-slate-700/80'
                     }`}
@@ -426,8 +427,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 3-Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Responsive Lodge Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {section1Lodges.map((lodge) => (
             <LodgeCard
               key={lodge.id}
@@ -441,18 +442,18 @@ export default function HomePage() {
       {/* ======================================================== */}
       {/* 4. SECTION 2: "Curated Campus Accommodations" */}
       {/* ======================================================== */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-8">
-        <div className="text-center space-y-2 max-w-2xl mx-auto">
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white text-balance">
+      <section className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 space-y-6 sm:space-y-8">
+        <div className="text-center space-y-1.5 sm:space-y-2 max-w-2xl mx-auto">
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white text-balance">
             Curated Campus Accommodations
           </h2>
-          <p className="text-sm text-slate-500 dark:text-slate-400 text-pretty">
+          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 text-pretty">
             Handpicked student residences selected for security, perimeter fencing, and conducive academic learning environments.
           </p>
         </div>
 
-        {/* 3-Card Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Responsive Lodge Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {section2Lodges.map((lodge) => (
             <LodgeCard
               key={lodge.id}
@@ -463,11 +464,11 @@ export default function HomePage() {
         </div>
 
         {/* Explore All Campus Lodges Action */}
-        <div className="pt-4 text-center">
-          <Link href="/explore">
+        <div className="pt-2 sm:pt-4 text-center">
+          <Link href="/explore" className="w-full sm:w-auto inline-block">
             <button
               type="button"
-              className="inline-flex items-center gap-2 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-7 py-3.5 text-xs font-semibold text-slate-800 dark:text-slate-200 transition-all duration-150 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-xs hover:border-slate-400 active:scale-[0.98] cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-full border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-900 px-6 sm:px-7 py-3 sm:py-3.5 text-xs font-semibold text-slate-800 dark:text-slate-200 transition-all duration-150 hover:bg-slate-50 dark:hover:bg-slate-800 shadow-xs hover:border-slate-400 active:scale-[0.98] cursor-pointer focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
             >
               <span>Explore All Verified Lodges</span>
               <ArrowRight className="h-3.5 w-3.5" aria-hidden="true" />
@@ -479,55 +480,55 @@ export default function HomePage() {
       {/* ======================================================== */}
       {/* 5. HOW LODGEHERE WORKS (Step-by-step Trust Flow) */}
       {/* ======================================================== */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-12">
-        <div className="text-center space-y-3 max-w-2xl mx-auto">
-          <span className="text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-300 px-3.5 py-1 rounded-full border border-emerald-200/60 dark:border-emerald-800">
+      <section className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8 space-y-8 sm:space-y-12">
+        <div className="text-center space-y-2 sm:space-y-3 max-w-2xl mx-auto">
+          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-800 bg-emerald-50 dark:bg-emerald-950/60 dark:text-emerald-300 px-3 py-0.5 sm:px-3.5 sm:py-1 rounded-full border border-emerald-200/60 dark:border-emerald-800">
             Transparent Workflow
           </span>
-          <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white text-balance">
+          <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white text-balance">
             How LodgeHere Works
           </h2>
-          <p className="text-sm text-slate-600 dark:text-slate-300 text-pretty">
+          <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-300 text-pretty">
             Built specifically for Nigerian student realities. Every step enforces verification, zero surprises, and peace of mind.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-          <div className="rounded-3xl border border-slate-200/80 bg-white p-6 space-y-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 font-bold text-sm">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+          <div className="rounded-2xl sm:rounded-3xl border border-slate-200/80 bg-white p-5 sm:p-6 space-y-2.5 sm:space-y-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 font-bold text-xs sm:text-sm">
               01
             </div>
-            <h3 className="font-bold text-base text-slate-900 dark:text-white">Campus Discovery</h3>
+            <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Campus Discovery</h3>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed text-pretty">
               Filter by university, neighbourhood, budget, and accommodation type (self-con, single room, flat).
             </p>
           </div>
 
-          <div className="rounded-3xl border border-slate-200/80 bg-white p-6 space-y-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 font-bold text-sm">
+          <div className="rounded-2xl sm:rounded-3xl border border-slate-200/80 bg-white p-5 sm:p-6 space-y-2.5 sm:space-y-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 font-bold text-xs sm:text-sm">
               02
             </div>
-            <h3 className="font-bold text-base text-slate-900 dark:text-white">Upfront Total Costs</h3>
+            <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Upfront Total Costs</h3>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed text-pretty">
               See the full financial picture before leaving home: annual rent, caution deposit, and agreement fees.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-slate-200/80 bg-white p-6 space-y-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 font-bold text-sm">
+          <div className="rounded-2xl sm:rounded-3xl border border-slate-200/80 bg-white p-5 sm:p-6 space-y-2.5 sm:space-y-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 font-bold text-xs sm:text-sm">
               03
             </div>
-            <h3 className="font-bold text-base text-slate-900 dark:text-white">Physical Inspection</h3>
+            <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Physical Inspection</h3>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed text-pretty">
               Schedule a physical inspection on a chosen date. Confirm water, light, and security in person with the caretaker.
             </p>
           </div>
 
-          <div className="rounded-3xl border border-slate-200/80 bg-white p-6 space-y-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 font-bold text-sm">
+          <div className="rounded-2xl sm:rounded-3xl border border-slate-200/80 bg-white p-5 sm:p-6 space-y-2.5 sm:space-y-3.5 shadow-xs dark:border-slate-800 dark:bg-slate-900 transition-all duration-200 hover:-translate-y-1 hover:shadow-md">
+            <div className="flex h-10 w-10 sm:h-11 sm:w-11 items-center justify-center rounded-2xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 font-bold text-xs sm:text-sm">
               04
             </div>
-            <h3 className="font-bold text-base text-slate-900 dark:text-white">Confirmed Booking</h3>
+            <h3 className="font-bold text-sm sm:text-base text-slate-900 dark:text-white">Confirmed Booking</h3>
             <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed text-pretty">
               Pick your exact room number. Agree on terms directly with the verified landlord with zero middleman scams.
             </p>
@@ -538,17 +539,17 @@ export default function HomePage() {
       {/* ======================================================== */}
       {/* 6. LANDLORD CALL-TO-ACTION BANNER */}
       {/* ======================================================== */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl sm:rounded-[2.5rem] border border-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8 sm:p-14 text-white shadow-2xl relative overflow-hidden">
+      <section className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
+        <div className="rounded-2xl sm:rounded-3xl md:rounded-[2.5rem] border border-slate-800 bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-5 sm:p-10 md:p-14 text-white shadow-2xl relative overflow-hidden">
           <div className="absolute right-0 top-0 -mt-12 -mr-12 h-72 w-72 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none" />
 
-          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="space-y-3.5 max-w-2xl text-center lg:text-left">
-              <span className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 border border-emerald-800/60 px-3.5 py-1 rounded-full">
+          <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6 sm:gap-8">
+            <div className="space-y-2.5 sm:space-y-3.5 max-w-2xl text-center lg:text-left">
+              <span className="inline-flex items-center gap-1.5 text-[11px] sm:text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-950/80 border border-emerald-800/60 px-3 py-1 rounded-full">
                 <Building2 className="h-3.5 w-3.5" aria-hidden="true" />
                 <span>For Property Owners & Caretakers</span>
               </span>
-              <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white text-balance">
+              <h2 className="text-xl sm:text-3xl md:text-4xl font-extrabold tracking-tight text-white text-balance">
                 List Your Campus Lodge with 0% Agency Markup
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed text-pretty">
@@ -556,15 +557,15 @@ export default function HomePage() {
               </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-3.5 shrink-0">
-              <Link href="/landlord/properties">
-                <Button className="bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-full px-7 py-3.5 shadow-md gap-2 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2.5 sm:gap-3.5 w-full sm:w-auto shrink-0">
+              <Link href="/landlord/properties" className="w-full sm:w-auto">
+                <Button className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-semibold rounded-full px-6 sm:px-7 py-3 sm:py-3.5 shadow-md gap-2 active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none">
                   <Plus className="h-4 w-4" aria-hidden="true" />
                   <span>List Your Property</span>
                 </Button>
               </Link>
-              <Link href="/how-it-works">
-                <Button variant="outline" className="border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-slate-200 rounded-full px-7 py-3.5 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none">
+              <Link href="/how-it-works" className="w-full sm:w-auto">
+                <Button variant="outline" className="w-full sm:w-auto border-slate-700 bg-slate-900/80 hover:bg-slate-800 text-slate-200 rounded-full px-6 sm:px-7 py-3 sm:py-3.5 focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none">
                   <span>How Verification Works</span>
                 </Button>
               </Link>

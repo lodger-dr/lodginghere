@@ -11,9 +11,9 @@ import {
   CalendarCheck,
   BookmarkCheck,
   User,
-  ArrowRightLeft,
   ExternalLink,
 } from 'lucide-react';
+import { useTour } from '@/context/tour-context';
 
 interface StudentLayoutProps {
   children: React.ReactNode;
@@ -21,6 +21,7 @@ interface StudentLayoutProps {
 
 export default function StudentLayout({ children }: StudentLayoutProps) {
   const pathname = usePathname();
+  const { startTour } = useTour();
 
   const isLinkActive = (href: string) => {
     if (href === '/student/overview') return pathname === href;
@@ -58,7 +59,7 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
       <div className="pointer-events-none absolute top-1/3 right-10 h-80 w-80 rounded-full bg-blue-500/8 blur-3xl dark:bg-blue-500/10" />
 
       {/* Frosted Glass Left Navigation Sidebar */}
-      <aside className="w-64 shrink-0 border-r border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl p-4 hidden md:flex md:flex-col justify-between transition-colors z-20">
+      <aside data-tour="sidebar-nav" className="w-64 shrink-0 border-r border-slate-200/60 dark:border-slate-800/60 bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl p-4 hidden md:flex md:flex-col justify-between transition-colors z-20">
         <div className="space-y-6">
           {/* Grouped Sidebar Navigation */}
           <div className="space-y-6">
@@ -102,20 +103,20 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
         </div>
 
         {/* Bottom User Card */}
-        <div className="pt-4 border-t border-slate-200/50 dark:border-slate-800/50 space-y-3">
-          <Link
-            href="/landlord/overview"
-            className="flex items-center justify-between rounded-xl px-3 py-2 text-xs text-slate-600 hover:bg-slate-100/70 dark:text-slate-400 dark:hover:bg-slate-800/60 transition-colors"
-            title="Switch to Landlord workspace"
+        <div className="pt-4 border-t border-slate-200/50 dark:border-slate-800/50 space-y-2.5">
+          <button
+            type="button"
+            onClick={() => startTour('student')}
+            className="w-full flex items-center justify-between rounded-xl px-3 py-2 text-xs font-semibold text-emerald-800 dark:text-emerald-300 bg-emerald-50/70 hover:bg-emerald-100/80 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/50 transition-colors cursor-pointer border border-emerald-200/60 dark:border-emerald-800/60 shadow-2xs"
           >
             <span className="flex items-center gap-2">
-              <ArrowRightLeft className="h-3.5 w-3.5 text-slate-400" />
-              <span>Switch to Landlord</span>
+              <Compass className="h-3.5 w-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span>Interactive Tour Guide</span>
             </span>
-            <span className="text-[10px] font-bold text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-950/50 px-1.5 py-0.5 rounded">
-              Role
+            <span className="text-[10px] bg-emerald-200/60 dark:bg-emerald-900/60 px-1.5 py-0.5 rounded font-bold">
+              6 Steps
             </span>
-          </Link>
+          </button>
 
           <div className="flex items-center justify-between p-2.5 rounded-2xl border border-slate-200/60 bg-white/60 dark:border-slate-800/60 dark:bg-slate-800/40 backdrop-blur-md">
             <div className="flex items-center gap-2.5 min-w-0">

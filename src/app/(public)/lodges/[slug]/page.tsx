@@ -543,7 +543,7 @@ export default function LodgeDetailPage() {
                 <WinningCTA
                   onClick={() => setIsInspectionModalOpen(true)}
                   idleText="Schedule Physical Inspection"
-                  winText="Claim Your Room Spot — Win!"
+                  winText="Inspection Request Confirmed"
                   size="lg"
                   className="w-full"
                 />

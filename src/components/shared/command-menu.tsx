@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import {
   Search,
   Building2,
@@ -30,11 +30,14 @@ interface CommandMenuProps {
 
 export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const { role, switchRole } = useDevRole();
   const { theme, toggleTheme } = useTheme();
   const [query, setQuery] = useState('');
   const [lodges, setLodges] = useState<Lodge[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const isStudent = pathname?.startsWith('/student') || role === 'student';
 
   useEffect(() => {
     if (isOpen) {
@@ -116,16 +119,20 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
   );
 
   const actionItems = [
-    {
-      title: `Switch to ${role === 'student' ? 'Landlord' : 'Student'} Persona`,
-      subtitle: `Currently operating as ${role}`,
-      icon: ArrowRightLeft,
-      action: () => {
-        switchRole(role === 'student' ? 'landlord' : 'student');
-        onClose();
-      },
-      category: 'Quick Actions',
-    },
+    ...(!isStudent
+      ? [
+          {
+            title: 'Switch to Student Persona',
+            subtitle: `Currently operating as ${role}`,
+            icon: ArrowRightLeft,
+            action: () => {
+              switchRole('student');
+              onClose();
+            },
+            category: 'Quick Actions',
+          },
+        ]
+      : []),
     {
       title: `Toggle Theme (Current: ${theme})`,
       subtitle: 'Switch between light and dark modes',
@@ -156,7 +163,7 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center pt-16 sm:pt-24 px-4 bg-slate-950/50 backdrop-blur-md animate-in fade-in duration-150"
+      className="fixed inset-0 z-50 flex items-start justify-center pt-6 sm:pt-24 px-3 sm:px-4 bg-slate-950/50 backdrop-blur-md animate-in fade-in duration-150"
       onClick={onClose}
     >
       <div

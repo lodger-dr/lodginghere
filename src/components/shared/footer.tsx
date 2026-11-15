@@ -24,10 +24,10 @@ export function Footer() {
 
   return (
     <footer className="border-t border-slate-800 bg-slate-950 text-slate-300">
-      <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-5">
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:py-14 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 sm:gap-10">
           {/* Column 1: Brand & Mission */}
-          <div className="space-y-4 md:col-span-2">
+          <div className="space-y-4 col-span-2 md:col-span-2">
             <Logo inverted />
             <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
               Next-generation verified student accommodation across Nigerian universities. Upfront pricing transparency,
@@ -45,7 +45,7 @@ export function Footer() {
           </div>
 
           {/* Column 2: Discover */}
-          <div>
+          <div className="col-span-1">
             <h4 className="text-xs font-bold text-white tracking-widest uppercase">Explore</h4>
             <ul className="mt-4 space-y-2.5 text-xs text-slate-400">
               <li>
@@ -72,7 +72,7 @@ export function Footer() {
           </div>
 
           {/* Column 3: Trust & Safety */}
-          <div>
+          <div className="col-span-1">
             <h4 className="text-xs font-bold text-white tracking-widest uppercase">Trust &amp; Safety</h4>
             <ul className="mt-4 space-y-2.5 text-xs text-slate-400">
               <li>
@@ -99,7 +99,7 @@ export function Footer() {
           </div>
 
           {/* Column 4: Legal & Privacy */}
-          <div>
+          <div className="col-span-2 sm:col-span-1">
             <h4 className="text-xs font-bold text-white tracking-widest uppercase">Legal &amp; Privacy</h4>
             <ul className="mt-4 space-y-2.5 text-xs text-slate-400">
               <li>
@@ -141,9 +141,9 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
+        <div className="mt-8 sm:mt-12 border-t border-slate-800/80 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4 text-center sm:text-left">
           <p>© {new Date().getFullYear()} LodgeHere. Built for genuine Nigerian students &amp; verified property owners.</p>
-          <div className="flex flex-wrap items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center sm:justify-end gap-3.5 sm:gap-5">
             <Link href="/terms" className="hover:text-slate-300 transition-colors">
               Terms
             </Link>

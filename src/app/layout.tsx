@@ -4,6 +4,8 @@ import './globals.css';
 import { Navbar } from '@/components/shared/navbar';
 import { Footer } from '@/components/shared/footer';
 import { CookieConsentBanner } from '@/components/shared/cookie-consent-banner';
+import { TourProvider } from '@/context/tour-context';
+import { GuidedTour } from '@/components/shared/guided-tour';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -77,10 +79,13 @@ export default function RootLayout({
       <body
         className={`${inter.className} flex min-h-full flex-col bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100 transition-colors duration-150`}
       >
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <CookieConsentBanner />
+        <TourProvider>
+          <Navbar />
+          <main className="flex-1">{children}</main>
+          <Footer />
+          <CookieConsentBanner />
+          <GuidedTour />
+        </TourProvider>
       </body>
     </html>
   );

@@ -278,14 +278,14 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
             </div>
 
             {/* Actions */}
-            <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
-              <Button type="button" variant="outline" size="sm" onClick={handleReset} className="rounded-full">
+            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 sm:gap-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+              <Button type="button" variant="outline" size="sm" onClick={handleReset} className="w-full sm:w-auto rounded-full">
                 Cancel
               </Button>
               <Button
                 type="submit"
                 size="sm"
-                className="bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-semibold px-5 gap-1.5 shadow-xs focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
+                className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white rounded-full font-semibold px-5 gap-1.5 shadow-xs focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:outline-none"
               >
                 <CalendarCheck className="h-4 w-4" aria-hidden="true" />
                 <span>Confirm Inspection Request</span>
@@ -316,14 +316,14 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
               </p>
             </div>
 
-            <div className="flex items-center justify-center gap-3 pt-3">
-              <Link href="/student/inspections">
-                <Button size="sm" className="bg-emerald-600 hover:bg-emerald-700 gap-1.5">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-2 sm:gap-3 pt-3">
+              <Link href="/student/inspections" className="w-full sm:w-auto">
+                <Button size="sm" className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 gap-1.5 rounded-full">
                   <CalendarCheck className="h-4 w-4" aria-hidden="true" />
                   <span>View in My Inspections</span>
                 </Button>
               </Link>
-              <Button size="sm" variant="outline" onClick={handleReset}>
+              <Button size="sm" variant="outline" onClick={handleReset} className="w-full sm:w-auto rounded-full">
                 Close
               </Button>
             </div>

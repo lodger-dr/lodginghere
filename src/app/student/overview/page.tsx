@@ -88,7 +88,7 @@ export default function StudentOverviewPage() {
       </div>
 
       {/* STAGE 1: ORDER OF OPERATION — PRIMARY HERO ACTION (Frosted Glass) */}
-      <div className="relative rounded-3xl border border-slate-200/70 bg-white/75 dark:border-slate-800/70 dark:bg-slate-900/75 p-6 sm:p-8 backdrop-blur-xl shadow-lg overflow-hidden space-y-6">
+      <div data-tour="primary-action" className="relative rounded-3xl border border-slate-200/70 bg-white/75 dark:border-slate-800/70 dark:bg-slate-900/75 p-6 sm:p-8 backdrop-blur-xl shadow-lg overflow-hidden space-y-6">
         {/* Glow ambient accent */}
         <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
 
@@ -157,7 +157,7 @@ export default function StudentOverviewPage() {
       {/* STAGE 2: RELATIONSHIP-GROUPED ACTIVITY & QUICK ACTIONS */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Left Column: Scheduled Physical Inspections (2 cols) */}
-        <div className="lg:col-span-2 space-y-4">
+        <div data-tour="inspection-tracker" className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CalendarCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
@@ -309,7 +309,7 @@ export default function StudentOverviewPage() {
       </div>
 
       {/* STAGE 3: FOLD UNIMPORTANT & SECONDARY CONTENT INTO ACCORDIONS */}
-      <div className="space-y-4 pt-2">
+      <div data-tour="accordions-help" className="space-y-4 pt-2">
         <div className="space-y-0.5">
           <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
             Operational Guides & Protocols
