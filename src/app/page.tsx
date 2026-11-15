@@ -367,11 +367,10 @@ export default function HomePage() {
                   key={tab.label}
                   type="button"
                   onClick={() => setActiveCampusTab(tab.slug)}
-                  className={`rounded-full px-3.5 py-1.5 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${
-                    isActive
+                  className={`rounded-full px-3.5 py-1.5 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${isActive
                       ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold'
                       : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-                  }`}
+                    }`}
                 >
                   {tab.label}
                 </button>

@@ -70,8 +70,8 @@ export function Navbar() {
                 <Link
                   href="/explore"
                   className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${isLinkActive('/explore')
-                      ? 'text-slate-900 dark:text-white font-bold'
-                      : 'text-slate-600 dark:text-slate-400'
+                    ? 'text-slate-900 dark:text-white font-bold'
+                    : 'text-slate-600 dark:text-slate-400'
                     }`}
                 >
                   Explore Lodges
@@ -79,8 +79,8 @@ export function Navbar() {
                 <Link
                   href="/universities"
                   className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${isLinkActive('/universities')
-                      ? 'text-slate-900 dark:text-white font-bold'
-                      : 'text-slate-600 dark:text-slate-400'
+                    ? 'text-slate-900 dark:text-white font-bold'
+                    : 'text-slate-600 dark:text-slate-400'
                     }`}
                 >
                   Universities
@@ -88,8 +88,8 @@ export function Navbar() {
                 <Link
                   href="/how-it-works"
                   className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${isLinkActive('/how-it-works')
-                      ? 'text-slate-900 dark:text-white font-bold'
-                      : 'text-slate-600 dark:text-slate-400'
+                    ? 'text-slate-900 dark:text-white font-bold'
+                    : 'text-slate-600 dark:text-slate-400'
                     }`}
                 >
                   How It Works

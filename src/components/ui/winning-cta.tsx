@@ -39,7 +39,7 @@ export function WinningCTA({
       <span className="relative flex items-center justify-center transition-all duration-200">
         <SendHorizontal
           aria-hidden="true"
-          className={`h-4 w-4 shrink-0 transition-all ${isHovered ? 'animate-plane-loop text-emerald-300' : 'text-slate-300 dark:text-slate-900'
+          className={`h-4 w-4 shrink-0 transition-all ${isHovered ? 'animate-plane-loop text-white dark:text-slate-900' : 'text-slate-300 dark:text-slate-600'
             }`}
         />
       </span>
@@ -49,7 +49,7 @@ export function WinningCTA({
     </>
   );
 
-  const baseClasses = `group relative inline-flex items-center justify-center rounded-full font-bold shadow-lg transition-all duration-300 active:scale-97 cursor-pointer overflow-hidden border border-slate-700/50 dark:border-emerald-400/40 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 text-white hover:from-emerald-700 hover:via-emerald-600 hover:to-teal-600 dark:from-emerald-500 dark:via-emerald-400 dark:to-teal-400 dark:text-slate-950 dark:hover:from-emerald-400 dark:hover:to-teal-300 hover:shadow-emerald-500/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500 focus-visible:ring-offset-2 ${sizeClasses[size]} ${className}`;
+  const baseClasses = `group relative inline-flex items-center justify-center rounded-full font-bold shadow-md hover:shadow-lg transition-all duration-200 active:scale-97 cursor-pointer overflow-hidden border border-slate-900 dark:border-white/20 bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 ${sizeClasses[size]} ${className}`;
 
   if (href) {
     return (

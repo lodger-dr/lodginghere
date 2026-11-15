@@ -550,6 +550,7 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
               role: 'student',
               onboarding_completed: true,
               campus_name: campusName || null,
+              university_slug: universityId,
             },
           });
         } catch (adminErr) {

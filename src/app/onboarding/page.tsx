@@ -167,6 +167,12 @@ export default function OnboardingPage() {
           return;
         }
 
+        if (role === 'student' && universitySlug && typeof window !== 'undefined') {
+          try {
+            localStorage.setItem('lodgehere_user_university', universitySlug);
+          } catch {}
+        }
+
         await refreshProfile();
 
         if (response.redirectTo) {

@@ -12,7 +12,6 @@ import {
   Building2,
   ShieldCheck,
   Compass,
-  Sparkles,
   Phone,
   Clock,
   MapPin,
@@ -88,15 +87,8 @@ export default function StudentOverviewPage() {
 
       {/* STAGE 1: ORDER OF OPERATION — PRIMARY HERO ACTION (Frosted Glass) */}
       <div data-tour="primary-action" className="relative rounded-3xl border border-slate-200/70 bg-white/75 dark:border-slate-800/70 dark:bg-slate-900/75 p-6 sm:p-8 backdrop-blur-xl shadow-lg overflow-hidden space-y-6">
-        {/* Glow ambient accent */}
-        <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-emerald-500/10 blur-3xl" />
-
         <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 relative z-10">
           <div className="space-y-2 max-w-xl">
-            <div className="inline-flex items-center gap-1.5 text-[11px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/60 px-2.5 py-1 rounded-full">
-              <Sparkles className="h-3.5 w-3.5" />
-              <span>Stage 1 in Pipeline: In-Person Physical Inspection</span>
-            </div>
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 dark:text-white tracking-tight">
               Ready to secure your campus lodge, Daniel?
             </h2>
@@ -121,13 +113,13 @@ export default function StudentOverviewPage() {
 
         {/* Pipeline Progress Indicator */}
         <div className="pt-4 border-t border-slate-100/80 dark:border-slate-800/60 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="flex items-center gap-3 p-3 rounded-2xl bg-emerald-50/60 dark:bg-emerald-950/30 border border-emerald-200/50 dark:border-emerald-900/50">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-emerald-600 text-white font-bold text-xs">
+          <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60">
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs">
               ✓
             </div>
             <div className="min-w-0">
-              <span className="text-xs font-bold text-emerald-900 dark:text-emerald-300 block truncate">1. Profile Active</span>
-              <span className="text-[10px] text-emerald-700/80 dark:text-emerald-400">Student testing role</span>
+              <span className="text-xs font-bold text-slate-900 dark:text-slate-100 block truncate">1. Profile Active</span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400">Student testing role</span>
             </div>
           </div>
 
@@ -159,7 +151,7 @@ export default function StudentOverviewPage() {
         <div data-tour="inspection-tracker" className="lg:col-span-2 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <CalendarCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+              <CalendarCheck className="h-4 w-4 text-slate-600 dark:text-slate-400" />
               <h3 className="text-sm font-bold text-slate-900 dark:text-white uppercase tracking-wider">
                 Active Room Inspections ({activeInspections.length})
               </h3>
@@ -183,7 +175,7 @@ export default function StudentOverviewPage() {
                     <div className="space-y-0.5">
                       <Link
                         href={`/lodges/${insp.property_slug}`}
-                        className="text-sm font-bold text-slate-900 dark:text-white hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
+                        className="text-sm font-bold text-slate-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                       >
                         {insp.property_title}
                       </Link>
@@ -193,7 +185,7 @@ export default function StudentOverviewPage() {
                       </p>
                     </div>
 
-                    <span className="self-start sm:self-auto text-[11px] font-bold px-2.5 py-0.5 rounded-full capitalize bg-emerald-50 text-emerald-700 border border-emerald-200/60 dark:bg-emerald-950/60 dark:text-emerald-400 dark:border-emerald-800/60">
+                    <span className="self-start sm:self-auto text-[11px] font-semibold px-2.5 py-0.5 rounded-full capitalize bg-slate-100 text-slate-700 border border-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700">
                       {insp.status.replace('_', ' ')}
                     </span>
                   </div>
@@ -226,7 +218,7 @@ export default function StudentOverviewPage() {
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed border-slate-200 dark:border-slate-800 bg-white/60 dark:bg-slate-900/60 p-8 text-center backdrop-blur-md space-y-3">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-950/60 dark:text-emerald-400">
+              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-300">
                 <CalendarCheck className="h-6 w-6" />
               </div>
               <div className="space-y-1 max-w-sm mx-auto">
@@ -240,7 +232,7 @@ export default function StudentOverviewPage() {
               <Link href="/student/explore">
                 <button
                   type="button"
-                  className="rounded-xl bg-slate-900 text-white dark:bg-emerald-500 dark:text-slate-950 px-4 py-2 text-xs font-bold hover:bg-slate-800 transition-colors shadow-2xs cursor-pointer"
+                  className="rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 px-4 py-2 text-xs font-bold hover:bg-slate-800 dark:hover:bg-slate-100 transition-colors shadow-2xs cursor-pointer"
                 >
                   Browse Campus Lodges
                 </button>

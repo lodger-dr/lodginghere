@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { User, GraduationCap, Phone, Mail, Save, CheckCircle2, Trash2, BellOff, ShieldCheck, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,10 +10,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { NIGERIAN_UNIVERSITIES } from '@/lib/data/nigerian-universities';
 
 export default function StudentProfilePage() {
+  const [selectedUniSlug, setSelectedUniSlug] = useState('university-of-lagos');
   const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('lodgehere_user_university');
+      if (stored) setSelectedUniSlug(stored);
+    }
+  }, []);
 
   const handleSave = (e: React.FormEvent) => {
     e.preventDefault();
+    if (typeof window !== 'undefined' && selectedUniSlug) {
+      try {
+        localStorage.setItem('lodgehere_user_university', selectedUniSlug);
+      } catch { }
+    }
     setSaved(true);
     setTimeout(() => setSaved(false), 3000);
   };
@@ -68,7 +81,11 @@ export default function StudentProfilePage() {
               helperText="For landlords to coordinate inspection arrival"
             />
 
-            <Select label="Primary University">
+            <Select
+              label="Primary University"
+              value={selectedUniSlug}
+              onChange={(e) => setSelectedUniSlug(e.target.value)}
+            >
               {NIGERIAN_UNIVERSITIES.slice(0, 15).map((u) => (
                 <option key={u.slug} value={u.slug}>
                   {u.name} ({u.acronym})

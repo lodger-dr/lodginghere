@@ -86,23 +86,23 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
     },
     ...(role === 'student'
       ? [
-          {
-            title: 'Saved Favourites',
-            subtitle: 'Shortlisted lodges and pricing',
-            icon: Heart,
-            action: () => router.push('/student/favourites'),
-            category: 'Navigation',
-          },
-        ]
+        {
+          title: 'Saved Favourites',
+          subtitle: 'Shortlisted lodges and pricing',
+          icon: Heart,
+          action: () => router.push('/student/favourites'),
+          category: 'Navigation',
+        },
+      ]
       : [
-          {
-            title: 'Universities Directory',
-            subtitle: 'Browse campuses and student areas',
-            icon: GraduationCap,
-            action: () => router.push('/universities'),
-            category: 'Navigation',
-          },
-        ]),
+        {
+          title: 'Universities Directory',
+          subtitle: 'Browse campuses and student areas',
+          icon: GraduationCap,
+          action: () => router.push('/universities'),
+          category: 'Navigation',
+        },
+      ]),
     {
       title: 'My Inspections',
       subtitle: 'Manage upcoming physical room inspections',
@@ -126,17 +126,17 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
   const actionItems = [
     ...(!isStudent
       ? [
-          {
-            title: 'Switch to Student Persona',
-            subtitle: `Currently operating as ${role}`,
-            icon: ArrowRightLeft,
-            action: () => {
-              switchRole('student');
-              onClose();
-            },
-            category: 'Quick Actions',
+        {
+          title: 'Switch to Student Persona',
+          subtitle: `Currently operating as ${role}`,
+          icon: ArrowRightLeft,
+          action: () => {
+            switchRole('student');
+            onClose();
           },
-        ]
+          category: 'Quick Actions',
+        },
+      ]
       : []),
     {
       title: `Toggle Theme (Current: ${theme})`,
@@ -302,7 +302,6 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
           )}
 
           {filteredLodges.length === 0 &&
-            filteredUnis.length === 0 &&
             navigationItems.length === 0 &&
             actionItems.length === 0 && (
               <div className="py-8 text-center text-xs text-slate-400">
