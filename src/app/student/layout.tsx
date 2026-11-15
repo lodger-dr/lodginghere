@@ -7,9 +7,9 @@ import {
   Building2,
   Search,
   Compass,
-  GraduationCap,
   CalendarCheck,
   BookmarkCheck,
+  Heart,
   User,
   ExternalLink,
 } from 'lucide-react';
@@ -34,20 +34,20 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
       items: [
         { name: 'Dashboard Overview', href: '/student/overview', icon: Building2 },
         { name: 'Explore Lodges', href: '/student/explore', icon: Compass },
-        { name: 'Campuses & Unis', href: '/student/universities', icon: GraduationCap },
       ],
     },
     {
       label: 'STUDENT ACTIVITY',
       items: [
         { name: 'Physical Inspections', href: '/student/inspections', icon: CalendarCheck },
-        { name: 'Bookings & Saved', href: '/student/bookings', icon: BookmarkCheck },
+        { name: 'My Bookings', href: '/student/bookings', icon: BookmarkCheck },
+        { name: 'Saved Favourites', href: '/student/favourites', icon: Heart },
       ],
     },
     {
       label: 'PREFERENCES',
       items: [
-        { name: 'Profile & Security', href: '/student/profile', icon: User },
+        { name: 'Profile & Campus', href: '/student/profile', icon: User },
       ],
     },
   ];

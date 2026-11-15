@@ -1,8 +1,14 @@
 'use client';
 
-import React from 'react';
-import { UniversitiesView } from '@/components/universities/universities-view';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function StudentUniversitiesPage() {
-  return <UniversitiesView isDashboard={true} />;
+  const router = useRouter();
+
+  useEffect(() => {
+    router.replace('/student/explore');
+  }, [router]);
+
+  return null;
 }

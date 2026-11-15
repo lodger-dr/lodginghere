@@ -12,7 +12,6 @@ import {
   Building2,
   ShieldCheck,
   Compass,
-  GraduationCap,
   Sparkles,
   Phone,
   Clock,
@@ -269,14 +268,14 @@ export default function StudentOverviewPage() {
               </div>
             </Link>
 
-            <Link href="/student/universities">
+            <Link href="/student/favourites">
               <div className="flex items-center gap-3.5 p-3.5 rounded-2xl border border-slate-200/70 bg-white/80 hover:bg-white hover:border-slate-300 dark:border-slate-800/70 dark:bg-slate-900/80 dark:hover:bg-slate-850 backdrop-blur-md transition-all shadow-2xs group cursor-pointer">
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-purple-50 text-purple-600 dark:bg-purple-950/60 dark:text-purple-400 group-hover:scale-105 transition-transform">
-                  <GraduationCap className="h-4 w-4" />
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-rose-50 text-rose-600 dark:bg-rose-950/60 dark:text-rose-400 group-hover:scale-105 transition-transform">
+                  <Heart className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-bold text-slate-900 dark:text-white">Universities Directory</p>
-                  <p className="text-[11px] text-slate-400">Explore housing around 50+ campuses</p>
+                  <p className="text-xs font-bold text-slate-900 dark:text-white">Saved Favourites</p>
+                  <p className="text-[11px] text-slate-400">Shortlisted lodges &amp; rent comparisons</p>
                 </div>
               </div>
             </Link>

@@ -7,6 +7,7 @@ import {
   Building2,
   CalendarCheck,
   BookmarkCheck,
+  Heart,
   GraduationCap,
   Moon,
   Sun,
@@ -91,13 +92,25 @@ export function CommandMenu({ isOpen, onClose }: CommandMenuProps) {
       action: () => router.push(role === 'student' ? '/student/explore' : '/explore'),
       category: 'Navigation',
     },
-    {
-      title: 'Universities Directory',
-      subtitle: 'Browse campuses and student areas',
-      icon: GraduationCap,
-      action: () => router.push(role === 'student' ? '/student/universities' : '/universities'),
-      category: 'Navigation',
-    },
+    ...(role === 'student'
+      ? [
+          {
+            title: 'Saved Favourites',
+            subtitle: 'Shortlisted lodges and pricing',
+            icon: Heart,
+            action: () => router.push('/student/favourites'),
+            category: 'Navigation',
+          },
+        ]
+      : [
+          {
+            title: 'Universities Directory',
+            subtitle: 'Browse campuses and student areas',
+            icon: GraduationCap,
+            action: () => router.push('/universities'),
+            category: 'Navigation',
+          },
+        ]),
     {
       title: 'My Inspections',
       subtitle: 'Manage upcoming physical room inspections',
