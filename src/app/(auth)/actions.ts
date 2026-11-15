@@ -22,6 +22,13 @@ function isSafeRedirect(path: unknown): path is string {
 }
 
 export async function signInAction(formData: FormData): Promise<ActionResponse> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
+    return {
+      success: false,
+      message: 'Supabase configuration is missing on this deployment. Please add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to your Vercel Project Settings.',
+    };
+  }
+
   const rawData = {
     email: formData.get('email'),
     password: formData.get('password'),
@@ -109,6 +116,13 @@ export async function signInAction(formData: FormData): Promise<ActionResponse> 
 }
 
 export async function signUpAction(formData: FormData): Promise<ActionResponse> {
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL.includes('placeholder')) {
+    return {
+      success: false,
+      message: 'Supabase configuration is missing on this deployment. Please add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY to your Vercel Project Settings.',
+    };
+  }
+
   const role = formData.get('role');
 
   try {
