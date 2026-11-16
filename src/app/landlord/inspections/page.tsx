@@ -362,8 +362,8 @@ export default function LandlordInspectionsPage() {
 
       {/* Accept & Add Note Modal */}
       {acceptTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-4 backdrop-blur-xs">
-          <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-2xl space-y-4 border border-slate-200 dark:border-slate-800 dark:bg-slate-900">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 p-0 sm:p-4 backdrop-blur-xs">
+          <div className="relative w-full max-w-md rounded-t-3xl sm:rounded-2xl bg-white p-5 sm:p-6 shadow-2xl space-y-4 border-t sm:border border-slate-200 dark:border-slate-800 dark:bg-slate-900 animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200">
             <button
               onClick={() => setAcceptTarget(null)}
               className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"
@@ -391,11 +391,11 @@ export default function LandlordInspectionsPage() {
               />
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2">
-              <Button size="sm" variant="outline" onClick={() => setAcceptTarget(null)}>
+            <div className="flex flex-col-reverse sm:flex-row items-stretch sm:items-center justify-end gap-2 pt-2">
+              <Button size="sm" variant="outline" onClick={() => setAcceptTarget(null)} className="h-10 text-xs">
                 Cancel
               </Button>
-              <Button size="sm" onClick={handleConfirmAccept} className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100">
+              <Button size="sm" onClick={handleConfirmAccept} className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 dark:hover:bg-slate-100 h-10 text-xs font-bold shadow-md cursor-pointer">
                 Confirm & Notify Student
               </Button>
             </div>
@@ -403,67 +403,74 @@ export default function LandlordInspectionsPage() {
         </div>
       )}
 
-      {/* Reschedule Modal */}
+      {/* Reschedule Modal with Sticky Mobile Bottom Action Bar */}
       {rescheduleTarget && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-3 sm:p-4 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-md max-h-[92vh] overflow-y-auto rounded-2xl bg-white p-5 sm:p-6 shadow-2xl space-y-4 border border-slate-200 dark:border-slate-800 dark:bg-slate-900 my-auto">
-            <button
-              onClick={() => setRescheduleTarget(null)}
-              className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"
-            >
-              <X className="h-5 w-5" />
-            </button>
-
-            <div className="space-y-1">
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white">Propose Alternative Inspection Date</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Suggest an alternative date and time for <strong className="text-slate-800 dark:text-slate-200">{rescheduleTarget.student_name}</strong>.
-              </p>
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 p-0 sm:p-4 backdrop-blur-xs">
+          <div className="relative flex flex-col w-full max-w-md h-[88vh] sm:h-auto sm:max-h-[90vh] rounded-t-3xl sm:rounded-2xl bg-white shadow-2xl border-t sm:border border-slate-200 dark:border-slate-800 dark:bg-slate-900 overflow-hidden animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-900">
+              <div className="space-y-0.5 pr-6">
+                <h3 className="text-base sm:text-lg font-bold text-slate-900 dark:text-white">Propose Alternative Date</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Suggest alternative for <strong className="text-slate-800 dark:text-slate-200">{rescheduleTarget.student_name}</strong>
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setRescheduleTarget(null)}
+                className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer shrink-0"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
 
-            <div className="space-y-3">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Proposed New Date *</label>
-                <Input
-                  type="date"
-                  value={rescheduleDate}
-                  onChange={(e) => setRescheduleDate(e.target.value)}
-                  min={new Date().toISOString().split('T')[0]}
-                  className="text-xs"
-                  required
-                />
-              </div>
+            {/* Scrollable Body */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+              <div className="space-y-3">
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Proposed New Date *</label>
+                  <Input
+                    type="date"
+                    value={rescheduleDate}
+                    onChange={(e) => setRescheduleDate(e.target.value)}
+                    min={new Date().toISOString().split('T')[0]}
+                    className="text-xs"
+                    required
+                  />
+                </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Proposed Time Slot *</label>
-                <select
-                  value={rescheduleSlot}
-                  onChange={(e) => setRescheduleSlot(e.target.value as InspectionTimeSlot)}
-                  className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                >
-                  <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
-                  <option value="afternoon">Afternoon (12:00 PM - 4:00 PM)</option>
-                  <option value="evening">Evening (4:00 PM - 6:30 PM)</option>
-                </select>
-              </div>
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Proposed Time Slot *</label>
+                  <select
+                    value={rescheduleSlot}
+                    onChange={(e) => setRescheduleSlot(e.target.value as InspectionTimeSlot)}
+                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  >
+                    <option value="morning">Morning (9:00 AM - 12:00 PM)</option>
+                    <option value="afternoon">Afternoon (12:00 PM - 4:00 PM)</option>
+                    <option value="evening">Evening (4:00 PM - 6:30 PM)</option>
+                  </select>
+                </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Reason / Note for Student</label>
-                <textarea
-                  value={rescheduleNote}
-                  onChange={(e) => setRescheduleNote(e.target.value)}
-                  placeholder="e.g. I will be out of town on your requested date. Can we do this day instead?"
-                  rows={2}
-                  className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                />
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Reason / Note for Student</label>
+                  <textarea
+                    value={rescheduleNote}
+                    onChange={(e) => setRescheduleNote(e.target.value)}
+                    placeholder="e.g. I will be out of town on your requested date. Can we do this day instead?"
+                    rows={2}
+                    className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  />
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2 pt-2">
-              <Button size="sm" variant="outline" onClick={() => setRescheduleTarget(null)}>
+            {/* Sticky Bottom Footer */}
+            <div className="sticky bottom-0 z-20 bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 p-3.5 sm:p-4 backdrop-blur-md flex items-center justify-between gap-3 shrink-0 shadow-lg">
+              <Button size="sm" variant="outline" onClick={() => setRescheduleTarget(null)} className="h-10 px-4 text-xs font-semibold">
                 Cancel
               </Button>
-              <Button size="sm" onClick={handleConfirmReschedule} className="bg-blue-600 hover:bg-blue-700">
+              <Button size="sm" onClick={handleConfirmReschedule} className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 px-5 flex-1 sm:flex-initial shadow-md cursor-pointer">
                 Send Reschedule Offer
               </Button>
             </div>

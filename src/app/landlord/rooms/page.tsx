@@ -199,7 +199,7 @@ function RoomsContent() {
             <select
               value={selectedPropertyId}
               onChange={(e) => setSelectedPropertyId(e.target.value)}
-              className="rounded-lg border border-slate-300 bg-white py-1.5 px-3 text-xs text-slate-800 focus:border-blue-500 focus:outline-none min-w-[220px] dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+              className="w-full sm:w-auto min-w-0 sm:min-w-[220px] rounded-lg border border-slate-300 bg-white py-1.5 px-3 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
             >
               <option value="">All Lodges ({lodges.length})</option>
               {lodges.map((l) => (
@@ -364,151 +364,165 @@ function RoomsContent() {
         )}
       </div>
 
-      {/* Add Room Modal */}
+      {/* Add Room Modal with Sticky Mobile Bottom Action Bar */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 p-0 sm:p-4 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-lg max-h-[92vh] sm:max-h-[90vh] overflow-y-auto rounded-t-3xl sm:rounded-2xl bg-white p-5 sm:p-6 shadow-2xl space-y-5 border-t sm:border border-slate-200 dark:border-slate-800 dark:bg-slate-900 pb-safe animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200">
-            <button
-              onClick={() => setIsAddModalOpen(false)}
-              className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"
-            >
-              <X className="h-5 w-5" />
-            </button>
-
-            <div className="space-y-1">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Add Room Unit</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Attach a specific room to your property with its code, rent, and live vacancy status.
-              </p>
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 p-0 sm:p-4 backdrop-blur-xs">
+          <div className="relative flex flex-col w-full max-w-lg h-[92vh] sm:h-auto sm:max-h-[90vh] rounded-t-3xl sm:rounded-2xl bg-white shadow-2xl border-t sm:border border-slate-200 dark:border-slate-800 dark:bg-slate-900 overflow-hidden animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200">
+            {/* Modal Header (Fixed at top) */}
+            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-900">
+              <div className="space-y-0.5 pr-6">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">Add Room Unit</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Attach a specific room to your property with its code, rent, and live vacancy status.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAddModalOpen(false)}
+                className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer shrink-0"
+                aria-label="Close modal"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
 
-            {formError && (
-              <div className="rounded-lg bg-red-50 dark:bg-red-950/50 p-3 text-xs text-red-700 dark:text-red-400 flex items-center gap-2">
-                <AlertCircle className="h-4 w-4 shrink-0" />
-                <span>{formError}</span>
-              </div>
-            )}
+            {/* Scrollable Form Body */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+              {formError && (
+                <div className="rounded-lg bg-red-50 dark:bg-red-950/50 p-3 text-xs text-red-700 dark:text-red-400 flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <span>{formError}</span>
+                </div>
+              )}
 
-            <form onSubmit={handleCreateRoom} className="space-y-4">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Select Property *</label>
-                <select
-                  value={selectedPropertyId || lodges[0]?.id || ''}
-                  onChange={(e) => setSelectedPropertyId(e.target.value)}
-                  className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                  required
-                >
-                  {lodges.map((l) => (
-                    <option key={l.id} value={l.id}>
-                      {l.title} ({l.neighbourhood})
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              <form id="add-room-form" onSubmit={handleCreateRoom} className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Room Code / Number *</label>
-                  <Input
-                    value={roomNumber}
-                    onChange={(e) => setRoomNumber(e.target.value)}
-                    placeholder="e.g. Room 204 (First Floor)"
-                    className="text-xs"
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Select Property *</label>
+                  <select
+                    value={selectedPropertyId || lodges[0]?.id || ''}
+                    onChange={(e) => setSelectedPropertyId(e.target.value)}
+                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
                     required
+                  >
+                    {lodges.map((l) => (
+                      <option key={l.id} value={l.id}>
+                        {l.title} ({l.neighbourhood})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Room Code / Number *</label>
+                    <Input
+                      value={roomNumber}
+                      onChange={(e) => setRoomNumber(e.target.value)}
+                      placeholder="e.g. Room 204 (First Floor)"
+                      className="text-xs"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Accommodation Type *</label>
+                    <select
+                      value={accommodationType}
+                      onChange={(e) => setAccommodationType(e.target.value as AccommodationType)}
+                      className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    >
+                      <option value="self_contained">Self-Contained</option>
+                      <option value="single_room">Single Room</option>
+                      <option value="one_bedroom">1-Bedroom Flat</option>
+                      <option value="two_bedroom">2-Bedroom Flat</option>
+                      <option value="shared_apartment">Shared Apartment</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Annual Rent (₦) *</label>
+                    <Input
+                      type="number"
+                      value={annualRent}
+                      onChange={(e) => setAnnualRent(e.target.value)}
+                      placeholder="450000"
+                      className="text-xs"
+                      required
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Current Status</label>
+                    <select
+                      value={status}
+                      onChange={(e) => setStatus(e.target.value as RoomAvailabilityStatus)}
+                      className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    >
+                      <option value="available">Vacant & Ready</option>
+                      <option value="occupied">Currently Occupied</option>
+                      <option value="reserved_pending">Reserved / Pending</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Room Title / Description</label>
+                  <Input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="e.g. Deluxe Balcony Self-Contained"
+                    className="text-xs"
                   />
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Accommodation Type *</label>
-                  <select
-                    value={accommodationType}
-                    onChange={(e) => setAccommodationType(e.target.value as AccommodationType)}
-                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                  >
-                    <option value="self_contained">Self-Contained</option>
-                    <option value="single_room">Single Room</option>
-                    <option value="one_bedroom">1-Bedroom Flat</option>
-                    <option value="two_bedroom">2-Bedroom Flat</option>
-                    <option value="shared_apartment">Shared Apartment</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Annual Rent (₦) *</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Features (Comma-separated)</label>
                   <Input
-                    type="number"
-                    value={annualRent}
-                    onChange={(e) => setAnnualRent(e.target.value)}
-                    placeholder="450000"
+                    value={featuresStr}
+                    onChange={(e) => setFeaturesStr(e.target.value)}
+                    placeholder="Private Bathroom, Fitted Wardrobe, Prepaid Meter"
                     className="text-xs"
-                    required
                   />
                 </div>
 
+                {/* Room Pictures Upload to lodge-images */}
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Current Status</label>
-                  <select
-                    value={status}
-                    onChange={(e) => setStatus(e.target.value as RoomAvailabilityStatus)}
-                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                  >
-                    <option value="available">Vacant & Ready</option>
-                    <option value="occupied">Currently Occupied</option>
-                    <option value="reserved_pending">Reserved / Pending</option>
-                  </select>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    Room Pictures (Uploads to lodge-images bucket)
+                  </label>
+                  <ImageUploader
+                    value={roomImages}
+                    onChange={setRoomImages}
+                    maxFiles={4}
+                    bucketName="lodge-images"
+                    folder="rooms"
+                  />
                 </div>
-              </div>
+              </form>
+            </div>
 
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Room Title / Description</label>
-                <Input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="e.g. Deluxe Balcony Self-Contained"
-                  className="text-xs"
-                />
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Features (Comma-separated)</label>
-                <Input
-                  value={featuresStr}
-                  onChange={(e) => setFeaturesStr(e.target.value)}
-                  placeholder="Private Bathroom, Fitted Wardrobe, Prepaid Meter"
-                  className="text-xs"
-                />
-              </div>
-
-              {/* Room Pictures Upload to lodge-images */}
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                  Room Pictures (Uploads to lodge-images bucket)
-                </label>
-                <ImageUploader
-                  value={roomImages}
-                  onChange={setRoomImages}
-                  maxFiles={4}
-                  bucketName="lodge-images"
-                  folder="rooms"
-                />
-              </div>
-
-              <div className="flex items-center justify-end gap-2 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsAddModalOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" size="sm">
-                  Save Room Unit
-                </Button>
-              </div>
-            </form>
+            {/* Sticky Bottom Footer - ALWAYS VISIBLE ON MOBILE */}
+            <div className="sticky bottom-0 z-30 bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 p-3.5 sm:p-4 backdrop-blur-md flex items-center justify-between gap-3 shrink-0 shadow-lg">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsAddModalOpen(false)}
+                className="h-10 px-4 text-xs font-semibold"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                form="add-room-form"
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 px-5 flex-1 sm:flex-initial shadow-md cursor-pointer"
+              >
+                Save Room Unit
+              </Button>
+            </div>
           </div>
         </div>
       )}

@@ -16,12 +16,14 @@ import {
   X,
   AlertCircle,
   Clock,
+  Navigation,
+  Loader2,
 } from 'lucide-react';
 import { getLodges, fetchLodges, saveLodge, deleteLodge, AMENITIES_CATALOG, DEFAULT_LANDLORD_ID } from '@/lib/data/lodges-data';
 import { Lodge, AmenityKey, AccommodationType, ListingStatus } from '@/types/database';
 import { NIGERIAN_UNIVERSITIES } from '@/lib/data/nigerian-universities';
 import { formatNaira } from '@/lib/utils';
-import { getLodgeCoordinates } from '@/lib/data/maps-data';
+import { getLodgeCoordinates, verifyAddressOnMaps, getGoogleMapsSearchUrl } from '@/lib/data/maps-data';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -56,6 +58,37 @@ export default function LandlordPropertiesPage() {
     'Modern, secure student accommodation with continuous water supply, backup solar power, and close proximity to campus gate.'
   );
   const [formError, setFormError] = useState<string | null>(null);
+
+  // Map Street Address Verification State
+  const [addressVerification, setAddressVerification] = useState<{
+    verified: boolean;
+    status: 'idle' | 'checking' | 'verified_on_maps' | 'approximated_near_campus' | 'not_found';
+    formattedAddress?: string;
+    lat?: number;
+    lng?: number;
+    googleMapsUrl?: string;
+  }>({
+    verified: false,
+    status: 'idle',
+  });
+
+  const handleVerifyStreet = async (streetToVerify?: string) => {
+    const targetAddress = streetToVerify !== undefined ? streetToVerify : address;
+    if (!targetAddress.trim() || targetAddress.trim().length < 3) return;
+
+    setAddressVerification((prev) => ({ ...prev, status: 'checking' }));
+    const selectedUni = NIGERIAN_UNIVERSITIES.find((u) => u.slug === universitySlug);
+    const result = await verifyAddressOnMaps(targetAddress, universitySlug, selectedUni?.name);
+
+    setAddressVerification({
+      verified: result.verified,
+      status: result.status,
+      formattedAddress: result.formattedAddress,
+      lat: result.lat,
+      lng: result.lng,
+      googleMapsUrl: result.googleMapsUrl,
+    });
+  };
 
   const loadLodges = () => {
     setLodges(getLodges());
@@ -104,8 +137,8 @@ export default function LandlordPropertiesPage() {
       neighbourhood: neighbourhood.trim(),
       address: address.trim(),
       distance_to_campus: distanceToCampus.trim(),
-      latitude: coords.lat,
-      longitude: coords.lng,
+      latitude: addressVerification.lat || coords.lat,
+      longitude: addressVerification.lng || coords.lng,
       accommodation_type: accommodationType,
       pricing: {
         min_price: Number(minPrice) || 300000,
@@ -130,6 +163,7 @@ export default function LandlordPropertiesPage() {
     setIsAddModalOpen(false);
     setFormError(null);
     setImages([]);
+    setAddressVerification({ verified: false, status: 'idle' });
     // Reset basic fields
     setTitle('');
     setAddress('');
@@ -271,8 +305,8 @@ export default function LandlordPropertiesPage() {
                     </div>
 
                     {/* Actions */}
-                    <div className="mt-auto pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2">
-                      <div className="flex items-center gap-1.5">
+                    <div className="mt-auto pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between gap-2 flex-wrap">
+                      <div className="flex items-center gap-1.5 flex-wrap">
                         <Link href={`/landlord/rooms?propertyId=${lodge.id}`}>
                           <Button size="sm" variant="outline" className="text-xs h-8 px-2.5 gap-1 text-slate-700 dark:text-slate-300">
                             <BedDouble className="h-3.5 w-3.5" />
@@ -291,7 +325,7 @@ export default function LandlordPropertiesPage() {
                         size="sm"
                         variant="ghost"
                         onClick={() => handleDelete(lodge.id, lodge.title)}
-                        className="text-xs h-8 w-8 p-0 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40"
+                        className="text-xs h-8 w-8 p-0 text-slate-400 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/40 shrink-0"
                         title="Delete Property"
                       >
                         <Trash2 className="h-3.5 w-3.5" />
@@ -325,227 +359,355 @@ export default function LandlordPropertiesPage() {
         )}
       </div>
 
-      {/* Add Property Modal */}
+      {/* Add Property Modal with Sticky Mobile Bottom Action Bar */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 p-0 sm:p-4 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-2xl max-h-[92vh] sm:max-h-[90vh] overflow-y-auto rounded-t-3xl sm:rounded-2xl bg-white p-5 sm:p-6 shadow-2xl space-y-5 border-t sm:border border-slate-200 dark:border-slate-800 dark:bg-slate-900 pb-safe animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200">
-            <button
-              onClick={() => setIsAddModalOpen(false)}
-              className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"
-            >
-              <X className="h-5 w-5" />
-            </button>
-
-            <div className="space-y-1">
-              <h3 className="text-xl font-bold text-slate-900 dark:text-white">Add New Student Lodge</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400">
-                Provide clear details and strictly transparent pricing. Listings appear instantly for inspection booking.
-              </p>
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 p-0 sm:p-4 backdrop-blur-xs">
+          <div className="relative flex flex-col w-full max-w-2xl h-[92vh] sm:h-auto sm:max-h-[90vh] rounded-t-3xl sm:rounded-2xl bg-white shadow-2xl border-t sm:border border-slate-200 dark:border-slate-800 dark:bg-slate-900 overflow-hidden animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200">
+            {/* Modal Header (Fixed at top) */}
+            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-900">
+              <div className="space-y-0.5 pr-6">
+                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">Add New Student Lodge</h3>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
+                  Provide clear details and strictly transparent pricing. Listings appear instantly for inspection booking.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsAddModalOpen(false)}
+                className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer shrink-0"
+                aria-label="Close modal"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
 
-            {formError && (
-              <div className="rounded-lg bg-red-50 dark:bg-red-950/50 p-3 text-xs text-red-700 dark:text-red-400 flex items-center gap-2">
-                <AlertCircle className="h-4 w-4 shrink-0" />
-                <span>{formError}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleCreateLodge} className="space-y-4">
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Lodge Name *</label>
-                <Input
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  placeholder="e.g. Royal Heights Executive Villa"
-                  className="text-xs"
-                  required
-                />
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">University *</label>
-                  <select
-                    value={universitySlug}
-                    onChange={(e) => setUniversitySlug(e.target.value)}
-                    className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                  >
-                    {NIGERIAN_UNIVERSITIES.map((u) => (
-                      <option key={u.slug} value={u.slug}>
-                        {u.name} ({u.acronym})
-                      </option>
-                    ))}
-                  </select>
+            {/* Scrollable Form Body */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-6 space-y-4">
+              {formError && (
+                <div className="rounded-lg bg-red-50 dark:bg-red-950/50 p-3 text-xs text-red-700 dark:text-red-400 flex items-center gap-2">
+                  <AlertCircle className="h-4 w-4 shrink-0" />
+                  <span>{formError}</span>
                 </div>
+              )}
 
+              <form id="add-property-form" onSubmit={handleCreateLodge} className="space-y-4">
                 <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Campus / Campus Gate</label>
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Lodge Name *</label>
                   <Input
-                    value={campusName}
-                    onChange={(e) => setCampusName(e.target.value)}
-                    placeholder="e.g. Akoka Main Campus / Back Gate"
-                    className="text-xs"
-                  />
-                </div>
-              </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Neighbourhood / Area *</label>
-                  <Input
-                    value={neighbourhood}
-                    onChange={(e) => setNeighbourhood(e.target.value)}
-                    placeholder="e.g. Akoka, Yaba"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    placeholder="e.g. Royal Heights Executive Villa"
                     className="text-xs"
                     required
                   />
                 </div>
 
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Distance to Campus *</label>
-                  <Input
-                    value={distanceToCampus}
-                    onChange={(e) => setDistanceToCampus(e.target.value)}
-                    placeholder="e.g. 5 mins walk from UNILAG Gate"
-                    className="text-xs"
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Full Street Address *</label>
-                <Input
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  placeholder="e.g. 18 Community Road, Akoka, Yaba, Lagos"
-                  className="text-xs"
-                  required
-                />
-              </div>
-
-              {/* Transparent Financials */}
-              <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3 dark:border-slate-800 dark:bg-slate-850">
-                <span className="text-xs font-bold text-slate-800 dark:text-white block">
-                  Transparent Upfront Pricing (Per Annum)
-                </span>
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <div className="space-y-1">
-                    <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Base Annual Rent (₦) *</label>
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">University *</label>
+                    <select
+                      value={universitySlug}
+                      onChange={(e) => {
+                        setUniversitySlug(e.target.value);
+                        setAddressVerification({ verified: false, status: 'idle' });
+                      }}
+                      className="w-full rounded-md border border-slate-300 bg-white p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                    >
+                      {NIGERIAN_UNIVERSITIES.map((u) => (
+                        <option key={u.slug} value={u.slug}>
+                          {u.name} ({u.acronym})
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Campus / Campus Gate</label>
                     <Input
-                      type="number"
-                      value={minPrice}
-                      onChange={(e) => setMinPrice(e.target.value)}
-                      placeholder="450000"
-                      className="text-xs bg-white dark:bg-slate-800"
+                      value={campusName}
+                      onChange={(e) => setCampusName(e.target.value)}
+                      placeholder="e.g. Akoka Main Campus / Back Gate"
+                      className="text-xs"
+                    />
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="space-y-1">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Neighbourhood / Area *</label>
+                    <Input
+                      value={neighbourhood}
+                      onChange={(e) => setNeighbourhood(e.target.value)}
+                      placeholder="e.g. Akoka, Yaba"
+                      className="text-xs"
                       required
                     />
                   </div>
+
                   <div className="space-y-1">
-                    <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Caution Deposit (₦)</label>
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Distance to Campus *</label>
                     <Input
-                      type="number"
-                      value={cautionDeposit}
-                      onChange={(e) => setCautionDeposit(e.target.value)}
-                      placeholder="40000"
-                      className="text-xs bg-white dark:bg-slate-800"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Service Charge (₦)</label>
-                    <Input
-                      type="number"
-                      value={serviceCharge}
-                      onChange={(e) => setServiceCharge(e.target.value)}
-                      placeholder="30000"
-                      className="text-xs bg-white dark:bg-slate-800"
+                      value={distanceToCampus}
+                      onChange={(e) => setDistanceToCampus(e.target.value)}
+                      placeholder="e.g. 5 mins walk from UNILAG Gate"
+                      className="text-xs"
+                      required
                     />
                   </div>
                 </div>
-                <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
-                  Zero middleman agency commission: LodgeHere direct landlord model is designed to eliminate unauthorized agent markups.
-                </p>
-              </div>
 
-              {/* Amenities */}
-              <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Available Amenities</label>
-                <div className="flex flex-wrap gap-2">
-                  {AMENITIES_CATALOG.map((a) => {
-                    const isSelected = selectedAmenities.includes(a.key);
-                    return (
+                {/* Street Address & Google Maps Verification */}
+                <div className="space-y-2">
+                  <div className="flex items-center justify-between">
+                    <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                      Full Street Address *
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => handleVerifyStreet()}
+                      disabled={addressVerification.status === 'checking' || !address.trim()}
+                      className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:underline flex items-center gap-1 disabled:opacity-50 cursor-pointer"
+                    >
+                      <Navigation className="h-3 w-3" />
+                      <span>{addressVerification.status === 'checking' ? 'Verifying...' : 'Verify on Maps'}</span>
+                    </button>
+                  </div>
+                  <div className="relative">
+                    <Input
+                      value={address}
+                      onChange={(e) => {
+                        setAddress(e.target.value);
+                        if (addressVerification.status !== 'idle') {
+                          setAddressVerification({ verified: false, status: 'idle' });
+                        }
+                      }}
+                      onBlur={() => {
+                        if (address.trim().length >= 4 && addressVerification.status === 'idle') {
+                          handleVerifyStreet();
+                        }
+                      }}
+                      placeholder="e.g. 18 Community Road, Akoka, Yaba, Lagos"
+                      className="text-xs pr-20"
+                      required
+                    />
+                    <div className="absolute right-1.5 top-1/2 -translate-y-1/2">
                       <button
-                        key={a.key}
                         type="button"
-                        onClick={() => toggleAmenity(a.key)}
-                        className={`rounded-full px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none ${isSelected
-                          ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-slate-900 dark:border-white'
-                          : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-750'
-                          }`}
+                        onClick={() => handleVerifyStreet()}
+                        disabled={addressVerification.status === 'checking' || !address.trim()}
+                        className="rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 px-2 py-1 text-[10px] font-bold text-slate-700 dark:text-slate-300 transition-colors cursor-pointer disabled:opacity-50"
                       >
-                        {a.label}
+                        {addressVerification.status === 'checking' ? 'Checking...' : 'Check'}
                       </button>
-                    );
-                  })}
+                    </div>
+                  </div>
+
+                  {/* Verification Status Feedback Card */}
+                  {addressVerification.status === 'checking' && (
+                    <div className="rounded-xl border border-blue-200 bg-blue-50/70 p-3 text-xs text-blue-800 dark:border-blue-900/50 dark:bg-blue-950/40 dark:text-blue-300 flex items-center gap-2.5 animate-pulse">
+                      <Loader2 className="h-4 w-4 shrink-0 animate-spin text-blue-600 dark:text-blue-400" />
+                      <span>Validating street address on maps and generating GPS coordinates...</span>
+                    </div>
+                  )}
+
+                  {addressVerification.status === 'verified_on_maps' && (
+                    <div className="rounded-xl border border-emerald-200 bg-emerald-50/80 p-3 text-xs text-emerald-800 dark:border-emerald-900/50 dark:bg-emerald-950/40 dark:text-emerald-300 space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-1.5 font-bold">
+                          <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                          <span>Street Verified on Maps</span>
+                        </div>
+                        <span className="text-[10px] bg-emerald-200/70 dark:bg-emerald-900/60 text-emerald-800 dark:text-emerald-200 font-bold px-2 py-0.5 rounded-full">
+                          GPS Coordinates Ready
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-emerald-700 dark:text-emerald-300 font-medium leading-relaxed">
+                        {addressVerification.formattedAddress || address}
+                      </p>
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-emerald-200/60 dark:border-emerald-900/40">
+                        <span className="text-[10px] font-mono text-emerald-600 dark:text-emerald-400">
+                          Lat: {addressVerification.lat?.toFixed(5)}, Lng: {addressVerification.lng?.toFixed(5)}
+                        </span>
+                        <a
+                          href={addressVerification.googleMapsUrl || getGoogleMapsSearchUrl(address, NIGERIAN_UNIVERSITIES.find((u) => u.slug === universitySlug)?.name)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-emerald-700 hover:text-emerald-900 dark:text-emerald-300 dark:hover:text-emerald-100 underline cursor-pointer"
+                        >
+                          <span>Confirm on Google Maps</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {addressVerification.status === 'approximated_near_campus' && (
+                    <div className="rounded-xl border border-amber-200 bg-amber-50/80 p-3 text-xs text-amber-900 dark:border-amber-900/50 dark:bg-amber-950/40 dark:text-amber-300 space-y-2">
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="flex items-center gap-1.5 font-bold">
+                          <MapPin className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                          <span>Street Mapped in Campus Vicinity</span>
+                        </div>
+                        <span className="text-[10px] bg-amber-200/70 dark:bg-amber-900/60 text-amber-900 dark:text-amber-200 font-bold px-2 py-0.5 rounded-full">
+                          Proximity Centroid
+                        </span>
+                      </div>
+                      <p className="text-[11px] text-amber-800 dark:text-amber-300 leading-relaxed">
+                        Street pinned within {distanceToCampus}. Students can navigate directly with 1-click Google Maps turn-by-turn.
+                      </p>
+                      <div className="flex flex-wrap items-center justify-between gap-2 pt-1 border-t border-amber-200/60 dark:border-amber-900/40">
+                        <span className="text-[10px] font-mono text-amber-700 dark:text-amber-400">
+                          Lat: {addressVerification.lat?.toFixed(5)}, Lng: {addressVerification.lng?.toFixed(5)}
+                        </span>
+                        <a
+                          href={addressVerification.googleMapsUrl || getGoogleMapsSearchUrl(address, NIGERIAN_UNIVERSITIES.find((u) => u.slug === universitySlug)?.name)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[11px] font-bold text-amber-800 hover:text-amber-950 dark:text-amber-200 dark:hover:text-white underline cursor-pointer"
+                        >
+                          <span>Confirm Street on Google Maps</span>
+                          <ExternalLink className="h-3 w-3" />
+                        </a>
+                      </div>
+                    </div>
+                  )}
+
+                  {addressVerification.status === 'idle' && (
+                    <p className="text-[10px] text-slate-500 dark:text-slate-400">
+                      Street verification checks Google Maps and coordinates for student campus navigation. Click &apos;Check&apos; or finish typing.
+                    </p>
+                  )}
                 </div>
-              </div>
 
-              {/* Real Property Images Upload via Supabase Storage */}
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-                  Property Photos (Real Upload to Storage)
-                </label>
-                <ImageUploader
-                  value={images}
-                  onChange={setImages}
-                  maxFiles={6}
-                  bucketName="lodge-images"
-                  folder="lodges"
-                />
-              </div>
+                {/* Transparent Financials */}
+                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 space-y-3 dark:border-slate-800 dark:bg-slate-850">
+                  <span className="text-xs font-bold text-slate-800 dark:text-white block">
+                    Transparent Upfront Pricing (Per Annum)
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Base Annual Rent (₦) *</label>
+                      <Input
+                        type="number"
+                        value={minPrice}
+                        onChange={(e) => setMinPrice(e.target.value)}
+                        placeholder="450000"
+                        className="text-xs bg-white dark:bg-slate-800"
+                        required
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Caution Deposit (₦)</label>
+                      <Input
+                        type="number"
+                        value={cautionDeposit}
+                        onChange={(e) => setCautionDeposit(e.target.value)}
+                        placeholder="40000"
+                        className="text-xs bg-white dark:bg-slate-800"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label className="text-[11px] font-semibold text-slate-600 dark:text-slate-400">Service Charge (₦)</label>
+                      <Input
+                        type="number"
+                        value={serviceCharge}
+                        onChange={(e) => setServiceCharge(e.target.value)}
+                        placeholder="30000"
+                        className="text-xs bg-white dark:bg-slate-800"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-slate-500 dark:text-slate-400 font-medium">
+                    Zero middleman agency commission: LodgeHere direct landlord model is designed to eliminate unauthorized agent markups.
+                  </p>
+                </div>
 
-              {/* Description */}
-              <div className="space-y-1">
-                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Description</label>
-                <textarea
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  rows={3}
-                  className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-                />
-              </div>
+                {/* Amenities */}
+                <div className="space-y-1.5">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Available Amenities</label>
+                  <div className="flex flex-wrap gap-2">
+                    {AMENITIES_CATALOG.map((a) => {
+                      const isSelected = selectedAmenities.includes(a.key);
+                      return (
+                        <button
+                          key={a.key}
+                          type="button"
+                          onClick={() => toggleAmenity(a.key)}
+                          className={`rounded-full px-2.5 py-1 text-xs font-medium border transition-colors cursor-pointer focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:outline-none ${isSelected
+                            ? 'bg-slate-900 text-white border-slate-900 dark:bg-white dark:text-slate-900 dark:border-white'
+                            : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-750'
+                            }`}
+                        >
+                          {a.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
 
-              {/* Form Consent Checkbox */}
-              <div className="flex items-start gap-2 pt-2">
-                <input
-                  id="landlord-listing-consent"
-                  type="checkbox"
-                  required
-                  className="h-4 w-4 mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
-                />
-                <label htmlFor="landlord-listing-consent" className="text-xs text-slate-700 dark:text-slate-300 leading-snug cursor-pointer">
-                  I confirm that all stated rents and fees are transparent with zero unadvertised charges, and that I have legal authority to list this property in accordance with the{' '}
-                  <a href="/terms" target="_blank" className="text-blue-600 underline dark:text-blue-400 font-semibold">
-                    Terms of Service
-                  </a>.
-                </label>
-              </div>
+                {/* Real Property Images Upload via Supabase Storage */}
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">
+                    Property Photos (Real Upload to Storage)
+                  </label>
+                  <ImageUploader
+                    value={images}
+                    onChange={setImages}
+                    maxFiles={6}
+                    bucketName="lodge-images"
+                    folder="lodges"
+                  />
+                </div>
 
-              {/* Actions */}
-              <div className="flex items-center justify-end gap-2 pt-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={() => setIsAddModalOpen(false)}
-                >
-                  Cancel
-                </Button>
-                <Button type="submit" size="sm">
-                  Save & Publish Property
-                </Button>
-              </div>
-            </form>
+                {/* Description */}
+                <div className="space-y-1">
+                  <label className="text-xs font-semibold text-slate-700 dark:text-slate-300">Description</label>
+                  <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    rows={3}
+                    className="w-full rounded-md border border-slate-300 p-2 text-xs text-slate-800 focus:border-blue-500 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+                  />
+                </div>
+
+                {/* Form Consent Checkbox */}
+                <div className="flex items-start gap-2 pt-2">
+                  <input
+                    id="landlord-listing-consent"
+                    type="checkbox"
+                    required
+                    className="h-4 w-4 mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800 cursor-pointer"
+                  />
+                  <label htmlFor="landlord-listing-consent" className="text-xs text-slate-700 dark:text-slate-300 leading-snug cursor-pointer">
+                    I confirm that all stated rents and fees are transparent with zero unadvertised charges, and that I have legal authority to list this property in accordance with the{' '}
+                    <a href="/terms" target="_blank" className="text-blue-600 underline dark:text-blue-400 font-semibold">
+                      Terms of Service
+                    </a>.
+                  </label>
+                </div>
+              </form>
+            </div>
+
+            {/* Sticky Bottom Footer - ALWAYS VISIBLE ON MOBILE */}
+            <div className="sticky bottom-0 z-30 bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 p-3.5 sm:p-4 backdrop-blur-md flex items-center justify-between gap-3 shrink-0 shadow-lg">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={() => setIsAddModalOpen(false)}
+                className="h-10 px-4 text-xs font-semibold"
+              >
+                Cancel
+              </Button>
+              <Button
+                type="submit"
+                form="add-property-form"
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white font-bold h-10 px-5 flex-1 sm:flex-initial shadow-md cursor-pointer"
+              >
+                Save & Publish Property
+              </Button>
+            </div>
           </div>
         </div>
       )}

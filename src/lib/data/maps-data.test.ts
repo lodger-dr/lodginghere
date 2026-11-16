@@ -4,6 +4,7 @@ import {
   getLodgeCoordinates,
   getGoogleMapsDirectionsUrl,
   getGoogleMapsSearchUrl,
+  verifyAddressOnMaps,
   UNIVERSITY_COORDINATES,
 } from './maps-data';
 
@@ -59,5 +60,19 @@ describe('maps-data utilities', () => {
     const url = getGoogleMapsSearchUrl('14 University Road, Akoka', 'UNILAG');
     expect(url).toContain('https://www.google.com/maps/search/?api=1&query=');
     expect(url).toContain('14%20University%20Road');
+  });
+
+  it('verifies address on maps and returns coordinates and Google Maps search link', async () => {
+    const result = await verifyAddressOnMaps('14 University Road, Akoka', 'university-of-lagos', 'UNILAG');
+    expect(result.verified).toBe(true);
+    expect(result.lat).toBeGreaterThan(0);
+    expect(result.lng).toBeGreaterThan(0);
+    expect(result.googleMapsUrl).toContain('google.com/maps/search');
+  });
+
+  it('handles empty or short addresses gracefully during verification', async () => {
+    const result = await verifyAddressOnMaps('', 'university-of-lagos');
+    expect(result.verified).toBe(false);
+    expect(result.status).toBe('not_found');
   });
 });

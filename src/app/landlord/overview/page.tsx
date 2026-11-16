@@ -74,7 +74,7 @@ export default function LandlordOverviewPage() {
   return (
     <div className="space-y-6">
       {/* Top Header Row (matching Dojah reference layout) */}
-      <div className="flex items-center justify-between pb-2 border-b border-slate-200/60 dark:border-slate-800/80">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200/60 dark:border-slate-800/80">
         <div>
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
             Dashboard
@@ -82,7 +82,7 @@ export default function LandlordOverviewPage() {
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{currentDate}</p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-wrap">
           <Link
             href="/landlord/properties"
             className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs"
@@ -113,28 +113,28 @@ export default function LandlordOverviewPage() {
         {/* 4 Steps */}
         <div className="divide-y divide-slate-100 dark:divide-slate-800/60">
           {/* Step 1: Provider Profile Ready */}
-          <div className="flex items-center justify-between py-3.5 first:pt-0">
-            <div className="flex items-start gap-3.5">
+          <div className="flex items-start sm:items-center justify-between gap-3 py-3.5 first:pt-0">
+            <div className="flex items-start gap-3.5 min-w-0">
               <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white mt-0.5">
                 <CheckCircle2 className="h-4 w-4" />
               </div>
-              <div className="space-y-0.5">
+              <div className="space-y-0.5 min-w-0">
                 <p className="text-xs font-bold text-slate-900 dark:text-white">Provider profile verified</p>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Your registered landlord identity and banking details are verified
                 </p>
               </div>
             </div>
-            <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded">
+            <span className="text-[11px] font-bold text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded shrink-0">
               Verified
             </span>
           </div>
 
           {/* Step 2: Add Lodge Listing */}
-          <div className="flex items-center justify-between py-3.5">
-            <div className="flex items-start gap-3.5">
+          <div className="flex items-start sm:items-center justify-between gap-3 py-3.5">
+            <div className="flex items-start gap-3.5 min-w-0">
               <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-slate-300 dark:border-slate-700 mt-0.5" />
-              <div className="space-y-0.5">
+              <div className="space-y-0.5 min-w-0">
                 <p className="text-xs font-bold text-slate-900 dark:text-white">Add lodge property listing</p>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Publish photo gallery, transparent pricing breakdown, and campus distance
@@ -143,17 +143,17 @@ export default function LandlordOverviewPage() {
             </div>
             <Link
               href="/landlord/properties"
-              className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs inline-block"
+              className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs inline-block shrink-0"
             >
               Start
             </Link>
           </div>
 
           {/* Step 3: Room Inventory */}
-          <div className="flex items-center justify-between py-3.5">
-            <div className="flex items-start gap-3.5">
+          <div className="flex items-start sm:items-center justify-between gap-3 py-3.5">
+            <div className="flex items-start gap-3.5 min-w-0">
               <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-slate-300 dark:border-slate-700 mt-0.5" />
-              <div className="space-y-0.5">
+              <div className="space-y-0.5 min-w-0">
                 <p className="text-xs font-bold text-slate-900 dark:text-white">Configure room inventory & vacancies</p>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Set up individual room units (e.g. Room 101) and real-time vacancies
@@ -162,17 +162,17 @@ export default function LandlordOverviewPage() {
             </div>
             <Link
               href="/landlord/rooms"
-              className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs inline-block"
+              className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs inline-block shrink-0"
             >
               Add
             </Link>
           </div>
 
           {/* Step 4: Inspections */}
-          <div className="flex items-center justify-between py-3.5 last:pb-0">
-            <div className="flex items-start gap-3.5">
+          <div className="flex items-start sm:items-center justify-between gap-3 py-3.5 last:pb-0">
+            <div className="flex items-start gap-3.5 min-w-0">
               <div className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 border-slate-300 dark:border-slate-700 mt-0.5" />
-              <div className="space-y-0.5">
+              <div className="space-y-0.5 min-w-0">
                 <p className="text-xs font-bold text-slate-900 dark:text-white">Review student inspection requests</p>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Accept or reschedule physical inspection appointments with students
@@ -181,7 +181,7 @@ export default function LandlordOverviewPage() {
             </div>
             <Link
               href="/landlord/inspections"
-              className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs inline-block"
+              className="rounded-lg border border-slate-200 bg-white px-3.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors shadow-2xs inline-block shrink-0"
             >
               Inspect
             </Link>

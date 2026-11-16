@@ -60,7 +60,7 @@ export default function LandlordLayout({ children }: LandlordLayoutProps) {
   ];
 
   return (
-    <div className="relative flex min-h-[calc(100vh-4rem)] bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
+    <div className="relative flex min-h-[calc(100vh-4rem)] w-full max-w-full overflow-x-hidden bg-slate-50 dark:bg-slate-950 text-slate-900 dark:text-slate-100 transition-colors">
       {/* Ambient background light gradients */}
       <div className="pointer-events-none absolute -top-40 left-1/4 h-96 w-96 rounded-full bg-blue-500/5 blur-3xl dark:bg-indigo-500/5" />
       <div className="pointer-events-none absolute top-1/3 right-10 h-80 w-80 rounded-full bg-blue-500/5 blur-3xl dark:bg-blue-500/5" />
@@ -153,7 +153,7 @@ export default function LandlordLayout({ children }: LandlordLayoutProps) {
       </aside>
 
       {/* Main Content Area */}
-      <main className="relative flex-1 p-4 sm:p-6 md:p-8 max-w-6xl z-10 pb-24 md:pb-8">{children}</main>
+      <main className="relative flex-1 w-full max-w-6xl min-w-0 p-3.5 sm:p-6 md:p-8 z-10 pb-28 md:pb-8">{children}</main>
     </div>
   );
 }
