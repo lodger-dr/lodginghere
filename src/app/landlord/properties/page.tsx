@@ -21,6 +21,7 @@ import { getLodges, fetchLodges, saveLodge, deleteLodge, AMENITIES_CATALOG, DEFA
 import { Lodge, AmenityKey, AccommodationType, ListingStatus } from '@/types/database';
 import { NIGERIAN_UNIVERSITIES } from '@/lib/data/nigerian-universities';
 import { formatNaira } from '@/lib/utils';
+import { getLodgeCoordinates } from '@/lib/data/maps-data';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -85,9 +86,11 @@ export default function LandlordPropertiesPage() {
 
     const selectedUni = NIGERIAN_UNIVERSITIES.find((u) => u.slug === universitySlug);
     const slug = `${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}-${Date.now().toString().slice(-4)}`;
+    const lodgeId = `lodge-${Date.now()}`;
+    const coords = getLodgeCoordinates({ id: lodgeId, university_slug: universitySlug });
 
     const newLodge: Lodge = {
-      id: `lodge-${Date.now()}`,
+      id: lodgeId,
       title: title.trim(),
       slug,
       description: description.trim(),
@@ -101,6 +104,8 @@ export default function LandlordPropertiesPage() {
       neighbourhood: neighbourhood.trim(),
       address: address.trim(),
       distance_to_campus: distanceToCampus.trim(),
+      latitude: coords.lat,
+      longitude: coords.lng,
       accommodation_type: accommodationType,
       pricing: {
         min_price: Number(minPrice) || 300000,
@@ -322,8 +327,8 @@ export default function LandlordPropertiesPage() {
 
       {/* Add Property Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-3 sm:p-4 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-2xl max-h-[92vh] overflow-y-auto rounded-2xl bg-white p-5 sm:p-6 shadow-2xl space-y-5 border border-slate-200 dark:border-slate-800 dark:bg-slate-900 my-auto">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 p-0 sm:p-4 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-2xl max-h-[92vh] sm:max-h-[90vh] overflow-y-auto rounded-t-3xl sm:rounded-2xl bg-white p-5 sm:p-6 shadow-2xl space-y-5 border-t sm:border border-slate-200 dark:border-slate-800 dark:bg-slate-900 pb-safe animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200">
             <button
               onClick={() => setIsAddModalOpen(false)}
               className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"

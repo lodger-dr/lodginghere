@@ -125,11 +125,10 @@ export function ImageUploader({
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
-        className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 text-center cursor-pointer transition-colors ${
-          isDragOver
+        className={`relative flex flex-col items-center justify-center rounded-xl border-2 border-dashed p-6 text-center cursor-pointer transition-colors ${isDragOver
             ? 'border-blue-500 bg-blue-50/50'
             : 'border-slate-300 bg-slate-50/50 hover:border-slate-400 hover:bg-slate-50'
-        }`}
+          }`}
       >
         <input
           ref={fileInputRef}

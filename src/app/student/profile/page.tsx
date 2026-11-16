@@ -81,7 +81,7 @@ export default function StudentProfilePage() {
         if (typeof window !== 'undefined' && selectedUniSlug) {
           try {
             localStorage.setItem('lodgehere_user_university', selectedUniSlug);
-          } catch {}
+          } catch { }
         }
 
         updateProfileState({

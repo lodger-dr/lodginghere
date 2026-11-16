@@ -170,7 +170,7 @@ export default function OnboardingPage() {
           if (universitySlug && typeof window !== 'undefined') {
             try {
               localStorage.setItem('lodgehere_user_university', universitySlug);
-            } catch {}
+            } catch { }
           }
           updateProfileState({
             full_name: fullName.trim(),
@@ -281,18 +281,16 @@ export default function OnboardingPage() {
                     setRole('student');
                   }
                 }}
-                className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${
-                  role === 'student'
+                className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${role === 'student'
                     ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30 shadow-md ring-2 ring-blue-500/20'
                     : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900'
-                }`}
+                  }`}
               >
                 <div
-                  className={`p-3 rounded-2xl shrink-0 ${
-                    role === 'student'
+                  className={`p-3 rounded-2xl shrink-0 ${role === 'student'
                       ? 'bg-blue-600 text-white'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
-                  }`}
+                    }`}
                 >
                   <GraduationCap className="h-6 w-6" />
                 </div>
@@ -333,18 +331,16 @@ export default function OnboardingPage() {
                     setRole('landlord');
                   }
                 }}
-                className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${
-                  role === 'landlord'
+                className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${role === 'landlord'
                     ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30 shadow-md ring-2 ring-blue-500/20'
                     : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900'
-                }`}
+                  }`}
               >
                 <div
-                  className={`p-3 rounded-2xl shrink-0 ${
-                    role === 'landlord'
+                  className={`p-3 rounded-2xl shrink-0 ${role === 'landlord'
                       ? 'bg-blue-600 text-white'
                       : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
-                  }`}
+                    }`}
                 >
                   <Building2 className="h-6 w-6" />
                 </div>
@@ -643,11 +639,10 @@ export default function OnboardingPage() {
                           key={item.id}
                           type="button"
                           onClick={() => setPreferredRoomType(item.id)}
-                          className={`flex items-center gap-2 p-3 rounded-2xl border text-xs font-semibold transition-all ${
-                            preferredRoomType === item.id
+                          className={`flex items-center gap-2 p-3 rounded-2xl border text-xs font-semibold transition-all ${preferredRoomType === item.id
                               ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 shadow-2xs'
                               : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300'
-                          }`}
+                            }`}
                         >
                           <Home className="h-3.5 w-3.5" />
                           <span>{item.label}</span>
@@ -670,11 +665,10 @@ export default function OnboardingPage() {
                       <button
                         type="button"
                         onClick={() => setProviderType('owner')}
-                        className={`p-4 rounded-2xl border-2 text-left transition-all ${
-                          providerType === 'owner'
+                        className={`p-4 rounded-2xl border-2 text-left transition-all ${providerType === 'owner'
                             ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30'
                             : 'border-slate-200 dark:border-slate-800'
-                        }`}
+                          }`}
                       >
                         <h5 className="text-xs font-bold text-slate-900 dark:text-white">
                           Property Owner
@@ -687,11 +681,10 @@ export default function OnboardingPage() {
                       <button
                         type="button"
                         onClick={() => setProviderType('authorized_representative')}
-                        className={`p-4 rounded-2xl border-2 text-left transition-all ${
-                          providerType === 'authorized_representative'
+                        className={`p-4 rounded-2xl border-2 text-left transition-all ${providerType === 'authorized_representative'
                             ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30'
                             : 'border-slate-200 dark:border-slate-800'
-                        }`}
+                          }`}
                       >
                         <h5 className="text-xs font-bold text-slate-900 dark:text-white">
                           Property Manager / Agent
@@ -831,11 +824,10 @@ export default function OnboardingPage() {
                     </div>
                   </div>
                   <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold ${
-                      role === 'student'
+                    className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold ${role === 'student'
                         ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300'
                         : 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200'
-                    }`}
+                      }`}
                   >
                     {role === 'student' ? 'Student' : 'Accommodation Provider'}
                   </span>

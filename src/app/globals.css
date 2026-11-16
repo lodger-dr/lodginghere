@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "leaflet/dist/leaflet.css";
 
 @custom-variant dark (&:is(.dark, .dark *));
 
@@ -138,5 +139,29 @@ html.dark body {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+/* Safe Area Inset Utilities for Mobile Notch & Gesture Home Indicators */
+.pb-safe {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom, 0px));
+}
+
+.pt-safe {
+  padding-top: max(0.5rem, env(safe-area-inset-top, 0px));
+}
+
+.bottom-safe {
+  bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Mobile Touch & Input Ergonomics */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px !important; /* Prevents unwanted auto-zoom in mobile Safari */
+  }
+  button, a, [role="button"], input[type="submit"], input[type="button"] {
+    touch-action: manipulation; /* Eliminates 300ms mobile tap delay */
+  }
+}
+
 
 

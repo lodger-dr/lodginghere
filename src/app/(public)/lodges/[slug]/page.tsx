@@ -18,6 +18,7 @@ import {
   Share2,
   Heart,
   ChevronLeft,
+  ChevronRight,
   Phone,
   User,
   ArrowRight,
@@ -36,6 +37,7 @@ import { Badge } from '@/components/ui/badge';
 import { InspectionModal } from '@/components/lodges/inspection-modal';
 import { WinningCTA } from '@/components/ui/winning-cta';
 import { Accordion, AccordionItem } from '@/components/ui/accordion';
+import { LodgeMap } from '@/components/maps/lodge-map';
 
 const AMENITY_ICONS: Record<AmenityKey, React.ComponentType<{ className?: string }>> = {
   running_water: Droplets,
@@ -218,19 +220,58 @@ export default function LodgeDetailPage() {
 
         {/* Photo Gallery Grid */}
         <div className="space-y-3">
-          <div className="relative aspect-16/9 md:aspect-21/9 w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-850 shadow-md">
+          <div className="relative aspect-16/9 md:aspect-21/9 w-full overflow-hidden rounded-2xl bg-slate-100 dark:bg-slate-850 shadow-md group">
             <img
               src={images[activeImageIndex]}
               alt={`${lodge.title} - accommodation photograph ${activeImageIndex + 1} of ${images.length}`}
               className="h-full w-full object-cover transition-all duration-300"
             />
+
+            {/* Mobile Previous / Next Touch Controls */}
+            {images.length > 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={() => setActiveImageIndex((prev) => (prev > 0 ? prev - 1 : images.length - 1))}
+                  className="absolute left-2.5 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-slate-900/60 hover:bg-slate-900/90 text-white backdrop-blur-md transition-all active:scale-90 cursor-pointer"
+                  aria-label="Previous photograph"
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setActiveImageIndex((prev) => (prev < images.length - 1 ? prev + 1 : 0))}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 flex h-8 w-8 items-center justify-center rounded-full bg-slate-900/60 hover:bg-slate-900/90 text-white backdrop-blur-md transition-all active:scale-90 cursor-pointer"
+                  aria-label="Next photograph"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </button>
+
+                {/* Dot Pagination for Mobile */}
+                <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
+                  {images.map((_, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`h-1.5 rounded-full transition-all cursor-pointer ${idx === activeImageIndex
+                        ? 'w-5 bg-white shadow-xs'
+                        : 'w-1.5 bg-white/60 hover:bg-white/80'
+                        }`}
+                      aria-label={`Jump to photo ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              </>
+            )}
+
             <div className="absolute bottom-4 right-4 rounded-full bg-slate-900/75 px-3 py-1 text-xs font-semibold text-white backdrop-blur-xs">
               Photo {activeImageIndex + 1} of {images.length}
             </div>
           </div>
 
           {images.length > 1 && (
-            <div className="flex items-center gap-3 overflow-x-auto pb-2">
+            <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-none">
               {images.map((img, idx) => (
                 <button
                   key={idx}
@@ -427,6 +468,26 @@ export default function LodgeDetailPage() {
               )}
             </div>
 
+            {/* Location & Map Section with Open in Google Maps */}
+            <div className="rounded-2xl border border-slate-200 bg-white p-6 shadow-xs space-y-4 dark:border-slate-800 dark:bg-slate-900">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div>
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                    <MapPin className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                    <span>Location & Campus Map</span>
+                  </h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                    {lodge.neighbourhood} • {lodge.distance_to_campus}
+                  </p>
+                </div>
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-300">
+                  {lodge.address}
+                </span>
+              </div>
+
+              <LodgeMap singleLodge={lodge} height="360px" />
+            </div>
+
             {/* Secondary Details Folded into Accordions (Order of Operation Hierarchy) */}
             <div className="space-y-4">
               <h2 className="text-sm font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500">
@@ -563,15 +624,25 @@ export default function LodgeDetailPage() {
                   </div>
                 </div>
 
-                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-700 space-y-1 text-slate-600 dark:text-slate-300">
-                  <div className="flex items-center gap-2">
-                    <Phone className="h-3.5 w-3.5 text-slate-400" />
+                <div className="pt-2 border-t border-slate-200/60 dark:border-slate-700 space-y-1.5 text-slate-600 dark:text-slate-300">
+                  <a
+                    href={`tel:${(lodge.landlord_phone || '+2348032345678').replace(/\s+/g, '')}`}
+                    className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+                    title="Tap to call landlord"
+                  >
+                    <Phone className="h-3.5 w-3.5 shrink-0" />
                     <span>{lodge.landlord_phone || '+234 803 234 5678'}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <MapPin className="h-3.5 w-3.5 text-slate-400" />
+                  </a>
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${lodge.title}, ${lodge.address}`)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 hover:text-slate-900 dark:hover:text-white transition-colors"
+                    title="View directions on Google Maps"
+                  >
+                    <MapPin className="h-3.5 w-3.5 text-slate-400 shrink-0" />
                     <span className="truncate">{lodge.address}</span>
-                  </div>
+                  </a>
                 </div>
               </div>
             </div>
@@ -586,8 +657,8 @@ export default function LodgeDetailPage() {
         onClose={() => setIsInspectionModalOpen(false)}
       />
 
-      {/* Mobile Fixed Bottom Action Bar */}
-      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 backdrop-blur-md px-4 py-3 shadow-xl flex items-center justify-between gap-3">
+      {/* Mobile Fixed Bottom Action Bar with Safe Area Inset Support */}
+      <div className="lg:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 border-t border-slate-200/80 dark:border-slate-800/80 backdrop-blur-xl px-4 pt-3 pb-safe shadow-[0_-4px_25px_rgba(0,0,0,0.12)] flex items-center justify-between gap-3">
         <div>
           <span className="text-[10px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider block">
             Annual Rent
@@ -603,7 +674,7 @@ export default function LodgeDetailPage() {
         <Button
           size="sm"
           onClick={() => setIsInspectionModalOpen(true)}
-          className="bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 font-bold text-xs h-10 px-5 gap-1.5 shadow-sm rounded-full"
+          className="bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 font-bold text-xs h-11 px-6 gap-2 shadow-sm rounded-full active:scale-95 transition-all"
         >
           <CalendarCheck className="h-4 w-4" />
           <span>Schedule Inspection</span>

@@ -58,7 +58,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       try {
         const raw = localStorage.getItem(`lodgehere_profile_cache_${userId}`);
         if (raw) cachedProfile = JSON.parse(raw);
-      } catch {}
+      } catch { }
     }
 
     try {
@@ -89,7 +89,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 campus_name: null,
               };
             }
-          } catch {}
+          } catch { }
         } else if (profileObj.role === 'landlord') {
           try {
             const { data: lpData } = await supabase
@@ -106,14 +106,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
                 verification_status: lpData.verification_status,
               };
             }
-          } catch {}
+          } catch { }
         }
 
         // Cache for rapid local access
         if (typeof window !== 'undefined') {
           try {
             localStorage.setItem(`lodgehere_profile_cache_${userId}`, JSON.stringify(profileObj));
-          } catch {}
+          } catch { }
         }
 
         return profileObj;
@@ -157,7 +157,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (typeof window !== 'undefined') {
         try {
           localStorage.setItem(`lodgehere_profile_cache_${userId}`, JSON.stringify(fallback));
-        } catch {}
+        } catch { }
       }
 
       return fallback;
@@ -173,7 +173,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       if (typeof window !== 'undefined') {
         try {
           localStorage.setItem(`lodgehere_profile_cache_${updated.id}`, JSON.stringify(updated));
-        } catch {}
+        } catch { }
       }
       return updated;
     });

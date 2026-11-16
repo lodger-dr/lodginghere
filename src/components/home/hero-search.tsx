@@ -135,7 +135,7 @@ export function HeroSearch() {
         {/* Search Submit Button */}
         <button
           type="submit"
-          className="rounded-xl sm:rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 sm:py-3 text-xs flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md shadow-blue-500/20 shrink-0 cursor-pointer"
+          className="rounded-xl sm:rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 sm:py-3 text-xs flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md shadow-blue-500/20 shrink-0 cursor-pointer min-h-[44px]"
         >
           <Search className="h-4 w-4" />
           <span>Search Lodges</span>

@@ -9,6 +9,9 @@ import {
   ShieldCheck,
   X,
   RotateCcw,
+  SlidersHorizontal,
+  Map,
+  LayoutGrid,
 } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
 import { Button } from '@/components/ui/button';
@@ -19,6 +22,8 @@ import { getLodges, fetchLodges, AMENITIES_CATALOG } from '@/lib/data/lodges-dat
 import { Lodge, AmenityKey } from '@/types/database';
 import { LodgeCard } from '@/components/lodges/lodge-card';
 import { InspectionModal } from '@/components/lodges/inspection-modal';
+import { MobileFilterDrawer } from '@/components/lodges/mobile-filter-drawer';
+import { LodgeMap } from '@/components/maps/lodge-map';
 
 interface ExploreViewProps {
   isDashboard?: boolean;
@@ -41,6 +46,9 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
 
   // Inspection modal state
   const [inspectLodge, setInspectLodge] = useState<Lodge | null>(null);
+  const [isMobileFilterOpen, setIsMobileFilterOpen] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'map'>('grid');
+  const [highlightedLodgeId, setHighlightedLodgeId] = useState<string | undefined>();
 
   // Load and subscribe to live lodges data
   useEffect(() => {
@@ -186,6 +194,12 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
     searchQuery.trim()
   );
 
+  const activeFilterCount =
+    (accommodationType ? 1 : 0) +
+    (maxBudget ? 1 : 0) +
+    selectedAmenities.length +
+    (verifiedOnly ? 1 : 0);
+
   return (
     <div className={`space-y-8 ${isDashboard ? 'w-full' : 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8'}`}>
       {/* Page Header */}
@@ -207,27 +221,44 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
           </p>
         </div>
 
-        {/* Search Input */}
-        <div className="w-full md:w-80 relative">
-          <Input
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by lodge name, area, or road..."
-            className="pl-9 pr-14 text-xs h-10 rounded-xl glass-card border-slate-200/80 dark:border-slate-800/80 shadow-2xs"
-          />
-          <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-          {searchQuery ? (
-            <button
-              onClick={() => setSearchQuery('')}
-              className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer"
-            >
-              <X className="h-4 w-4" />
-            </button>
-          ) : (
-            <kbd className="hidden sm:inline-flex absolute right-2.5 top-2.5 items-center rounded border border-slate-200/80 bg-slate-100/70 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 dark:border-slate-800 dark:bg-slate-800/80">
-              ⌘K
-            </kbd>
-          )}
+        {/* Search Input & Mobile Filter Toggle */}
+        <div className="flex items-center gap-2 w-full md:w-auto">
+          <div className="flex-1 md:w-80 relative">
+            <Input
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search by lodge name, area, or road..."
+              className="pl-9 pr-14 text-xs h-10 rounded-xl glass-card border-slate-200/80 dark:border-slate-800/80 shadow-2xs"
+            />
+            <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
+            {searchQuery ? (
+              <button
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            ) : (
+              <kbd className="hidden sm:inline-flex absolute right-2.5 top-2.5 items-center rounded border border-slate-200/80 bg-slate-100/70 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 dark:border-slate-800 dark:bg-slate-800/80">
+                ⌘K
+              </kbd>
+            )}
+          </div>
+
+          <button
+            type="button"
+            onClick={() => setIsMobileFilterOpen(true)}
+            className="md:hidden flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 h-10 text-xs font-bold text-slate-700 dark:text-slate-200 shadow-2xs shrink-0 cursor-pointer active:scale-95 transition-all"
+            aria-label="Open filter drawer"
+          >
+            <SlidersHorizontal className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+            <span>Filters</span>
+            {activeFilterCount > 0 && (
+              <span className="flex h-4 min-w-[16px] items-center justify-center rounded-full bg-blue-600 px-1 text-[9px] font-black text-white">
+                {activeFilterCount}
+              </span>
+            )}
+          </button>
         </div>
       </div>
 
@@ -258,8 +289,8 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
         })}
       </div>
 
-      {/* Filter Card */}
-      <div className="glass-card rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
+      {/* Filter Card (Desktop Viewport) */}
+      <div className="hidden md:block glass-card rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
           {/* Accommodation Type */}
           <div className="space-y-1.5">
@@ -388,8 +419,8 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
 
       {/* Results Section */}
       <div className="space-y-4">
-        {/* Count Bar */}
-        <div className="flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-3">
+        {/* Count Bar with View Mode Toggle */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
           <div className="flex items-center gap-2">
             <span className="text-sm font-bold text-slate-900 dark:text-white">
               {filteredLodges.length} {filteredLodges.length === 1 ? 'Lodge' : 'Lodges'} Found
@@ -400,20 +431,67 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
               </span>
             )}
           </div>
-          <span className="text-xs text-slate-400 dark:text-slate-500 hidden sm:inline">
-            Direct landlord listings • 0% agency fees
-          </span>
+
+          <div className="flex items-center gap-2 self-end sm:self-auto">
+            {/* View Toggle */}
+            <div className="inline-flex items-center rounded-xl border border-slate-200 bg-white p-1 shadow-2xs dark:border-slate-800 dark:bg-slate-900">
+              <button
+                type="button"
+                onClick={() => setViewMode('grid')}
+                className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${viewMode === 'grid'
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+                  }`}
+                aria-label="Grid View"
+              >
+                <LayoutGrid className="h-3.5 w-3.5" />
+                <span>Grid</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setViewMode('map')}
+                className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${viewMode === 'map'
+                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+                  }`}
+                aria-label="Map View"
+              >
+                <Map className="h-3.5 w-3.5" />
+                <span>Map View</span>
+              </button>
+            </div>
+          </div>
         </div>
+
+        {/* Interactive Map View */}
+        {viewMode === 'map' && filteredLodges.length > 0 && (
+          <div className="space-y-2">
+            <LodgeMap
+              lodges={filteredLodges}
+              universitySlug={selectedUniSlug}
+              selectedLodgeId={highlightedLodgeId}
+              onSelectLodge={(lodge) => setHighlightedLodgeId(lodge.id)}
+              height="440px"
+            />
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center">
+              Click any price badge on the map to preview lodge details, or click &ldquo;Directions&rdquo; to launch Google Maps walking routes.
+            </p>
+          </div>
+        )}
 
         {/* Lodge Grid */}
         {filteredLodges.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredLodges.map((lodge) => (
-              <LodgeCard
+              <div
                 key={lodge.id}
-                lodge={lodge}
-                onBookInspection={(l) => setInspectLodge(l)}
-              />
+                className={highlightedLodgeId === lodge.id ? 'ring-2 ring-blue-500 rounded-3xl' : ''}
+              >
+                <LodgeCard
+                  lodge={lodge}
+                  onBookInspection={(l) => setInspectLodge(l)}
+                />
+              </div>
             ))}
           </div>
         ) : (
@@ -446,6 +524,27 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
         lodge={inspectLodge}
         isOpen={Boolean(inspectLodge)}
         onClose={() => setInspectLodge(null)}
+      />
+
+      {/* Mobile Filter Bottom Sheet Drawer */}
+      <MobileFilterDrawer
+        isOpen={isMobileFilterOpen}
+        onClose={() => setIsMobileFilterOpen(false)}
+        selectedUniSlug={selectedUniSlug}
+        onSelectUni={setSelectedUniSlug}
+        accommodationType={accommodationType}
+        onChangeAccommodationType={setAccommodationType}
+        maxBudget={maxBudget}
+        onChangeMaxBudget={setMaxBudget}
+        selectedAmenities={selectedAmenities}
+        onToggleAmenity={toggleAmenity}
+        verifiedOnly={verifiedOnly}
+        onToggleVerifiedOnly={setVerifiedOnly}
+        sortBy={sortBy}
+        onChangeSortBy={setSortBy}
+        totalResultsCount={filteredLodges.length}
+        onReset={resetFilters}
+        activeFilterCount={activeFilterCount}
       />
     </div>
   );

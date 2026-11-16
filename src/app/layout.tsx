@@ -3,6 +3,8 @@ import { Inter } from 'next/font/google';
 import './globals.css';
 import { Navbar } from '@/components/shared/navbar';
 import { Footer } from '@/components/shared/footer';
+import { MobileBottomNav } from '@/components/shared/mobile-bottom-nav';
+import { MobilePwaBanner } from '@/components/shared/mobile-pwa-banner';
 import { CookieConsentBanner } from '@/components/shared/cookie-consent-banner';
 import { TourProvider } from '@/context/tour-context';
 import { AuthProvider } from '@/context/auth-context';
@@ -19,10 +21,16 @@ export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
+  viewportFit: 'cover',
 };
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://lodginghere.vercel.app'),
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'LodgeHere',
+  },
   title: {
     default: 'LodgeHere — Verified Student Accommodation Across Nigerian Campuses',
     template: '%s | LodgeHere — Student Accommodation Nigeria',
@@ -142,8 +150,10 @@ export default function RootLayout({
         <TourProvider>
           <AuthProvider>
             <Navbar />
-            <main className="flex-1">{children}</main>
+            <main className="flex-1 pb-16 md:pb-0">{children}</main>
             <Footer />
+            <MobileBottomNav />
+            <MobilePwaBanner />
             <CookieConsentBanner />
             <GuidedTour />
           </AuthProvider>

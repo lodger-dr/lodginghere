@@ -235,8 +235,8 @@ function RoomsContent() {
                 <div
                   key={room.id}
                   className={`rounded-2xl border p-5 transition-all shadow-xs flex flex-col justify-between space-y-4 ${isAvailable
-                      ? 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700'
-                      : 'border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-850/60'
+                    ? 'border-slate-200 bg-white hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700'
+                    : 'border-slate-200 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-850/60'
                     }`}
                 >
                   <div className="space-y-2">
@@ -253,8 +253,8 @@ function RoomsContent() {
 
                       <span
                         className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${isAvailable
-                            ? 'bg-slate-100 text-slate-800 border border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700'
-                            : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
+                          ? 'bg-slate-100 text-slate-800 border border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700'
+                          : 'bg-slate-200 text-slate-700 dark:bg-slate-800 dark:text-slate-400'
                           }`}
                       >
                         {isAvailable ? 'Vacant / Available' : 'Occupied'}
@@ -310,8 +310,8 @@ function RoomsContent() {
                         variant={isAvailable ? 'outline' : 'secondary'}
                         onClick={() => handleToggleStatus(room)}
                         className={`text-xs h-8 px-2.5 ${isAvailable
-                            ? 'hover:border-amber-500 hover:text-amber-700'
-                            : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
+                          ? 'hover:border-amber-500 hover:text-amber-700'
+                          : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
                           }`}
                       >
                         {isAvailable ? 'Mark Occupied' : 'Mark Available'}
@@ -366,8 +366,8 @@ function RoomsContent() {
 
       {/* Add Room Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 p-3 sm:p-4 backdrop-blur-xs overflow-y-auto">
-          <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-2xl bg-white p-5 sm:p-6 shadow-2xl space-y-5 border border-slate-200 dark:border-slate-800 dark:bg-slate-900 my-auto">
+        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 p-0 sm:p-4 backdrop-blur-xs overflow-y-auto">
+          <div className="relative w-full max-w-lg max-h-[92vh] sm:max-h-[90vh] overflow-y-auto rounded-t-3xl sm:rounded-2xl bg-white p-5 sm:p-6 shadow-2xl space-y-5 border-t sm:border border-slate-200 dark:border-slate-800 dark:bg-slate-900 pb-safe animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200">
             <button
               onClick={() => setIsAddModalOpen(false)}
               className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer"

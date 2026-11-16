@@ -247,15 +247,23 @@ export default function LandlordInspectionsPage() {
                           <h4 className="font-bold text-sm text-slate-900 dark:text-white">{insp.student_name}</h4>
                         </div>
                         <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
-                          <span className="flex items-center gap-1">
-                            <Phone className="h-3 w-3 text-slate-400" />
+                          <a
+                            href={`tel:${insp.student_phone.replace(/\s+/g, '')}`}
+                            className="flex items-center gap-1 text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+                            title="Tap to call student"
+                          >
+                            <Phone className="h-3 w-3 text-blue-600 dark:text-blue-400" />
                             <span>{insp.student_phone}</span>
-                          </span>
+                          </a>
                           <span>•</span>
-                          <span className="flex items-center gap-1">
+                          <a
+                            href={`mailto:${insp.student_email}`}
+                            className="flex items-center gap-1 hover:underline text-slate-600 dark:text-slate-300"
+                            title="Send email to student"
+                          >
                             <Mail className="h-3 w-3 text-slate-400" />
                             <span>{insp.student_email}</span>
-                          </span>
+                          </a>
                         </div>
                       </div>
 

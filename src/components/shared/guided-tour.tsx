@@ -50,8 +50,10 @@ export function GuidedTour() {
     }
 
     const el = document.querySelector(currentStep.targetSelector);
-    if (!el) {
-      // Target element not found on current view: fall back to screen-centered dialog
+    const rawRect = el?.getBoundingClientRect();
+
+    if (!el || !rawRect || (rawRect.width === 0 && rawRect.height === 0)) {
+      // Target element not found or hidden on current mobile viewport: fall back to screen-centered dialog
       setTargetRect(null);
       setTooltipPos({
         top: Math.max(40, window.innerHeight / 2 - 200),
@@ -64,7 +66,6 @@ export function GuidedTour() {
     // Scroll smoothly into view if needed
     el.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'nearest' });
 
-    const rawRect = el.getBoundingClientRect();
     const padding = 8;
     const rect: ElementRect = {
       top: rawRect.top - padding,

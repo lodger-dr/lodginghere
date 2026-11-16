@@ -97,6 +97,8 @@ function mapSupabasePropertyToLodge(row: any): Lodge {
     neighbourhood: row.neighbourhoods?.name || row.address?.split(',')[1]?.trim() || 'Campus Area',
     address: row.address,
     distance_to_campus: row.distance_to_campus,
+    latitude: row.latitude ? Number(row.latitude) : null,
+    longitude: row.longitude ? Number(row.longitude) : null,
     accommodation_type: row.accommodation_type || 'self_contained',
     pricing: {
       min_price: Number(row.min_price) || 0,
@@ -180,6 +182,8 @@ export async function saveLodge(lodge: Lodge): Promise<void> {
       university_id: universityId,
       address: lodge.address,
       distance_to_campus: lodge.distance_to_campus,
+      latitude: lodge.latitude,
+      longitude: lodge.longitude,
       accommodation_type: lodge.accommodation_type,
       min_price: lodge.pricing.min_price,
       max_price: lodge.pricing.max_price,

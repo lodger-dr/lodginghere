@@ -76,7 +76,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </div>
       </aside>
 
-      <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-5xl">{children}</main>
+      <main className="flex-1 p-4 sm:p-6 md:p-8 max-w-5xl pb-24 md:pb-8">{children}</main>
     </div>
   );
 }

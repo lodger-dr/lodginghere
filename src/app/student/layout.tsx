@@ -154,40 +154,6 @@ export default function StudentLayout({ children }: StudentLayoutProps) {
 
       {/* Main Content Area */}
       <main className="relative flex-1 p-4 sm:p-6 md:p-8 max-w-6xl z-10 pb-24 md:pb-8">{children}</main>
-
-      {/* Mobile Bottom Navigation Bar (iOS/Android style native tab bar) */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 border-t border-slate-200 dark:border-slate-800 backdrop-blur-md px-1 py-1.5 flex items-center justify-around shadow-lg">
-        {[
-          { name: 'Overview', href: '/student/overview', icon: Building2 },
-          { name: 'Explore', href: '/student/explore', icon: Search },
-          { name: 'Inspections', href: '/student/inspections', icon: CalendarCheck },
-          { name: 'Bookings', href: '/student/bookings', icon: BookmarkCheck },
-          { name: 'Profile', href: '/student/profile', icon: User },
-        ].map((tab) => {
-          const Icon = tab.icon;
-          const active = isLinkActive(tab.href);
-          return (
-            <Link
-              key={tab.href}
-              href={tab.href}
-              className={`flex flex-col items-center justify-center min-w-[56px] py-1 px-1.5 rounded-xl transition-all ${active
-                ? 'text-blue-600 dark:text-blue-400 font-bold'
-                : 'text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200 font-medium'
-                }`}
-            >
-              <div
-                className={`flex h-7 w-7 items-center justify-center rounded-lg transition-colors ${active
-                  ? 'bg-blue-600 text-white dark:bg-blue-500 dark:text-slate-950'
-                  : 'text-slate-500 dark:text-slate-400'
-                  }`}
-              >
-                <Icon className="h-4 w-4" />
-              </div>
-              <span className="text-[10px] mt-0.5 tracking-tight">{tab.name}</span>
-            </Link>
-          );
-        })}
-      </nav>
     </div>
   );
 }

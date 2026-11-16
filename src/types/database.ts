@@ -176,6 +176,8 @@ export interface Lodge {
   neighbourhood: string;
   address: string;
   distance_to_campus: string;
+  latitude?: number | null;
+  longitude?: number | null;
   accommodation_type: AccommodationType;
   pricing: LodgePricing;
   amenities: AmenityKey[];

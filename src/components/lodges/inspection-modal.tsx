@@ -123,9 +123,14 @@ export function InspectionModal({ lodge, isOpen, onClose, onSuccess }: Inspectio
       role="dialog"
       aria-modal="true"
       aria-labelledby="inspection-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/60 p-3 sm:p-4 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-950/60 p-0 sm:p-4 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto"
     >
-      <div className="relative w-full max-w-lg max-h-[92vh] overflow-y-auto rounded-3xl bg-white p-5 sm:p-7 shadow-2xl space-y-5 border border-slate-200/80 dark:border-slate-800/80 dark:bg-slate-900 dark:text-white my-auto">
+      <div className="relative w-full max-w-lg max-h-[92vh] sm:max-h-[90vh] overflow-y-auto rounded-t-3xl sm:rounded-3xl bg-white p-5 sm:p-7 shadow-2xl space-y-5 border-t sm:border border-slate-200/80 dark:border-slate-800/80 dark:bg-slate-900 dark:text-white pb-safe animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-250">
+        {/* Mobile Drag Indicator */}
+        <div className="sm:hidden -mt-1 pb-1 flex justify-center">
+          <div className="w-12 h-1.5 bg-slate-300 dark:bg-slate-700 rounded-full" />
+        </div>
+
         {/* Close Button */}
         <button
           type="button"

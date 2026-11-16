@@ -34,6 +34,8 @@ const CURATED_SHOWCASE_LODGES: Lodge[] = [
     neighbourhood: 'Akoka',
     address: '14 University Road, Akoka, Yaba, Lagos',
     distance_to_campus: '5 mins walk to Gate',
+    latitude: 6.5182,
+    longitude: 3.3855,
     accommodation_type: 'self_contained',
     pricing: {
       min_price: 350000,
@@ -67,6 +69,8 @@ const CURATED_SHOWCASE_LODGES: Lodge[] = [
     neighbourhood: 'Agbowo',
     address: '8 Bodija Extension, Agbowo, Ibadan',
     distance_to_campus: '3 mins to UI Main Gate',
+    latitude: 7.4475,
+    longitude: 3.9025,
     accommodation_type: 'self_contained',
     pricing: {
       min_price: 320000,
@@ -100,6 +104,8 @@ const CURATED_SHOWCASE_LODGES: Lodge[] = [
     neighbourhood: 'Mayfair',
     address: '22 Mayfair Roundabout, Ile-Ife, Osun State',
     distance_to_campus: '8 mins by campus shuttle',
+    latitude: 7.5142,
+    longitude: 4.5245,
     accommodation_type: 'single_room',
     pricing: {
       min_price: 280000,
@@ -133,6 +139,8 @@ const CURATED_SHOWCASE_LODGES: Lodge[] = [
     neighbourhood: 'Ekosodin',
     address: '5 Ekosodin Road, Ugbowo, Benin City',
     distance_to_campus: '4 mins walk to Back Gate',
+    latitude: 6.4025,
+    longitude: 5.6178,
     accommodation_type: 'self_contained',
     pricing: {
       min_price: 300000,
@@ -166,6 +174,8 @@ const CURATED_SHOWCASE_LODGES: Lodge[] = [
     neighbourhood: 'South Gate',
     address: '18 South Gate Junction, FUTA, Akure',
     distance_to_campus: '6 mins walk to South Gate',
+    latitude: 7.3055,
+    longitude: 5.1388,
     accommodation_type: 'one_bedroom',
     pricing: {
       min_price: 420000,
@@ -199,6 +209,8 @@ const CURATED_SHOWCASE_LODGES: Lodge[] = [
     neighbourhood: 'Hilltop',
     address: '7 Hilltop Road, UNN, Nsukka, Enugu',
     distance_to_campus: '5 mins to Lecture Theatres',
+    latitude: 6.8682,
+    longitude: 7.4085,
     accommodation_type: 'single_room',
     pricing: {
       min_price: 250000,
