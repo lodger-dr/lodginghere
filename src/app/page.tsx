@@ -280,113 +280,125 @@ export default function HomePage() {
   };
 
   return (
-    <div className="space-y-16 sm:space-y-24 pb-20">
+    <div className="px-4 pt-2 pb-24 space-y-6">
       {/* ======================================================== */}
-      {/* 1. MINIMALIST HERO SECTION */}
+      {/* 1. MOBILE APP HERO / FEED HEADER */}
       {/* ======================================================== */}
-      <section className="relative px-4 sm:px-6 lg:px-8 pt-10 sm:pt-16 pb-6 text-center">
-        <div className="mx-auto max-w-3xl space-y-5">
-          {/* Clean Focused Headline */}
-          <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 dark:text-white leading-[1.1] text-balance">
-            Find verified lodges <br className="hidden sm:block" />
-            near your campus.
-          </h1>
-
-          {/* Clean Subheadline */}
-          <p className="text-sm sm:text-base text-slate-600 dark:text-slate-400 max-w-xl mx-auto leading-relaxed text-pretty">
-            Connect directly with verified landlords. Transparent pricing, zero agent exploitation,
-            and free physical inspections before you pay.
-          </p>
-
-          {/* Clean Horizontal Search Bar */}
-          <div className="pt-4 sm:pt-6">
-            <HeroSearch />
+      <section className="space-y-4">
+        {/* Top Campus Pill */}
+        <div className="flex items-center justify-between">
+          <div className="inline-flex items-center gap-1.5 rounded-full bg-blue-50 dark:bg-blue-950/60 border border-blue-200/80 dark:border-blue-900/60 px-3 py-1 text-[11px] font-bold text-blue-700 dark:text-blue-300">
+            <MapPin className="h-3 w-3 text-blue-600 dark:text-blue-400" />
+            <span>UNILAG, UI &amp; 30+ Campuses</span>
           </div>
+          <Link
+            href="/explore"
+            className="text-[11px] font-semibold text-blue-600 dark:text-blue-400 hover:underline"
+          >
+            All Lodges →
+          </Link>
         </div>
 
-        {/* 4 Minimalist Assurances in a clean single row */}
-        <div className="mx-auto max-w-4xl mt-12 sm:mt-16 pt-8 border-t border-slate-200/70 dark:border-slate-800/70">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
-            <div className="flex items-start gap-3">
-              <div className="p-2 rounded-xl bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 shrink-0">
-                <ShieldCheck className="h-4 w-4" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-900 dark:text-white">Direct Landlords</h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">0% agent markup</p>
-              </div>
-            </div>
+        {/* Clean Mobile App Greeting */}
+        <div className="space-y-1">
+          <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-white leading-tight">
+            Find verified lodges <br />near your campus.
+          </h1>
+          <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+            Connect directly with verified landlords. Transparent pricing, ₦0 agent exploitation, and free physical room inspections.
+          </p>
+        </div>
 
-            <div className="flex items-start gap-3">
-              <div className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0">
-                <FileCheck2 className="h-4 w-4" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-900 dark:text-white">Clear Pricing</h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">Itemized rent & caution</p>
-              </div>
-            </div>
+        {/* Touch Search Widget */}
+        <HeroSearch />
 
-            <div className="flex items-start gap-3">
-              <div className="p-2 rounded-xl bg-purple-50 dark:bg-purple-950/40 text-purple-600 dark:text-purple-400 shrink-0">
-                <CalendarCheck className="h-4 w-4" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-900 dark:text-white">Physical Inspection</h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">Inspect before paying</p>
-              </div>
+        {/* 4 Assurances in 2x2 Grid */}
+        <div className="grid grid-cols-2 gap-2 pt-2">
+          <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-850/60 border border-slate-200/70 dark:border-slate-800">
+            <div className="p-1.5 rounded-lg bg-blue-100/70 dark:bg-blue-950/80 text-blue-600 dark:text-blue-400 shrink-0">
+              <ShieldCheck className="h-3.5 w-3.5" />
             </div>
+            <div className="min-w-0">
+              <h4 className="text-[11px] font-bold text-slate-900 dark:text-white truncate">Direct Landlord</h4>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">0% agent markup</p>
+            </div>
+          </div>
 
-            <div className="flex items-start gap-3">
-              <div className="p-2 rounded-xl bg-amber-50 dark:bg-amber-950/40 text-amber-600 dark:text-amber-400 shrink-0">
-                <MapPin className="h-4 w-4" />
-              </div>
-              <div>
-                <h4 className="text-xs font-bold text-slate-900 dark:text-white">Campus Proximity</h4>
-                <p className="text-[11px] text-slate-500 dark:text-slate-400">Walking distance to gates</p>
-              </div>
+          <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-850/60 border border-slate-200/70 dark:border-slate-800">
+            <div className="p-1.5 rounded-lg bg-slate-200/70 dark:bg-slate-800 text-slate-700 dark:text-slate-300 shrink-0">
+              <FileCheck2 className="h-3.5 w-3.5" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-[11px] font-bold text-slate-900 dark:text-white truncate">Clear Pricing</h4>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Itemized rent & caution</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-850/60 border border-slate-200/70 dark:border-slate-800">
+            <div className="p-1.5 rounded-lg bg-purple-100/70 dark:bg-purple-950/80 text-purple-600 dark:text-purple-400 shrink-0">
+              <CalendarCheck className="h-3.5 w-3.5" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-[11px] font-bold text-slate-900 dark:text-white truncate">Free Inspection</h4>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Inspect before paying</p>
+            </div>
+          </div>
+
+          <div className="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-50 dark:bg-slate-850/60 border border-slate-200/70 dark:border-slate-800">
+            <div className="p-1.5 rounded-lg bg-amber-100/70 dark:bg-amber-950/80 text-amber-600 dark:text-amber-400 shrink-0">
+              <MapPin className="h-3.5 w-3.5" />
+            </div>
+            <div className="min-w-0">
+              <h4 className="text-[11px] font-bold text-slate-900 dark:text-white truncate">Near Campus</h4>
+              <p className="text-[10px] text-slate-500 dark:text-slate-400">Walk to school gates</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* ======================================================== */}
-      {/* 2. AVAILABLE VERIFIED LODGES */}
+      {/* 2. AVAILABLE VERIFIED LODGES (Mobile Feed) */}
       {/* ======================================================== */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div className="space-y-1">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
+      <section className="space-y-3.5">
+        <div className="flex items-center justify-between">
+          <div className="space-y-0.5">
+            <h2 className="text-base font-bold tracking-tight text-slate-900 dark:text-white">
               Available Lodges
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              Verified off-campus accommodations ready for physical inspection.
+            <p className="text-[11px] text-slate-500 dark:text-slate-400">
+              Verified off-campus rooms ready for physical inspection.
             </p>
           </div>
-
-          {/* Campus Filter Pills */}
-          <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none">
-            {CAMPUS_TABS.map((tab) => {
-              const isActive = activeCampusTab === tab.slug;
-              return (
-                <button
-                  key={tab.label}
-                  type="button"
-                  onClick={() => setActiveCampusTab(tab.slug)}
-                  className={`rounded-full px-3.5 py-1.5 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer ${isActive
-                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold'
-                    : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-                    }`}
-                >
-                  {tab.label}
-                </button>
-              );
-            })}
-          </div>
+          <Link
+            href="/explore"
+            className="text-xs font-bold text-blue-600 dark:text-blue-400 hover:underline shrink-0"
+          >
+            See all ({allLodges.length})
+          </Link>
         </div>
 
-        {/* Lodge Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        {/* Campus Filter Pills (Horizontal Scrollable) */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4">
+          {CAMPUS_TABS.map((tab) => {
+            const isActive = activeCampusTab === tab.slug;
+            return (
+              <button
+                key={tab.label}
+                type="button"
+                onClick={() => setActiveCampusTab(tab.slug)}
+                className={`rounded-full px-3 py-1.5 text-xs font-medium whitespace-nowrap transition-colors cursor-pointer shrink-0 ${isActive
+                  ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 font-semibold shadow-2xs'
+                  : 'bg-slate-100 text-slate-600 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
+                  }`}
+              >
+                {tab.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Lodge Cards Single-Column Mobile Stream */}
+        <div className="flex flex-col gap-4">
           {displayedLodges.map((lodge) => (
             <LodgeCard
               key={lodge.id}
@@ -397,11 +409,11 @@ export default function HomePage() {
         </div>
 
         {/* Explore All Lodges Button */}
-        <div className="pt-4 text-center">
+        <div className="pt-2">
           <Link href="/explore">
             <Button
               variant="outline"
-              className="rounded-full px-6 py-2.5 text-xs font-semibold gap-2 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800"
+              className="w-full rounded-2xl py-3 text-xs font-semibold gap-2 border-slate-200 dark:border-slate-800 hover:bg-slate-100 dark:hover:bg-slate-800 min-h-[44px]"
             >
               <span>Explore All Available Lodges</span>
               <ArrowRight className="h-3.5 w-3.5" />
@@ -411,40 +423,44 @@ export default function HomePage() {
       </section>
 
       {/* ======================================================== */}
-      {/* 3. HOW IT WORKS (Simple 3 Steps) */}
+      {/* 3. HOW IT WORKS (Mobile Step Cards) */}
       {/* ======================================================== */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 p-8 sm:p-12 space-y-8">
-          <div className="text-center max-w-xl mx-auto space-y-2">
-            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-              How LodgeHere Works
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
-              Three simple steps to secure your student accommodation with zero stress.
-            </p>
+      <section className="rounded-2xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/80 dark:border-slate-800 p-4 space-y-4">
+        <div className="space-y-1">
+          <h2 className="text-sm font-bold tracking-tight text-slate-900 dark:text-white uppercase tracking-wider">
+            How LodgeHere Works
+          </h2>
+          <p className="text-xs text-slate-500 dark:text-slate-400">
+            Three simple steps to secure your student accommodation with zero stress.
+          </p>
+        </div>
+
+        <div className="space-y-2.5">
+          <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 flex items-start gap-3 shadow-2xs">
+            <span className="text-xs font-extrabold text-blue-600 dark:text-blue-400 font-mono bg-blue-50 dark:bg-blue-950/80 px-2 py-0.5 rounded-md">01</span>
+            <div className="space-y-0.5 min-w-0">
+              <h3 className="text-xs font-bold text-slate-900 dark:text-white">Search & Filter</h3>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                Filter by campus, room type, and budget to find verified lodges within walking distance.
+              </p>
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 space-y-2.5 shadow-2xs">
-              <span className="text-xs font-bold text-blue-600 dark:text-blue-400 font-mono">01</span>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Search & Filter</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                Filter by your university, room type, and budget to find verified lodges within walking distance.
+          <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 flex items-start gap-3 shadow-2xs">
+            <span className="text-xs font-extrabold text-slate-900 dark:text-white font-mono bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-md">02</span>
+            <div className="space-y-0.5 min-w-0">
+              <h3 className="text-xs font-bold text-slate-900 dark:text-white">Inspect for Free</h3>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
+                Pick a date and inspect the room, light, and water supply in person with the caretaker before paying.
               </p>
             </div>
+          </div>
 
-            <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 space-y-2.5 shadow-2xs">
-              <span className="text-xs font-bold text-slate-900 dark:text-white font-mono">02</span>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Inspect for Free</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                Pick a date and inspect the room, light, and water supply in person with the caretaker before committing.
-              </p>
-            </div>
-
-            <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 space-y-2.5 shadow-2xs">
-              <span className="text-xs font-bold text-purple-600 dark:text-purple-400 font-mono">03</span>
-              <h3 className="text-sm font-bold text-slate-900 dark:text-white">Pay Directly & Move In</h3>
-              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+          <div className="p-3.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-200/70 dark:border-slate-800 flex items-start gap-3 shadow-2xs">
+            <span className="text-xs font-extrabold text-purple-600 dark:text-purple-400 font-mono bg-purple-50 dark:bg-purple-950/80 px-2 py-0.5 rounded-md">03</span>
+            <div className="space-y-0.5 min-w-0">
+              <h3 className="text-xs font-bold text-slate-900 dark:text-white">Pay Directly & Move In</h3>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed">
                 Agree on terms directly with the verified landlord with zero middleman agent commission.
               </p>
             </div>
@@ -453,32 +469,28 @@ export default function HomePage() {
       </section>
 
       {/* ======================================================== */}
-      {/* 4. MINIMALIST LANDLORD BANNER */}
+      {/* 4. MOBILE LANDLORD BANNER */}
       {/* ======================================================== */}
-      <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="rounded-3xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <div className="space-y-1.5 max-w-xl">
-            <div className="inline-flex items-center gap-1.5 text-[11px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
-              <Building2 className="h-3.5 w-3.5" />
-              <span>For Lodge Owners & Managers</span>
-            </div>
-            <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">
-              List your student property on LodgeHere
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 leading-relaxed">
-              Reach thousands of verified Nigerian university students looking for off-campus accommodation. Fill rooms faster with 0% commission.
-            </p>
+      <section className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-4 space-y-3">
+        <div className="space-y-1">
+          <div className="inline-flex items-center gap-1.5 text-[10px] font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
+            <Building2 className="h-3 w-3" />
+            <span>For Lodge Owners & Managers</span>
           </div>
-
-          <div className="flex items-center gap-3 shrink-0">
-            <Link href="/register">
-              <Button className="rounded-full bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 text-white px-5 py-2.5 text-xs font-bold gap-2">
-                <Plus className="h-4 w-4" />
-                <span>List Your Property</span>
-              </Button>
-            </Link>
-          </div>
+          <h3 className="text-sm font-bold text-slate-900 dark:text-white">
+            List your student property on LodgeHere
+          </h3>
+          <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
+            Reach thousands of verified university students looking for accommodation. Fill rooms faster with 0% commission.
+          </p>
         </div>
+
+        <Link href="/register" className="block">
+          <Button className="w-full rounded-xl bg-slate-900 hover:bg-slate-800 dark:bg-white dark:text-slate-900 text-white px-4 py-2.5 text-xs font-bold gap-2 min-h-[44px]">
+            <Plus className="h-4 w-4" />
+            <span>List Your Property</span>
+          </Button>
+        </Link>
       </section>
 
       {/* Inspection Modal */}

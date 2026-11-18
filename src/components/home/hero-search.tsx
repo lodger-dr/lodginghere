@@ -53,14 +53,14 @@ export function HeroSearch() {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto space-y-4">
-      {/* Clean Horizontal Search Bar */}
+    <div className="w-full space-y-3">
+      {/* Mobile App Search Card */}
       <form
         onSubmit={handleSearch}
-        className="rounded-2xl sm:rounded-full bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-2 sm:p-2.5 shadow-lg shadow-slate-900/5 dark:shadow-black/20 flex flex-col sm:flex-row items-stretch sm:items-center gap-2"
+        className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-3 shadow-lg shadow-slate-900/5 dark:shadow-black/20 flex flex-col gap-2.5 text-left"
       >
         {/* University Selector */}
-        <div className="flex-1 flex items-center gap-2.5 px-3 py-2 sm:py-1 rounded-xl sm:rounded-full hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
+        <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80">
           <MapPin className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
           <div className="flex-1 min-w-0">
             <label htmlFor="hero-uni" className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
@@ -84,58 +84,57 @@ export function HeroSearch() {
           </div>
         </div>
 
-        <div className="hidden sm:block h-8 w-px bg-slate-200 dark:bg-slate-800" />
-
-        {/* Room Type Selector */}
-        <div className="flex-1 flex items-center gap-2.5 px-3 py-2 sm:py-1 rounded-xl sm:rounded-full hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-          <Home className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
-          <div className="flex-1 min-w-0">
-            <label htmlFor="hero-type" className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              Room Type
-            </label>
-            <select
-              id="hero-type"
-              value={roomType}
-              onChange={(e) => setRoomType(e.target.value)}
-              className="w-full bg-transparent text-xs font-semibold text-slate-800 dark:text-white focus:outline-none cursor-pointer truncate"
-            >
-              {ROOM_TYPES.map((type) => (
-                <option key={type.value} value={type.value} className="text-slate-800 dark:text-slate-200 dark:bg-slate-900">
-                  {type.label}
-                </option>
-              ))}
-            </select>
+        {/* Room Type & Budget Row */}
+        <div className="grid grid-cols-2 gap-2">
+          {/* Room Type */}
+          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80">
+            <Home className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <label htmlFor="hero-type" className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Type
+              </label>
+              <select
+                id="hero-type"
+                value={roomType}
+                onChange={(e) => setRoomType(e.target.value)}
+                className="w-full bg-transparent text-xs font-semibold text-slate-800 dark:text-white focus:outline-none cursor-pointer truncate"
+              >
+                {ROOM_TYPES.map((type) => (
+                  <option key={type.value} value={type.value} className="text-slate-800 dark:text-slate-200 dark:bg-slate-900">
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
-        </div>
 
-        <div className="hidden sm:block h-8 w-px bg-slate-200 dark:bg-slate-800" />
-
-        {/* Budget Selector */}
-        <div className="flex-1 flex items-center gap-2.5 px-3 py-2 sm:py-1 rounded-xl sm:rounded-full hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors">
-          <Wallet className="h-4 w-4 text-amber-500 shrink-0" />
-          <div className="flex-1 min-w-0">
-            <label htmlFor="hero-budget" className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              Budget
-            </label>
-            <select
-              id="hero-budget"
-              value={budget}
-              onChange={(e) => setBudget(e.target.value)}
-              className="w-full bg-transparent text-xs font-semibold text-slate-800 dark:text-white focus:outline-none cursor-pointer truncate"
-            >
-              {BUDGET_RANGES.map((b) => (
-                <option key={b.value} value={b.value} className="text-slate-800 dark:text-slate-200 dark:bg-slate-900">
-                  {b.label}
-                </option>
-              ))}
-            </select>
+          {/* Budget */}
+          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80">
+            <Wallet className="h-4 w-4 text-amber-500 shrink-0" />
+            <div className="flex-1 min-w-0">
+              <label htmlFor="hero-budget" className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                Budget
+              </label>
+              <select
+                id="hero-budget"
+                value={budget}
+                onChange={(e) => setBudget(e.target.value)}
+                className="w-full bg-transparent text-xs font-semibold text-slate-800 dark:text-white focus:outline-none cursor-pointer truncate"
+              >
+                {BUDGET_RANGES.map((b) => (
+                  <option key={b.value} value={b.value} className="text-slate-800 dark:text-slate-200 dark:bg-slate-900">
+                    {b.label}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
 
         {/* Search Submit Button */}
         <button
           type="submit"
-          className="rounded-xl sm:rounded-full bg-blue-600 hover:bg-blue-700 text-white font-bold px-6 py-3 sm:py-3 text-xs flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md shadow-blue-500/20 shrink-0 cursor-pointer min-h-[44px]"
+          className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-3 text-xs flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md shadow-blue-500/20 cursor-pointer min-h-[44px]"
         >
           <Search className="h-4 w-4" />
           <span>Search Lodges</span>
@@ -143,14 +142,14 @@ export function HeroSearch() {
       </form>
 
       {/* Quick Campus Filter Pills */}
-      <div className="flex items-center justify-center gap-2 flex-wrap text-xs">
-        <span className="text-[11px] font-semibold text-slate-400">Popular:</span>
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
+        <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider shrink-0 pl-1">Campuses:</span>
         {POPULAR_CAMPUSES.map((campus) => (
           <button
             key={campus.slug}
             type="button"
             onClick={() => handleQuickCampus(campus.slug)}
-            className="rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 px-3 py-1 text-[11px] font-medium text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
+            className="rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 px-3 py-1.5 text-[11px] font-semibold text-slate-600 dark:text-slate-300 transition-colors shrink-0 cursor-pointer"
           >
             {campus.name}
           </button>

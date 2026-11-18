@@ -117,43 +117,43 @@ export default function StudentOverviewPage() {
         </div>
 
         {/* Pipeline Progress Indicator */}
-        <div className="pt-4 border-t border-slate-100/80 dark:border-slate-800/60 grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-xs">
+        <div className="pt-3 border-t border-slate-100/80 dark:border-slate-800/60 flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none">
+          <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50/80 dark:bg-slate-800/50 border border-slate-200/60 dark:border-slate-700/60 shrink-0">
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-900 dark:bg-white text-white dark:text-slate-900 font-bold text-[11px]">
               ✓
             </div>
             <div className="min-w-0">
               <span className="text-xs font-bold text-slate-900 dark:text-slate-100 block truncate">1. Profile Active</span>
-              <span className="text-[10px] text-slate-500 dark:text-slate-400">Student testing role</span>
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate">Student role</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-2xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200/50 dark:border-blue-900/50">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white font-bold text-xs">
+          <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-blue-50/60 dark:bg-blue-950/30 border border-blue-200/50 dark:border-blue-900/50 shrink-0">
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white font-bold text-[11px]">
               2
             </div>
             <div className="min-w-0">
               <span className="text-xs font-bold text-blue-900 dark:text-blue-300 block truncate">2. Inspect Room</span>
-              <span className="text-[10px] text-blue-700/80 dark:text-blue-400">Physical verification</span>
+              <span className="text-[10px] text-blue-700/80 dark:text-blue-400 block truncate">Physical verify</span>
             </div>
           </div>
 
-          <div className="flex items-center gap-3 p-3 rounded-2xl bg-slate-50/60 dark:bg-slate-800/40 border border-slate-200/50 dark:border-slate-700/50">
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold text-xs">
+          <div className="flex items-center gap-2.5 p-2.5 rounded-xl bg-slate-50/60 dark:bg-slate-800/40 border border-slate-200/50 dark:border-slate-700/50 shrink-0">
+            <div className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-700 text-slate-600 dark:text-slate-300 font-bold text-[11px]">
               3
             </div>
             <div className="min-w-0">
-              <span className="text-xs font-bold text-slate-700 dark:text-slate-300 block truncate">3. Confirm Booking</span>
-              <span className="text-[10px] text-slate-400 dark:text-slate-500">Mutual lease confirmation</span>
+              <span className="text-xs font-bold text-slate-700 dark:text-slate-300 block truncate">3. Move In</span>
+              <span className="text-[10px] text-slate-400 dark:text-slate-500 block truncate">Direct lease</span>
             </div>
           </div>
         </div>
       </div>
 
       {/* STAGE 2: RELATIONSHIP-GROUPED ACTIVITY & QUICK ACTIONS */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Column: Scheduled Physical Inspections (2 cols) */}
-        <div data-tour="inspection-tracker" className="lg:col-span-2 space-y-4">
+      <div className="space-y-6">
+        {/* Left Column: Scheduled Physical Inspections */}
+        <div data-tour="inspection-tracker" className="space-y-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CalendarCheck className="h-4 w-4 text-slate-600 dark:text-slate-400" />

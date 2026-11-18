@@ -2,8 +2,21 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-import { Menu, X, Search, LogOut } from 'lucide-react';
+import { usePathname, useRouter } from 'next/navigation';
+import {
+  Menu,
+  X,
+  Search,
+  LogOut,
+  ChevronLeft,
+  Building2,
+  SlidersHorizontal,
+  Compass,
+  GraduationCap,
+  HelpCircle,
+  ShieldCheck,
+  User,
+} from 'lucide-react';
 import { Logo } from './logo';
 import { ThemeToggle } from './theme-toggle';
 import { CommandMenu } from './command-menu';
@@ -14,8 +27,9 @@ export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [commandOpen, setCommandOpen] = useState(false);
   const { user, profile, role: authRole, isAuthenticated, signOut } = useAuth();
-  const { role: devRole } = useDevRole();
+  const { role: devRole, switchRole } = useDevRole();
   const pathname = usePathname();
+  const router = useRouter();
 
   const effectiveRole = authRole || devRole || 'student';
   const displayName =
@@ -37,155 +51,100 @@ export function Navbar() {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  const isDashboard = Boolean(
-    pathname &&
-    (pathname.startsWith('/student') ||
-      pathname.startsWith('/landlord') ||
-      pathname.startsWith('/admin'))
-  );
+  // Determine if on a sub-route where a back button makes sense
+  const isRootTab =
+    pathname === '/' ||
+    pathname === '/explore' ||
+    pathname === '/student/overview' ||
+    pathname === '/landlord/overview' ||
+    pathname === '/admin/dashboard';
 
-  const isLinkActive = (path: string) => pathname === path;
+  const isLodgeDetail = pathname.startsWith('/lodges/');
+
+  const getPageTitle = () => {
+    if (pathname === '/') return 'LodgeHere';
+    if (pathname === '/explore') return 'Explore Lodges';
+    if (pathname === '/universities') return 'Campuses';
+    if (pathname === '/how-it-works') return 'How It Works';
+    if (pathname.startsWith('/student/overview')) return 'Student Portal';
+    if (pathname.startsWith('/student/inspections')) return 'My Inspections';
+    if (pathname.startsWith('/student/bookings')) return 'Room Bookings';
+    if (pathname.startsWith('/student/favourites')) return 'Saved Lodges';
+    if (pathname.startsWith('/student/profile')) return 'My Profile';
+    if (pathname.startsWith('/landlord/overview')) return 'Landlord Portal';
+    if (pathname.startsWith('/landlord/properties')) return 'My Properties';
+    if (pathname.startsWith('/landlord/rooms')) return 'Rooms & Vacancy';
+    if (pathname.startsWith('/landlord/inspections')) return 'Inspection Requests';
+    if (pathname.startsWith('/landlord/verification')) return 'Verification';
+    if (pathname.startsWith('/landlord/profile')) return 'Host Profile';
+    if (pathname.startsWith('/admin')) return 'Admin Console';
+    if (pathname === '/login') return 'Sign In';
+    if (pathname === '/register') return 'Create Account';
+    if (pathname === '/onboarding') return 'Get Started';
+    return 'LodgeHere';
+  };
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-slate-200/70 bg-white/90 dark:bg-slate-900/90 dark:border-slate-800/70 backdrop-blur-md transition-colors">
-        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          {/* Left: Brand Logo & Mobile Toggle */}
-          <div className="flex items-center gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden inline-flex items-center justify-center rounded-lg p-2 text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800"
-              aria-label="Toggle menu"
-            >
-              {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-            </button>
-            <Logo />
+      <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/95 dark:bg-slate-900/95 dark:border-slate-800/80 backdrop-blur-xl transition-colors">
+        <div className="flex h-14 items-center justify-between px-3 sm:px-4">
+          {/* Left: Back button (if subpage) or Brand Logo */}
+          <div className="flex items-center gap-1.5 shrink-0">
+            {!isRootTab ? (
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="flex h-9 w-9 items-center justify-center rounded-full text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800 active:scale-95 transition-all"
+                aria-label="Go back"
+              >
+                <ChevronLeft className="h-5 w-5" />
+              </button>
+            ) : null}
+
+            <Link href="/" className="flex items-center gap-1.5">
+              <Logo />
+            </Link>
           </div>
 
-          {/* Middle: Nav Links & Search Bar (Centered) */}
-          <div className="hidden md:flex items-center gap-6 lg:gap-8">
-            {!isDashboard && (
-              <nav className="flex items-center gap-5 lg:gap-7">
-                <Link
-                  href="/explore"
-                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${isLinkActive('/explore')
-                    ? 'text-slate-900 dark:text-white font-bold'
-                    : 'text-slate-600 dark:text-slate-400'
-                    }`}
-                >
-                  Explore Lodges
-                </Link>
-                <Link
-                  href="/universities"
-                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${isLinkActive('/universities')
-                    ? 'text-slate-900 dark:text-white font-bold'
-                    : 'text-slate-600 dark:text-slate-400'
-                    }`}
-                >
-                  Universities
-                </Link>
-                <Link
-                  href="/how-it-works"
-                  className={`text-xs font-medium transition-colors hover:text-slate-900 dark:hover:text-white ${isLinkActive('/how-it-works')
-                    ? 'text-slate-900 dark:text-white font-bold'
-                    : 'text-slate-600 dark:text-slate-400'
-                    }`}
-                >
-                  How It Works
-                </Link>
-              </nav>
-            )}
+          {/* Center Title (Clean Mobile Header) */}
+          <div className="flex-1 text-center truncate px-2">
+            <span className="text-xs font-bold text-slate-900 dark:text-white truncate block">
+              {getPageTitle()}
+            </span>
+          </div>
 
-            {/* Compact Search Trigger */}
+          {/* Right: Search, Theme Toggle, and Profile/More Menu */}
+          <div className="flex items-center gap-1 shrink-0">
+            {/* Quick Search Button */}
             <button
               type="button"
               onClick={() => setCommandOpen(true)}
-              className="flex items-center gap-2.5 rounded-full border border-slate-200/90 bg-slate-100/70 hover:bg-slate-100/90 px-3.5 py-1.5 text-xs text-slate-500 hover:border-slate-300 dark:border-slate-800/80 dark:bg-slate-800/60 dark:text-slate-400 dark:hover:border-slate-700 dark:hover:bg-slate-800 transition-all cursor-pointer group shadow-2xs"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 active:scale-95 transition-all"
+              aria-label="Quick search"
+              title="Search"
             >
-              <Search className="h-3.5 w-3.5 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-200 transition-colors shrink-0" />
-              <span className="text-slate-400 dark:text-slate-400 text-xs truncate max-w-[140px] lg:max-w-[180px]">
-                {isDashboard ? 'Search lodges...' : 'Search lodges, campuses...'}
-              </span>
-              <kbd className="ml-1 inline-flex items-center gap-0.5 rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-mono text-slate-500 dark:border-slate-700 dark:bg-slate-900 shadow-2xs shrink-0">
-                ⌘K
-              </kbd>
+              <Search className="h-4 w-4" />
             </button>
-          </div>
-
-          {/* Right: Auth Controls & Theme Toggle */}
-          <div className="flex items-center gap-2 sm:gap-3 shrink-0">
-            {!isDashboard ? (
-              <div className="flex items-center gap-2">
-                <Link
-                  href="/login"
-                  className="rounded-full px-3 py-1.5 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white transition-colors"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  href="/register"
-                  className="inline-flex items-center rounded-full bg-slate-900 text-white hover:bg-slate-800 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100 px-4 py-1.5 text-xs font-bold shadow-xs transition-all active:scale-[0.98]"
-                >
-                  Get Started
-                </Link>
-              </div>
-            ) : isAuthenticated ? (
-              <>
-                {/* Account Role Badge */}
-                <Link
-                  href={effectiveRole === 'student' ? '/student/profile' : '/landlord/profile'}
-                  className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-200 dark:hover:bg-slate-800 transition-colors"
-                  title={`Account role: ${effectiveRole === 'student' ? 'Student' : 'Landlord'}`}
-                >
-                  <span className="h-2 w-2 rounded-full bg-blue-600 dark:bg-blue-400" />
-                  <span className="capitalize">{effectiveRole}</span>
-                </Link>
-
-                {/* User Profile Pill & Sign Out */}
-                <div className="flex items-center gap-1.5 sm:gap-2">
-                  <Link
-                    href={effectiveRole === 'student' ? '/student/profile' : '/landlord/profile'}
-                    className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900 px-2 py-1 text-xs font-medium text-slate-700 dark:text-slate-200 hover:border-slate-300 transition-colors shadow-2xs"
-                    title={displayName}
-                  >
-                    <div className="flex h-5 w-5 items-center justify-center rounded-full bg-blue-600 text-[10px] font-bold text-white">
-                      {initialLetter}
-                    </div>
-                    <span className="hidden md:inline max-w-[90px] truncate">{displayName}</span>
-                  </Link>
-
-                  <button
-                    type="button"
-                    onClick={() => signOut()}
-                    className="flex h-7 w-7 items-center justify-center rounded-md text-slate-500 hover:text-rose-600 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors cursor-pointer"
-                    title="Sign Out"
-                    aria-label="Sign Out"
-                  >
-                    <LogOut className="h-3.5 w-3.5" />
-                  </button>
-                </div>
-              </>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Link
-                  href="/login"
-                  className="rounded-lg px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-300 dark:hover:text-white"
-                >
-                  Sign In
-                </Link>
-              </div>
-            )}
 
             {/* Dark Mode Toggle */}
             <ThemeToggle />
+
+            {/* More / Menu Drawer Toggle */}
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="flex h-9 w-9 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 active:scale-95 transition-all"
+              aria-label="Open mobile menu"
+            >
+              {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
+            </button>
           </div>
         </div>
 
-        {/* Mobile Drawer */}
+        {/* Mobile Quick Drawer / More Sheet */}
         {mobileMenuOpen && (
-          <div className="md:hidden border-t border-slate-200 bg-white px-4 pt-3 pb-6 space-y-3 dark:border-slate-800 dark:bg-slate-900">
-            {/* Mobile Search Button */}
+          <div className="border-t border-slate-200/90 bg-white/98 px-4 pt-3 pb-6 space-y-3 dark:border-slate-800 dark:bg-slate-900/98 shadow-xl animate-in slide-in-from-top-2 duration-150">
+            {/* Search Trigger inside drawer */}
             <button
               type="button"
               onClick={() => {
@@ -196,7 +155,7 @@ export function Navbar() {
             >
               <div className="flex items-center gap-2">
                 <Search className="h-4 w-4 text-slate-400" />
-                <span>Quick search lodges, campuses...</span>
+                <span>Search lodges, campuses...</span>
               </div>
               <kbd className="rounded border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-mono dark:border-slate-700 dark:bg-slate-900">
                 ⌘K
@@ -206,15 +165,17 @@ export function Navbar() {
             {isAuthenticated ? (
               <>
                 <div className="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
-                  <div className="flex items-center gap-2 min-w-0">
-                    <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white">
+                  <div className="flex items-center gap-2.5 min-w-0">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white shadow-2xs">
                       {initialLetter}
                     </div>
                     <div className="min-w-0">
                       <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
                         {displayName}
                       </p>
-                      <p className="text-[10px] text-slate-400 truncate">{user?.email}</p>
+                      <p className="text-[10px] text-slate-400 truncate capitalize">
+                        {effectiveRole} Account
+                      </p>
                     </div>
                   </div>
                   <button
@@ -230,37 +191,75 @@ export function Navbar() {
                   </button>
                 </div>
 
+                {/* Persona Switcher inside Mobile App */}
+                <div className="rounded-xl border border-slate-200/80 bg-slate-50/70 dark:border-slate-800 dark:bg-slate-850/50 p-2 text-xs space-y-1">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block px-1">
+                    Persona Switcher
+                  </span>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        switchRole('student');
+                        setMobileMenuOpen(false);
+                        router.push('/student/overview');
+                      }}
+                      className={`py-1.5 px-2 rounded-lg font-semibold text-center transition-all ${effectiveRole === 'student'
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                        }`}
+                    >
+                      Student View
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        switchRole('landlord');
+                        setMobileMenuOpen(false);
+                        router.push('/landlord/overview');
+                      }}
+                      className={`py-1.5 px-2 rounded-lg font-semibold text-center transition-all ${effectiveRole === 'landlord'
+                        ? 'bg-blue-600 text-white shadow-xs'
+                        : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
+                        }`}
+                    >
+                      Landlord View
+                    </button>
+                  </div>
+                </div>
+
                 <div className="space-y-1 pt-1">
                   <Link
                     href="/explore"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
-                    Explore Lodges
+                    <Compass className="h-4 w-4 text-slate-400" />
+                    <span>Explore Lodges</span>
                   </Link>
                   <Link
                     href="/universities"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
-                    Universities
+                    <GraduationCap className="h-4 w-4 text-slate-400" />
+                    <span>Universities Directory</span>
                   </Link>
                   <Link
                     href="/how-it-works"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
-                    How It Works
+                    <HelpCircle className="h-4 w-4 text-slate-400" />
+                    <span>How It Works & Pricing</span>
                   </Link>
-                </div>
-
-                <div className="pt-2 border-t border-slate-100 dark:border-slate-800">
                   <Link
-                    href={effectiveRole === 'student' ? '/student/overview' : '/landlord/overview'}
+                    href="/admin/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block w-full text-center rounded-xl bg-blue-600 py-2.5 text-xs font-semibold text-white hover:bg-blue-700"
+                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
-                    Open {effectiveRole === 'student' ? 'Student' : 'Landlord'} Dashboard
+                    <ShieldCheck className="h-4 w-4 text-slate-400" />
+                    <span>Admin Moderation Console</span>
                   </Link>
                 </div>
               </>
@@ -270,23 +269,26 @@ export function Navbar() {
                   <Link
                     href="/explore"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
-                    Explore Lodges
+                    <Compass className="h-4 w-4 text-slate-400" />
+                    <span>Explore Lodges</span>
                   </Link>
                   <Link
                     href="/universities"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
-                    Universities
+                    <GraduationCap className="h-4 w-4 text-slate-400" />
+                    <span>Universities Directory</span>
                   </Link>
                   <Link
                     href="/how-it-works"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
+                    className="flex items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-slate-800"
                   >
-                    How It Works
+                    <HelpCircle className="h-4 w-4 text-slate-400" />
+                    <span>How It Works</span>
                   </Link>
                 </div>
 
@@ -312,7 +314,7 @@ export function Navbar() {
         )}
       </header>
 
-      {/* Global Command K Quick Actions Modal */}
+      {/* Global Command K Search & Action Palette */}
       <CommandMenu isOpen={commandOpen} onClose={() => setCommandOpen(false)} />
     </>
   );

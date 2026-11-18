@@ -145,19 +145,21 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.className} flex min-h-full flex-col bg-slate-50 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100 transition-colors duration-150`}
+        className={`${inter.className} min-h-dvh bg-slate-100 text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100 transition-colors duration-150 flex justify-center overflow-x-hidden`}
       >
-        <TourProvider>
-          <AuthProvider>
-            <Navbar />
-            <main className="flex-1 pb-16 md:pb-0">{children}</main>
-            <Footer />
-            <MobileBottomNav />
-            <MobilePwaBanner />
-            <CookieConsentBanner />
-            <GuidedTour />
-          </AuthProvider>
-        </TourProvider>
+        <div className="w-full max-w-md min-h-dvh flex flex-col bg-white dark:bg-slate-900 shadow-2xl relative border-x border-slate-200/80 dark:border-slate-800/80">
+          <TourProvider>
+            <AuthProvider>
+              <Navbar />
+              <main className="flex-1 pb-20">{children}</main>
+              <Footer />
+              <MobileBottomNav />
+              <MobilePwaBanner />
+              <CookieConsentBanner />
+              <GuidedTour />
+            </AuthProvider>
+          </TourProvider>
+        </div>
       </body>
     </html>
   );

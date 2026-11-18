@@ -23,47 +23,47 @@ export default function AdminDashboardPage() {
         </p>
       </div>
 
-      {/* Metrics Row */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 space-y-2">
+      {/* Metrics Row (2x2 Mobile App Grid) */}
+      <div className="grid grid-cols-2 gap-3">
+        <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400">Pending Verifications</span>
+            <span className="text-[11px] font-semibold text-slate-400">Verifications</span>
             <FileCheck2 className="h-4 w-4 text-amber-400" />
           </div>
-          <p className="text-2xl font-bold text-white">0</p>
-          <span className="text-[11px] text-slate-500">Landlord identity & authority checks</span>
+          <p className="text-xl font-bold text-white">0</p>
+          <span className="text-[10px] text-slate-500 block truncate">Identity & docs</span>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 space-y-2">
+        <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400">Pending Listings</span>
+            <span className="text-[11px] font-semibold text-slate-400">Pending</span>
             <Building2 className="h-4 w-4 text-blue-400" />
           </div>
-          <p className="text-2xl font-bold text-white">0</p>
-          <span className="text-[11px] text-slate-500">Properties awaiting moderation</span>
+          <p className="text-xl font-bold text-white">0</p>
+          <span className="text-[10px] text-slate-500 block truncate">Awaiting review</span>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 space-y-2">
+        <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400">Approved Properties</span>
+            <span className="text-[11px] font-semibold text-slate-400">Approved</span>
             <CheckCircle2 className="h-4 w-4 text-blue-400" />
           </div>
-          <p className="text-2xl font-bold text-white">0</p>
-          <span className="text-[11px] text-slate-500">Live in public marketplace</span>
+          <p className="text-xl font-bold text-white">0</p>
+          <span className="text-[10px] text-slate-500 block truncate">Live listings</span>
         </div>
 
-        <div className="rounded-xl border border-slate-800 bg-slate-950 p-5 space-y-2">
+        <div className="rounded-xl border border-slate-800 bg-slate-950 p-4 space-y-1.5">
           <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-400">Open Reports</span>
+            <span className="text-[11px] font-semibold text-slate-400">Reports</span>
             <AlertTriangle className="h-4 w-4 text-rose-400" />
           </div>
-          <p className="text-2xl font-bold text-white">0</p>
-          <span className="text-[11px] text-slate-500">Listing or provider flags</span>
+          <p className="text-xl font-bold text-white">0</p>
+          <span className="text-[10px] text-slate-500 block truncate">Open flags</span>
         </div>
       </div>
 
       {/* Action Queues */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="space-y-4">
         <div className="rounded-xl border border-slate-800 bg-slate-950 p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div className="space-y-0.5">

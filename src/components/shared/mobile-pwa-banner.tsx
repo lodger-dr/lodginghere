@@ -67,7 +67,7 @@ export function MobilePwaBanner() {
   if (!showBanner) return null;
 
   return (
-    <div className="md:hidden fixed bottom-18 left-3 right-3 z-30 animate-in slide-in-from-bottom-5 duration-300">
+    <div className="fixed bottom-18 left-3 right-3 max-w-md mx-auto z-30 animate-in slide-in-from-bottom-5 duration-300">
       <div className="flex items-center justify-between gap-3 rounded-2xl border border-slate-200/90 bg-white/95 p-3.5 shadow-xl dark:border-slate-800 dark:bg-slate-900/95 backdrop-blur-md">
         <div className="flex items-center gap-3 min-w-0">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-xs">

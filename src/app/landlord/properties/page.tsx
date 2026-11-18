@@ -359,22 +359,27 @@ export default function LandlordPropertiesPage() {
         )}
       </div>
 
-      {/* Add Property Modal with Sticky Mobile Bottom Action Bar */}
+      {/* Add Property Bottom Sheet Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center bg-slate-900/60 p-0 sm:p-4 backdrop-blur-xs">
-          <div className="relative flex flex-col w-full max-w-2xl h-[92vh] sm:h-auto sm:max-h-[90vh] rounded-t-3xl sm:rounded-2xl bg-white shadow-2xl border-t sm:border border-slate-200 dark:border-slate-800 dark:bg-slate-900 overflow-hidden animate-in slide-in-from-bottom sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-200">
+        <div className="fixed inset-0 z-50 flex items-end justify-center bg-slate-900/60 backdrop-blur-xs">
+          <div className="relative flex flex-col w-full max-w-md mx-auto h-[92vh] rounded-t-3xl bg-white shadow-2xl border-t border-slate-200 dark:border-slate-800 dark:bg-slate-900 overflow-hidden animate-in slide-in-from-bottom duration-200">
+            {/* Sheet Handle */}
+            <div className="flex justify-center pt-2.5 pb-1 bg-white dark:bg-slate-900 shrink-0">
+              <div className="h-1 w-10 rounded-full bg-slate-300 dark:bg-slate-700" />
+            </div>
+
             {/* Modal Header (Fixed at top) */}
-            <div className="flex items-center justify-between p-4 sm:p-5 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-900">
-              <div className="space-y-0.5 pr-6">
-                <h3 className="text-lg sm:text-xl font-bold text-slate-900 dark:text-white">Add New Student Lodge</h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
-                  Provide clear details and strictly transparent pricing. Listings appear instantly for inspection booking.
+            <div className="flex items-center justify-between px-4 pb-3 pt-1 border-b border-slate-100 dark:border-slate-800 shrink-0 bg-white dark:bg-slate-900">
+              <div className="space-y-0.5 pr-4">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">Add New Student Lodge</h3>
+                <p className="text-[11px] text-slate-500 dark:text-slate-400">
+                  Provide clear details and strictly transparent pricing.
                 </p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsAddModalOpen(false)}
-                className="rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer shrink-0"
+                className="rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-200 cursor-pointer shrink-0"
                 aria-label="Close modal"
               >
                 <X className="h-5 w-5" />

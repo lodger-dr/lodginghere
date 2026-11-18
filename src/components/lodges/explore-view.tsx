@@ -201,54 +201,50 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
     (verifiedOnly ? 1 : 0);
 
   return (
-    <div className={`space-y-8 ${isDashboard ? 'w-full' : 'mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8'}`}>
+    <div className={`space-y-4 ${isDashboard ? 'w-full' : 'w-full px-4 pt-2 pb-24'}`}>
       {/* Page Header */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="flex flex-col gap-2.5">
         <div className="space-y-1">
           {selectedUni && (
-            <div className="inline-flex items-center gap-1.5 text-xs font-semibold text-blue-700 bg-blue-50 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800/80 border border-blue-200 px-3 py-1 rounded-full mb-1">
-              <Building2 className="h-3.5 w-3.5" />
+            <div className="inline-flex items-center gap-1.5 text-[11px] font-semibold text-blue-700 bg-blue-50 dark:bg-blue-950/60 dark:text-blue-300 dark:border-blue-800/80 border border-blue-200 px-3 py-0.5 rounded-full mb-0.5">
+              <Building2 className="h-3 w-3" />
               <span>{selectedUni.name} ({selectedUni.acronym})</span>
             </div>
           )}
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            Explore Student Lodges
+          <h1 className="text-xl font-black tracking-tight text-slate-900 dark:text-white">
+            Explore Campus Lodges
           </h1>
-          <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400">
+          <p className="text-xs text-slate-500 dark:text-slate-400">
             {selectedUni
-              ? `Discover verified student accommodations near ${selectedUni.name} (${selectedUni.acronym}) with zero agent markup and upfront fee transparency.`
-              : 'Discover verified student accommodation with zero agent markup and upfront fee transparency.'}
+              ? `Verified accommodations near ${selectedUni.acronym} with zero agent fees.`
+              : 'Verified accommodations with 0% agent markup & fee transparency.'}
           </p>
         </div>
 
-        {/* Search Input & Mobile Filter Toggle */}
-        <div className="flex items-center gap-2 w-full md:w-auto">
-          <div className="flex-1 md:w-80 relative">
+        {/* Search Input & Filter Toggle Bar */}
+        <div className="flex items-center gap-2 w-full">
+          <div className="flex-1 relative">
             <Input
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search by lodge name, area, or road..."
-              className="pl-9 pr-14 text-xs h-10 rounded-xl glass-card border-slate-200/80 dark:border-slate-800/80 shadow-2xs"
+              placeholder="Search by lodge name, area..."
+              className="pl-9 pr-8 text-xs h-10 rounded-xl glass-card border-slate-200/80 dark:border-slate-800/80 shadow-2xs"
             />
             <Search className="absolute left-3 top-3 h-4 w-4 text-slate-400" />
-            {searchQuery ? (
+            {searchQuery && (
               <button
                 onClick={() => setSearchQuery('')}
                 className="absolute right-3 top-3 text-slate-400 hover:text-slate-600 dark:text-slate-400 dark:hover:text-slate-200 cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </button>
-            ) : (
-              <kbd className="hidden sm:inline-flex absolute right-2.5 top-2.5 items-center rounded border border-slate-200/80 bg-slate-100/70 px-1.5 py-0.5 text-[10px] font-mono text-slate-400 dark:border-slate-800 dark:bg-slate-800/80">
-                ⌘K
-              </kbd>
             )}
           </div>
 
           <button
             type="button"
             onClick={() => setIsMobileFilterOpen(true)}
-            className="md:hidden flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3 h-10 text-xs font-bold text-slate-700 dark:text-slate-200 shadow-2xs shrink-0 cursor-pointer active:scale-95 transition-all"
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 px-3.5 h-10 text-xs font-bold text-slate-700 dark:text-slate-200 shadow-2xs shrink-0 cursor-pointer active:scale-95 transition-all"
             aria-label="Open filter drawer"
           >
             <SlidersHorizontal className="h-4 w-4 text-blue-600 dark:text-blue-400" />
@@ -262,8 +258,8 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
         </div>
       </div>
 
-      {/* Category Filter Pills (PrimeHouse aesthetic) */}
-      <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
+      {/* Category Filter Pills */}
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none -mx-4 px-4">
         {[
           { label: 'All Lodges', value: '' },
           { label: 'Self-Con', value: 'self_contained' },
@@ -278,9 +274,9 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
               key={item.label}
               type="button"
               onClick={() => setAccommodationType(item.value)}
-              className={`rounded-full px-4 py-2 text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer ${isActive
+              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold whitespace-nowrap transition-all duration-200 cursor-pointer shrink-0 ${isActive
                 ? 'bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-900'
-                : 'glass-card text-slate-700 hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/80 dark:hover:text-white'
+                : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300'
                 }`}
             >
               {item.label}
@@ -289,177 +285,83 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
         })}
       </div>
 
-      {/* Filter Card (Desktop Viewport) */}
-      <div className="hidden md:block glass-card rounded-2xl p-4 sm:p-5 shadow-xs space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-xs">
-          {/* Accommodation Type */}
-          <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700 dark:text-slate-300">Lodge Type</label>
-            <select
-              value={accommodationType}
-              onChange={(e) => setAccommodationType(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-slate-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-            >
-              <option value="">All Accommodation Types</option>
-              <option value="self_contained">Self-Contained</option>
-              <option value="single_room">Single Room</option>
-              <option value="one_bedroom">1-Bedroom Mini Flat</option>
-              <option value="two_bedroom">2-Bedroom Flat</option>
-              <option value="shared_apartment">Shared Apartment</option>
-              <option value="hostel">Private Hostel</option>
-            </select>
+      {/* Active Filter Tags & Reset */}
+      {hasActiveFilters && (
+        <div className="flex flex-wrap items-center justify-between gap-1.5 p-2 rounded-xl bg-slate-50 dark:bg-slate-850/60 border border-slate-200/80 dark:border-slate-800 text-xs">
+          <div className="flex flex-wrap items-center gap-1.5">
+            {accommodationType && (
+              <Badge variant="outline" className="gap-1 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-[10px] py-0.5">
+                {accommodationType.replace(/_/g, ' ')}
+                <X className="h-3 w-3 cursor-pointer" onClick={() => setAccommodationType('')} />
+              </Badge>
+            )}
+            {maxBudget && (
+              <Badge variant="outline" className="gap-1 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-[10px] py-0.5">
+                ≤ ₦{Number(maxBudget).toLocaleString()}
+                <X className="h-3 w-3 cursor-pointer" onClick={() => setMaxBudget('')} />
+              </Badge>
+            )}
+            {selectedAmenities.map((a) => (
+              <Badge key={a} variant="outline" className="gap-1 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 text-[10px] py-0.5">
+                {a.replace(/_/g, ' ')}
+                <X className="h-3 w-3 cursor-pointer" onClick={() => toggleAmenity(a)} />
+              </Badge>
+            ))}
           </div>
 
-          {/* Max Budget */}
-          <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700 dark:text-slate-300">Max Annual Budget (₦)</label>
-            <input
-              type="number"
-              placeholder="e.g. 400000"
-              value={maxBudget}
-              onChange={(e) => setMaxBudget(e.target.value)}
-              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-slate-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-            />
-          </div>
-
-          {/* Sort By */}
-          <div className="space-y-1.5">
-            <label className="font-semibold text-slate-700 dark:text-slate-300">Sort By</label>
-            <select
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value as any)}
-              className="w-full rounded-lg border border-slate-300 bg-white p-2.5 text-slate-800 text-xs focus:border-slate-400 focus:outline-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
-            >
-              <option value="recommended">Recommended & Top Rated</option>
-              <option value="price_asc">Annual Rent: Low to High</option>
-              <option value="price_desc">Annual Rent: High to Low</option>
-              <option value="availability">Most Available Vacancies</option>
-            </select>
-          </div>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={resetFilters}
+            className="text-[11px] h-6 px-2 gap-1 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
+          >
+            <RotateCcw className="h-3 w-3" />
+            <span>Reset</span>
+          </Button>
         </div>
-
-        {/* Amenities Checklist Chips */}
-        <div className="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold text-slate-700 dark:text-slate-300">
-              Must-Have Amenities
-            </span>
-            <div className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                id="verifiedOnly"
-                checked={verifiedOnly}
-                onChange={(e) => setVerifiedOnly(e.target.checked)}
-                className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 dark:border-slate-700 dark:bg-slate-800"
-              />
-              <label htmlFor="verifiedOnly" className="text-xs font-semibold text-slate-700 dark:text-slate-300 cursor-pointer">
-                Verified Landlords Only
-              </label>
-            </div>
-          </div>
-
-          <div className="flex flex-wrap items-center gap-2">
-            {AMENITIES_CATALOG.slice(0, 7).map((amenity) => {
-              const isSelected = selectedAmenities.includes(amenity.key);
-              return (
-                <button
-                  key={amenity.key}
-                  type="button"
-                  onClick={() => toggleAmenity(amenity.key)}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-medium transition-all cursor-pointer ${isSelected
-                    ? 'bg-slate-900 text-white shadow-xs dark:bg-white dark:text-slate-900'
-                    : 'bg-slate-100 text-slate-700 hover:bg-slate-200 dark:bg-slate-800 dark:text-slate-300 dark:hover:bg-slate-700'
-                    }`}
-                >
-                  <span>{amenity.label}</span>
-                  {isSelected && <X className="h-3 w-3" />}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Active Filter Tags & Reset */}
-        {hasActiveFilters && (
-          <div className="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 dark:border-slate-800 text-xs">
-            <div className="flex flex-wrap items-center gap-2 text-slate-600 dark:text-slate-300">
-              <span className="font-semibold text-slate-500 dark:text-slate-400">Active Filters:</span>
-              {accommodationType && (
-                <Badge variant="outline" className="gap-1 bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700">
-                  Type: {accommodationType.replace(/_/g, ' ')}
-                  <X className="h-3 w-3 cursor-pointer" onClick={() => setAccommodationType('')} />
-                </Badge>
-              )}
-              {maxBudget && (
-                <Badge variant="outline" className="gap-1 bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700">
-                  Under ₦{Number(maxBudget).toLocaleString()}
-                  <X className="h-3 w-3 cursor-pointer" onClick={() => setMaxBudget('')} />
-                </Badge>
-              )}
-              {selectedAmenities.map((a) => (
-                <Badge key={a} variant="outline" className="gap-1 bg-slate-100 text-slate-800 border-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:border-slate-700">
-                  {a.replace(/_/g, ' ')}
-                  <X className="h-3 w-3 cursor-pointer" onClick={() => toggleAmenity(a)} />
-                </Badge>
-              ))}
-            </div>
-
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={resetFilters}
-              className="text-xs h-7 gap-1 text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
-            >
-              <RotateCcw className="h-3.5 w-3.5" />
-              <span>Reset All Filters</span>
-            </Button>
-          </div>
-        )}
-      </div>
+      )}
 
       {/* Results Section */}
-      <div className="space-y-4">
+      <div className="space-y-3">
         {/* Count Bar with View Mode Toggle */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200 dark:border-slate-800 pb-3">
-          <div className="flex items-center gap-2">
-            <span className="text-sm font-bold text-slate-900 dark:text-white">
+        <div className="flex items-center justify-between gap-2 border-b border-slate-200 dark:border-slate-800 pb-2.5">
+          <div className="min-w-0">
+            <span className="text-xs font-bold text-slate-900 dark:text-white block truncate">
               {filteredLodges.length} {filteredLodges.length === 1 ? 'Lodge' : 'Lodges'} Found
             </span>
             {selectedUni && (
-              <span className="text-xs text-slate-500 dark:text-slate-400">
-                around {selectedUni.name} ({selectedUni.acronym})
+              <span className="text-[10px] text-slate-500 dark:text-slate-400 block truncate">
+                around {selectedUni.acronym}
               </span>
             )}
           </div>
 
-          <div className="flex items-center gap-2 self-end sm:self-auto">
-            {/* View Toggle */}
-            <div className="inline-flex items-center rounded-xl border border-slate-200 bg-white p-1 shadow-2xs dark:border-slate-800 dark:bg-slate-900">
-              <button
-                type="button"
-                onClick={() => setViewMode('grid')}
-                className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${viewMode === 'grid'
-                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-                  }`}
-                aria-label="Grid View"
-              >
-                <LayoutGrid className="h-3.5 w-3.5" />
-                <span>Grid</span>
-              </button>
-              <button
-                type="button"
-                onClick={() => setViewMode('map')}
-                className={`inline-flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${viewMode === 'map'
-                    ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
-                  }`}
-                aria-label="Map View"
-              >
-                <Map className="h-3.5 w-3.5" />
-                <span>Map View</span>
-              </button>
-            </div>
+          {/* View Toggle */}
+          <div className="inline-flex items-center rounded-xl border border-slate-200 bg-white p-0.5 shadow-2xs dark:border-slate-800 dark:bg-slate-900 shrink-0">
+            <button
+              type="button"
+              onClick={() => setViewMode('grid')}
+              className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${viewMode === 'grid'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+                }`}
+              aria-label="Feed View"
+            >
+              <LayoutGrid className="h-3.5 w-3.5" />
+              <span>Feed</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => setViewMode('map')}
+              className={`inline-flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-semibold transition-all cursor-pointer ${viewMode === 'map'
+                ? 'bg-slate-900 text-white dark:bg-white dark:text-slate-900 shadow-xs'
+                : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white'
+                }`}
+              aria-label="Map View"
+            >
+              <Map className="h-3.5 w-3.5" />
+              <span>Map</span>
+            </button>
           </div>
         </div>
 
@@ -471,17 +373,17 @@ export function ExploreView({ isDashboard = false }: ExploreViewProps) {
               universitySlug={selectedUniSlug}
               selectedLodgeId={highlightedLodgeId}
               onSelectLodge={(lodge) => setHighlightedLodgeId(lodge.id)}
-              height="440px"
+              height="360px"
             />
-            <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center">
-              Click any price badge on the map to preview lodge details, or click &ldquo;Directions&rdquo; to launch Google Maps walking routes.
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 text-center">
+              Tap any pin for details, or click directions for walking route.
             </p>
           </div>
         )}
 
-        {/* Lodge Grid */}
+        {/* Lodge Feed Stream */}
         {filteredLodges.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="flex flex-col gap-4">
             {filteredLodges.map((lodge) => (
               <div
                 key={lodge.id}
