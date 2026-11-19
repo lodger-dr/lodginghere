@@ -50,11 +50,6 @@ export function GoogleAuthButton({
       }
 
       if (data?.url) {
-        if (data.url.includes('placeholder.supabase.co')) {
-          onError?.('Supabase URL is not configured. Please redeploy on Vercel.');
-          setIsLoading(false);
-          return;
-        }
         window.location.href = data.url;
       }
     } catch (err) {
