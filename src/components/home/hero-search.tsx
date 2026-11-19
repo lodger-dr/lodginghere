@@ -60,23 +60,23 @@ export function HeroSearch() {
         className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/90 dark:border-slate-800 p-3 shadow-lg shadow-slate-900/5 dark:shadow-black/20 flex flex-col gap-2.5 text-left"
       >
         {/* University Selector */}
-        <div className="flex items-center gap-2.5 px-3 py-2 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80">
-          <MapPin className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
+        <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-2xl bg-[#FFF0E9]/50 border border-[#E8E8E5] focus-within:border-[#F45B2A] transition-colors">
+          <MapPin className="h-4 w-4 text-[#F45B2A] shrink-0" />
           <div className="flex-1 min-w-0">
-            <label htmlFor="hero-uni" className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-              Campus
+            <label htmlFor="hero-uni" className="block text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+              Campus Institution
             </label>
             <select
               id="hero-uni"
               value={universitySlug}
               onChange={(e) => setUniversitySlug(e.target.value)}
-              className="w-full bg-transparent text-xs font-semibold text-slate-800 dark:text-white focus:outline-none cursor-pointer truncate"
+              className="w-full bg-transparent text-xs font-bold text-[#24272B] focus:outline-none cursor-pointer truncate"
             >
-              <option value="" className="text-slate-800 dark:text-slate-200 dark:bg-slate-900">
-                All Nigerian Universities
+              <option value="" className="text-slate-800">
+                All Nigerian Universities (328 Institutions)
               </option>
               {NIGERIAN_UNIVERSITIES.map((uni) => (
-                <option key={uni.slug} value={uni.slug} className="text-slate-800 dark:text-slate-200 dark:bg-slate-900">
+                <option key={uni.slug} value={uni.slug} className="text-slate-800">
                   {uni.name} ({uni.acronym})
                 </option>
               ))}
@@ -87,8 +87,8 @@ export function HeroSearch() {
         {/* Room Type & Budget Row */}
         <div className="grid grid-cols-2 gap-2">
           {/* Room Type */}
-          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80">
-            <Home className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
+          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-[#E8E8E5] focus-within:border-[#F45B2A] transition-colors">
+            <Home className="h-4 w-4 text-[#F45B2A] shrink-0" />
             <div className="flex-1 min-w-0">
               <label htmlFor="hero-type" className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
                 Type
@@ -97,10 +97,10 @@ export function HeroSearch() {
                 id="hero-type"
                 value={roomType}
                 onChange={(e) => setRoomType(e.target.value)}
-                className="w-full bg-transparent text-xs font-semibold text-slate-800 dark:text-white focus:outline-none cursor-pointer truncate"
+                className="w-full bg-transparent text-xs font-semibold text-[#24272B] focus:outline-none cursor-pointer truncate"
               >
                 {ROOM_TYPES.map((type) => (
-                  <option key={type.value} value={type.value} className="text-slate-800 dark:text-slate-200 dark:bg-slate-900">
+                  <option key={type.value} value={type.value} className="text-slate-800">
                     {type.label}
                   </option>
                 ))}
@@ -109,20 +109,20 @@ export function HeroSearch() {
           </div>
 
           {/* Budget */}
-          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-slate-50/80 dark:bg-slate-800/60 border border-slate-100 dark:border-slate-800/80">
-            <Wallet className="h-4 w-4 text-amber-500 shrink-0" />
+          <div className="flex items-center gap-2 px-3 py-2 rounded-xl bg-white border border-[#E8E8E5] focus-within:border-[#F45B2A] transition-colors">
+            <Wallet className="h-4 w-4 text-[#F45B2A] shrink-0" />
             <div className="flex-1 min-w-0">
               <label htmlFor="hero-budget" className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                Budget
+                Max Budget
               </label>
               <select
                 id="hero-budget"
                 value={budget}
                 onChange={(e) => setBudget(e.target.value)}
-                className="w-full bg-transparent text-xs font-semibold text-slate-800 dark:text-white focus:outline-none cursor-pointer truncate"
+                className="w-full bg-transparent text-xs font-semibold text-[#24272B] focus:outline-none cursor-pointer truncate"
               >
                 {BUDGET_RANGES.map((b) => (
-                  <option key={b.value} value={b.value} className="text-slate-800 dark:text-slate-200 dark:bg-slate-900">
+                  <option key={b.value} value={b.value} className="text-slate-800">
                     {b.label}
                   </option>
                 ))}
@@ -134,22 +134,22 @@ export function HeroSearch() {
         {/* Search Submit Button */}
         <button
           type="submit"
-          className="w-full rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold px-4 py-3 text-xs flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md shadow-blue-500/20 cursor-pointer min-h-[44px]"
+          className="w-full rounded-2xl bg-[#F45B2A] hover:bg-[#DE4C1D] text-white font-black px-4 py-3 text-xs flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md shadow-[#F45B2A]/20 cursor-pointer min-h-[44px]"
         >
           <Search className="h-4 w-4" />
-          <span>Search Lodges</span>
+          <span>Find Lodges on Interactive Map</span>
         </button>
       </form>
 
       {/* Quick Campus Filter Pills */}
-      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none text-xs">
+      <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar text-xs">
         <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider shrink-0 pl-1">Campuses:</span>
         {POPULAR_CAMPUSES.map((campus) => (
           <button
             key={campus.slug}
             type="button"
             onClick={() => handleQuickCampus(campus.slug)}
-            className="rounded-full border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 px-3 py-1.5 text-[11px] font-semibold text-slate-600 dark:text-slate-300 transition-colors shrink-0 cursor-pointer"
+            className="rounded-full border border-[#E8E8E5] bg-white hover:border-[#F45B2A] hover:bg-[#FFF0E9] px-3 py-1 text-[11px] font-bold text-[#24272B] hover:text-[#F45B2A] transition-colors shrink-0 cursor-pointer shadow-xs"
           >
             {campus.name}
           </button>

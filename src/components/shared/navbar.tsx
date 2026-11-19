@@ -91,9 +91,9 @@ export function Navbar() {
   return (
     <>
       <header className="sticky top-0 z-40 w-full border-b border-[#E8E8E5] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl transition-colors">
-        <div className="flex h-14 items-center justify-between px-3 sm:px-4">
+        <div className="flex h-14 items-center justify-between px-3 sm:px-6 max-w-7xl mx-auto w-full">
           {/* Left: Back button (if subpage) or Brand Logo */}
-          <div className="flex items-center gap-1.5 shrink-0">
+          <div className="flex items-center gap-3 shrink-0">
             {!isRootTab ? (
               <button
                 type="button"
@@ -110,20 +110,70 @@ export function Navbar() {
             </Link>
           </div>
 
-          {/* Center Title (Clean Mobile Header) */}
-          <div className="flex-1 text-center truncate px-2">
-            <span className="text-xs font-bold text-slate-900 dark:text-white truncate block">
+          {/* Center: Desktop Navigation Links */}
+          <nav className="hidden md:flex items-center gap-6">
+            <Link
+              href="/student/explore"
+              className={`text-xs font-bold transition-colors flex items-center gap-1.5 ${
+                pathname === '/student/explore'
+                  ? 'text-[#F45B2A]'
+                  : 'text-[#24272B] dark:text-slate-200 hover:text-[#F45B2A]'
+              }`}
+            >
+              <Compass className="h-3.5 w-3.5 text-[#F45B2A]" />
+              <span>Map Discovery</span>
+            </Link>
+            <Link
+              href="/universities"
+              className={`text-xs font-semibold transition-colors ${
+                pathname === '/universities'
+                  ? 'text-[#F45B2A] font-bold'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-[#F45B2A]'
+              }`}
+            >
+              Campuses
+            </Link>
+            <Link
+              href="/how-it-works"
+              className={`text-xs font-semibold transition-colors ${
+                pathname === '/how-it-works'
+                  ? 'text-[#F45B2A] font-bold'
+                  : 'text-slate-600 dark:text-slate-300 hover:text-[#F45B2A]'
+              }`}
+            >
+              How It Works
+            </Link>
+            <Link
+              href="/register"
+              className="text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-[#F45B2A] transition-colors"
+            >
+              For Landlords
+            </Link>
+          </nav>
+
+          {/* Center Title (Mobile-only Header Title) */}
+          <div className="md:hidden flex-1 text-center truncate px-2">
+            <span className="text-xs font-bold text-[#24272B] dark:text-white truncate block">
               {getPageTitle()}
             </span>
           </div>
 
-          {/* Right: Search, Theme Toggle, and Profile/More Menu */}
-          <div className="flex items-center gap-1 shrink-0">
+          {/* Right: Actions */}
+          <div className="flex items-center gap-2 shrink-0">
+            {/* Desktop Explore CTA button */}
+            <Link
+              href="/student/explore"
+              className="hidden lg:inline-flex items-center gap-1.5 rounded-full bg-[#F45B2A] hover:bg-[#DE4C1D] text-white px-3.5 py-1.5 text-xs font-bold shadow-sm transition-all active:scale-95"
+            >
+              <Compass className="h-3.5 w-3.5" />
+              <span>Explore on Map</span>
+            </Link>
+
             {/* Quick Search Button */}
             <button
               type="button"
               onClick={() => setCommandOpen(true)}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 active:scale-95 transition-all"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-slate-600 hover:bg-[#FFF0E9] hover:text-[#F45B2A] dark:text-slate-300 dark:hover:bg-slate-800 active:scale-95 transition-all"
               aria-label="Quick search"
               title="Search"
             >
@@ -133,11 +183,33 @@ export function Navbar() {
             {/* Dark Mode Toggle */}
             <ThemeToggle />
 
+            {/* Desktop Auth / User Link */}
+            {isAuthenticated ? (
+              <Link
+                href={effectiveRole === 'landlord' ? '/landlord/overview' : '/student/profile'}
+                className="hidden md:flex items-center gap-2 pl-1 pr-2.5 py-1 rounded-full border border-[#E8E8E5] hover:border-[#F45B2A]/40 bg-white dark:bg-slate-800 transition-colors"
+              >
+                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#F45B2A] text-xs font-black text-white">
+                  {initialLetter}
+                </div>
+                <span className="text-xs font-bold text-[#24272B] dark:text-white max-w-[90px] truncate">
+                  {displayName}
+                </span>
+              </Link>
+            ) : (
+              <Link
+                href="/login"
+                className="hidden md:inline-flex items-center rounded-full border border-[#E8E8E5] px-3.5 py-1.5 text-xs font-bold text-[#24272B] hover:border-[#F45B2A] hover:text-[#F45B2A] transition-colors"
+              >
+                Sign In
+              </Link>
+            )}
+
             {/* More / Menu Drawer Toggle */}
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="flex h-9 w-9 items-center justify-center rounded-full text-slate-600 hover:bg-slate-100 dark:text-slate-300 dark:hover:bg-slate-800 active:scale-95 transition-all"
+              className="flex h-9 w-9 items-center justify-center rounded-full text-slate-600 hover:bg-[#FFF0E9] hover:text-[#F45B2A] dark:text-slate-300 dark:hover:bg-slate-800 active:scale-95 transition-all"
               aria-label="Open mobile menu"
             >
               {mobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
@@ -170,11 +242,11 @@ export function Navbar() {
               <>
                 <div className="flex items-center justify-between p-2.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50">
                   <div className="flex items-center gap-2.5 min-w-0">
-                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-xs font-bold text-white shadow-2xs">
+                    <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#F45B2A] text-xs font-bold text-white shadow-2xs">
                       {initialLetter}
                     </div>
                     <div className="min-w-0">
-                      <p className="text-xs font-bold text-slate-900 dark:text-white truncate">
+                      <p className="text-xs font-bold text-[#24272B] dark:text-white truncate">
                         {displayName}
                       </p>
                       <p className="text-[10px] text-slate-400 truncate capitalize">
@@ -209,7 +281,7 @@ export function Navbar() {
                         router.push('/student/overview');
                       }}
                       className={`py-1.5 px-2 rounded-lg font-semibold text-center transition-all ${effectiveRole === 'student'
-                        ? 'bg-blue-600 text-white shadow-xs'
+                        ? 'bg-[#F45B2A] text-white shadow-xs'
                         : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
                         }`}
                     >
@@ -223,7 +295,7 @@ export function Navbar() {
                         router.push('/landlord/overview');
                       }}
                       className={`py-1.5 px-2 rounded-lg font-semibold text-center transition-all ${effectiveRole === 'landlord'
-                        ? 'bg-blue-600 text-white shadow-xs'
+                        ? 'bg-[#F45B2A] text-white shadow-xs'
                         : 'bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700'
                         }`}
                     >

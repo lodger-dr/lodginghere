@@ -780,13 +780,13 @@ export function getInspections(filter?: { student_id?: string; landlord_id?: str
 export async function fetchInspections(filter?: { student_id?: string; landlord_id?: string }): Promise<Inspection[]> {
   try {
     const supabase = createClient();
-    let query = supabase.from('inspections').select('*, properties(*)');
+    let query = supabase.from('inspections').select('*, properties(*), profiles:student_id(full_name, phone, email)');
     if (filter?.student_id) query = query.eq('student_id', filter.student_id);
     if (filter?.landlord_id) query = query.eq('landlord_id', filter.landlord_id);
 
     const { data, error } = await query;
     if (!error && data) {
-      const mapped: Inspection[] = data.map((i) => ({
+      const mapped: Inspection[] = data.map((i: any) => ({
         id: i.id,
         property_id: i.property_id,
         property_title: i.properties?.title || 'Student Accommodation',
@@ -794,9 +794,9 @@ export async function fetchInspections(filter?: { student_id?: string; landlord_
         property_address: i.properties?.address || 'Near Campus',
         property_image: i.properties?.images?.[0] || '',
         student_id: i.student_id,
-        student_name: 'Student Tenant',
-        student_phone: '+234 812 345 6789',
-        student_email: 'student@example.com',
+        student_name: i.profiles?.full_name || i.student_name || 'Student Tenant',
+        student_phone: i.profiles?.phone || i.student_phone || '',
+        student_email: i.profiles?.email || i.student_email || '',
         landlord_id: i.landlord_id,
         requested_date: i.requested_date,
         time_slot: i.time_slot as InspectionTimeSlot,

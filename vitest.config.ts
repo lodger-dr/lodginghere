@@ -8,6 +8,7 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     testTimeout: 30000,
+    pool: 'forks',
   },
   resolve: {
     alias: {
@@ -15,4 +16,3 @@ export default defineConfig({
     },
   },
 });
-

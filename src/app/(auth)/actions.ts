@@ -9,6 +9,7 @@ import {
   resetPasswordSchema,
   emailSignUpSchema,
 } from '@/lib/validations/auth';
+import { getAppBaseUrl } from '@/lib/utils';
 
 export interface ActionResponse {
   success: boolean;
@@ -342,7 +343,7 @@ export async function resetPasswordAction(formData: FormData): Promise<ActionRes
 
   try {
     const supabase = await createClient();
-    const appBaseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const appBaseUrl = getAppBaseUrl();
     const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
       redirectTo: `${appBaseUrl}/api/auth/callback?next=/reset-password`,
     });

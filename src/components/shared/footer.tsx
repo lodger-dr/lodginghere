@@ -10,11 +10,10 @@ import { openCookiePreferencesModal } from './cookie-consent-banner';
 export function Footer() {
   const pathname = usePathname();
 
-  // The footer appears on public static pages (e.g. terms, privacy), excluded from app views
+  // The footer appears on the landing page and public info pages, excluded from app flows
   const isDashboard = Boolean(
     pathname &&
-    (pathname === '/' ||
-      pathname.startsWith('/onboarding') ||
+    (pathname.startsWith('/onboarding') ||
       pathname.startsWith('/student') ||
       pathname.startsWith('/landlord') ||
       pathname.startsWith('/admin') ||
@@ -26,78 +25,95 @@ export function Footer() {
   }
 
   return (
-    <footer className="border-t border-slate-200/80 bg-slate-50 dark:border-slate-800/80 dark:bg-slate-950/60 text-slate-600 dark:text-slate-400 px-4 py-8 space-y-6">
-      {/* Brand & Mission Statement */}
-      <div className="space-y-3">
-        <Logo />
-        <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-          Nigeria’s trusted student accommodation platform. Direct verified landlords, transparent upfront pricing, and mandatory in-person physical inspections.
-        </p>
-
-        <div className="rounded-2xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 p-3 text-xs space-y-1">
-          <div className="flex items-center gap-1.5 font-bold text-slate-900 dark:text-white">
-            <ShieldCheck className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />
-            <span>Direct Landlords • Zero Agent Fee</span>
-          </div>
-          <p className="text-[11px] text-slate-500 dark:text-slate-400">
-            Never pay rent in advance before physically entering the room and testing facilities.
+    <footer className="border-t border-[#E8E8E5] bg-white text-slate-600 px-4 sm:px-6 py-12 space-y-8 max-w-7xl mx-auto w-full">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+        {/* Brand & Mission Statement */}
+        <div className="space-y-3 md:col-span-2">
+          <Logo />
+          <p className="text-xs text-slate-500 leading-relaxed max-w-md">
+            Nigeria’s trusted student accommodation discovery platform. Find verified off-campus lodges around your university gate with zero agent fees, direct landlord contacts, and mandatory free physical inspections.
           </p>
-        </div>
-      </div>
 
-      {/* Mobile App Navigation Grid */}
-      <div className="grid grid-cols-2 gap-4 text-xs pt-2 border-t border-slate-200/60 dark:border-slate-800/60">
-        <div className="space-y-2">
-          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-            Explore
+          <div className="rounded-2xl border border-[#E8E8E5] bg-[#FFF0E9]/40 p-3.5 text-xs space-y-1 max-w-md">
+            <div className="flex items-center gap-1.5 font-bold text-[#24272B]">
+              <ShieldCheck className="h-4 w-4 text-[#F45B2A] shrink-0" />
+              <span>Direct Landlords • 0% Agent & Legal Fees</span>
+            </div>
+            <p className="text-[11px] text-slate-500">
+              Never pay rent before physically entering the lodge and inspecting the room facilities in person.
+            </p>
+          </div>
+        </div>
+
+        {/* Explore Links */}
+        <div className="space-y-3">
+          <h4 className="text-[11px] font-black text-[#24272B] uppercase tracking-wider">
+            Explore Campuses
           </h4>
-          <ul className="space-y-1.5">
+          <ul className="space-y-2 text-xs">
             <li>
-              <Link href="/explore" className="hover:text-blue-600 transition-colors">
-                Explore Lodges
+              <Link href="/student/explore" className="font-bold text-[#F45B2A] hover:underline flex items-center gap-1">
+                <span>Interactive Map Discovery</span>
+                <span>→</span>
               </Link>
             </li>
             <li>
-              <Link href="/universities" className="hover:text-blue-600 transition-colors">
-                Campuses Directory
+              <Link href="/universities" className="hover:text-[#F45B2A] transition-colors">
+                All 328 Universities
               </Link>
             </li>
             <li>
-              <Link href="/how-it-works" className="hover:text-blue-600 transition-colors">
-                How It Works
+              <Link href="/student/explore?university=abia-state-university" className="hover:text-[#F45B2A] transition-colors">
+                Abia State University (ABSU)
               </Link>
             </li>
             <li>
-              <Link href="/landlord/properties" className="hover:text-blue-600 transition-colors">
-                List Your Property
+              <Link href="/student/explore?university=university-of-nigeria" className="hover:text-[#F45B2A] transition-colors">
+                University of Nigeria (UNN)
+              </Link>
+            </li>
+            <li>
+              <Link href="/student/explore?university=university-of-lagos" className="hover:text-[#F45B2A] transition-colors">
+                University of Lagos (UNILAG)
+              </Link>
+            </li>
+            <li>
+              <Link href="/register" className="hover:text-[#F45B2A] transition-colors">
+                List Lodge as Landlord
               </Link>
             </li>
           </ul>
         </div>
 
-        <div className="space-y-2">
-          <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-            Trust & Legal
+        {/* Trust & Legal */}
+        <div className="space-y-3">
+          <h4 className="text-[11px] font-black text-[#24272B] uppercase tracking-wider">
+            Trust & Safety
           </h4>
-          <ul className="space-y-1.5">
+          <ul className="space-y-2 text-xs">
             <li>
-              <Link href="/how-it-works#verification" className="hover:text-blue-600 transition-colors">
-                Verification Model
+              <Link href="/how-it-works" className="hover:text-[#F45B2A] transition-colors">
+                How LodgeHere Works
               </Link>
             </li>
             <li>
-              <Link href="/report" className="hover:text-blue-600 transition-colors">
-                Report a Scam
+              <Link href="/report" className="hover:text-[#F45B2A] transition-colors">
+                Report Suspicious Listing
               </Link>
             </li>
             <li>
-              <Link href="/terms" className="hover:text-blue-600 transition-colors">
+              <Link href="/terms" className="hover:text-[#F45B2A] transition-colors">
                 Terms of Service
               </Link>
             </li>
             <li>
-              <Link href="/privacy" className="hover:text-blue-600 transition-colors">
+              <Link href="/privacy" className="hover:text-[#F45B2A] transition-colors">
                 Privacy Policy
+              </Link>
+            </li>
+            <li>
+              <Link href="/data-deletion" className="hover:text-[#F45B2A] transition-colors">
+                Student Data Protection
               </Link>
             </li>
           </ul>
@@ -105,18 +121,24 @@ export function Footer() {
       </div>
 
       {/* Cookie Preferences and Mobile App Stamp */}
-      <div className="pt-4 border-t border-slate-200/60 dark:border-slate-800/60 flex flex-col items-center gap-2 text-center">
-        <button
-          type="button"
-          onClick={openCookiePreferencesModal}
-          className="text-[11px] font-semibold text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200 underline cursor-pointer"
-        >
-          Cookie Preferences
-        </button>
-
-        <p className="text-[10px] text-slate-400">
-          © {new Date().getFullYear()} LodgeHere Mobile App. Verified Nigerian Campus Accommodations.
+      <div className="pt-6 border-t border-[#E8E8E5] flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
+        <p className="text-[11px]">
+          © {new Date().getFullYear()} LodgeHere. Built for Nigerian tertiary institution students.
         </p>
+
+        <div className="flex items-center gap-4">
+          <button
+            type="button"
+            onClick={openCookiePreferencesModal}
+            className="text-[11px] font-semibold text-slate-600 hover:text-[#F45B2A] underline cursor-pointer"
+          >
+            Cookie Preferences
+          </button>
+          <span className="text-slate-300">•</span>
+          <span className="text-[11px] font-bold text-[#24272B]">
+            PWA Standalone Ready 📱
+          </span>
+        </div>
       </div>
     </footer>
   );

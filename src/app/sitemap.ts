@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getLodges } from '@/lib/data/lodges-data';
+import { getAppBaseUrl } from '@/lib/utils';
 
 // Fallback curated showcase slugs that are permanently supported for SEO ranking
 const CURATED_SLUGS = [
@@ -10,7 +11,7 @@ const CURATED_SLUGS = [
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'https://lodginghere.vercel.app';
+  const baseUrl = getAppBaseUrl();
   const now = new Date();
 
   // 1. Static Core Public Routes

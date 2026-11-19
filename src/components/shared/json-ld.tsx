@@ -1,7 +1,8 @@
 import React from 'react';
 import { Lodge } from '@/types/database';
+import { getAppBaseUrl } from '@/lib/utils';
 
-const BASE_URL = process.env.NEXT_PUBLIC_APP_URL || 'https://lodginghere.vercel.app';
+const BASE_URL = getAppBaseUrl();
 
 /**
  * Root Website Schema with SearchAction for Google Sitelinks Search Box
