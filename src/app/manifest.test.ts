@@ -2,17 +2,17 @@ import { describe, it, expect } from 'vitest';
 import manifest from './manifest';
 
 describe('Web App Manifest (PWA Configuration)', () => {
-  it('should generate valid manifest conforming to PWA standards', () => {
+  it('should generate valid manifest conforming to PWA standards and brand palette', () => {
     const config = manifest();
 
     expect(config).toBeDefined();
-    expect(config.name).toBe('LodgeHere — Verified Student Accommodation');
+    expect(config.name).toBe('LodgeHere');
     expect(config.short_name).toBe('LodgeHere');
     expect(config.start_url).toBe('/');
     expect(config.display).toBe('standalone');
     expect(config.orientation).toBe('portrait');
-    expect(config.background_color).toBe('#090d16');
-    expect(config.theme_color).toBe('#090d16');
+    expect(config.background_color).toBe('#F8F8F6');
+    expect(config.theme_color).toBe('#F45B2A');
 
     // Verify icons array contains required PWA icons
     expect(config.icons).toBeDefined();

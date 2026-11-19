@@ -32,36 +32,34 @@ vi.mock('@/lib/data/lodges-data', () => ({
   ],
 }));
 
-describe('MobileBottomNav', () => {
+describe('MobileBottomNav (Student 4-Tab Navigation)', () => {
   beforeEach(() => {
     mockPathname = '/';
     mockAuthRole = null;
     mockIsAuthenticated = false;
   });
 
-  it('renders public visitor tabs when on home page', () => {
+  it('renders student navigation tabs (Explore, Saved, Enquiries, Profile) when on student discovery home', () => {
     mockPathname = '/';
     render(<MobileBottomNav />);
 
     expect(screen.getByRole('navigation', { name: /mobile navigation/i })).toBeDefined();
-    expect(screen.getByText('Home')).toBeDefined();
     expect(screen.getByText('Explore')).toBeDefined();
-    expect(screen.getByText('Campuses')).toBeDefined();
     expect(screen.getByText('Saved')).toBeDefined();
-    expect(screen.getByText('Sign In')).toBeDefined();
+    expect(screen.getByText('Enquiries')).toBeDefined();
+    expect(screen.getByText('Profile')).toBeDefined();
   });
 
-  it('renders student dashboard tabs when on student routes', () => {
-    mockPathname = '/student/overview';
+  it('renders student navigation tabs on student sub-routes', () => {
+    mockPathname = '/student/saved';
     mockAuthRole = 'student';
     mockIsAuthenticated = true;
 
     render(<MobileBottomNav />);
 
-    expect(screen.getByText('Overview')).toBeDefined();
     expect(screen.getByText('Explore')).toBeDefined();
-    expect(screen.getByText('Inspections')).toBeDefined();
-    expect(screen.getByText('Bookings')).toBeDefined();
+    expect(screen.getByText('Saved')).toBeDefined();
+    expect(screen.getByText('Enquiries')).toBeDefined();
     expect(screen.getByText('Profile')).toBeDefined();
   });
 

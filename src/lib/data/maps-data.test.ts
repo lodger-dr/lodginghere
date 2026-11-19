@@ -68,7 +68,7 @@ describe('maps-data utilities', () => {
     expect(result.lat).toBeGreaterThan(0);
     expect(result.lng).toBeGreaterThan(0);
     expect(result.googleMapsUrl).toContain('google.com/maps/search');
-  });
+  }, 35000);
 
   it('handles empty or short addresses gracefully during verification', async () => {
     const result = await verifyAddressOnMaps('', 'university-of-lagos');

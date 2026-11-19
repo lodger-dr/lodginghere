@@ -12,16 +12,16 @@ describe('Nigerian Universities & States Dataset', () => {
     expect(names).toContain('Rivers');
   });
 
-  it('should have a substantial list of universities across all tiers', () => {
-    expect(NIGERIAN_UNIVERSITIES.length).toBeGreaterThan(60);
+  it('should have all 328 approved universities in Nigeria across federal, state, and private tiers', () => {
+    expect(NIGERIAN_UNIVERSITIES.length).toBe(328);
 
     const federal = NIGERIAN_UNIVERSITIES.filter((u) => u.university_type === 'federal');
     const state = NIGERIAN_UNIVERSITIES.filter((u) => u.university_type === 'state');
     const privateUnis = NIGERIAN_UNIVERSITIES.filter((u) => u.university_type === 'private');
 
-    expect(federal.length).toBeGreaterThan(20);
-    expect(state.length).toBeGreaterThan(15);
-    expect(privateUnis.length).toBeGreaterThan(15);
+    expect(federal.length).toBe(77);
+    expect(state.length).toBe(69);
+    expect(privateUnis.length).toBe(182);
   });
 
   it('should have unique slugs for all universities', () => {
@@ -30,11 +30,21 @@ describe('Nigerian Universities & States Dataset', () => {
     expect(uniqueSlugs.size).toBe(slugs.length);
   });
 
-  it('every university should map to a valid Nigerian state', () => {
+  it('every university should map to a valid Nigerian state and have required fields', () => {
     const validStateNames = new Set(NIGERIAN_STATES.map((s) => s.name));
     NIGERIAN_UNIVERSITIES.forEach((u) => {
       expect(validStateNames.has(u.state)).toBe(true);
+      expect(u.name.trim().length).toBeGreaterThan(0);
+      expect(u.slug.trim().length).toBeGreaterThan(0);
+      expect(u.acronym.trim().length).toBeGreaterThan(0);
+      expect(u.city.trim().length).toBeGreaterThan(0);
+      expect(['federal', 'state', 'private']).toContain(u.university_type);
     });
   });
-});
 
+  it('should cover all geopolitical regions and states across Nigeria', () => {
+    const statesRepresented = new Set(NIGERIAN_UNIVERSITIES.map((u) => u.state));
+    // Verify comprehensive distribution
+    expect(statesRepresented.size).toBe(37);
+  });
+});

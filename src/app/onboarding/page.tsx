@@ -1,950 +1,746 @@
 'use client';
 
-import React, { useState, useEffect, useTransition } from 'react';
+import React, { useState, useEffect, useTransition, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 import {
-  ShieldCheck,
-  GraduationCap,
-  Building2,
-  CheckCircle2,
-  User,
-  Mail,
-  Phone,
-  ArrowRight,
-  ArrowLeft,
-  School,
+  Search,
+  Check,
+  ChevronRight,
   MapPin,
-  BookOpen,
-  Briefcase,
-  AlertCircle,
+  Bell,
+  ArrowRight,
+  ShieldCheck,
+  Building2,
   Home,
+  CheckCircle2,
+  BedDouble,
+  Users,
+  Sparkles,
 } from 'lucide-react';
 import { useAuth } from '@/context/auth-context';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { NIGERIAN_UNIVERSITIES } from '@/lib/data/nigerian-universities';
 import { completeOnboardingAction } from '../(auth)/actions';
 
+// Popular schools featured on Screen 1 of reference design
+const POPULAR_SCHOOLS = [
+  {
+    acronym: 'ABSU',
+    name: 'Abia State University (ABSU)',
+    slug: 'abia-state-university',
+    state: 'Abia',
+    city: 'Uturu',
+    badgeBg: 'bg-[#0B3B60]',
+    badgeColor: 'text-white',
+  },
+  {
+    acronym: 'UNN',
+    name: 'University of Nigeria, Nsukka (UNN)',
+    slug: 'university-of-nigeria-nsukka',
+    state: 'Enugu',
+    city: 'Nsukka',
+    badgeBg: 'bg-[#186036]',
+    badgeColor: 'text-white',
+  },
+  {
+    acronym: 'MOU',
+    name: 'Michael Okpara University (MOU)',
+    slug: 'michael-okpara-university-of-agriculture-umudike',
+    state: 'Abia',
+    city: 'Umudike',
+    badgeBg: 'bg-[#1F4E34]',
+    badgeColor: 'text-white',
+  },
+];
+
+// Room type options for Screen 2
+const ACCOMMODATION_TYPES = [
+  {
+    id: 'single_room',
+    title: 'Single room',
+    description: 'A room of your own.',
+    image: 'https://images.unsplash.com/photo-1540518614846-7ede433c4550?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    id: 'self_contained',
+    title: 'Self-contained',
+    description: 'Private room and facilities.',
+    image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&w=600&q=80',
+  },
+  {
+    id: 'shared_apartment',
+    title: 'Shared apartment',
+    description: 'Share with others.',
+    image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?auto=format&fit=crop&w=600&q=80',
+  },
+];
+
+// Budget options for Screen 2
+const BUDGET_OPTIONS = [
+  { id: 'under_100k', label: 'Under ₦100k', maxBudget: 100000 },
+  { id: '100k_200k', label: '₦100k – ₦200k', maxBudget: 200000 },
+  { id: '200k_plus', label: '₦200k+', maxBudget: 500000 },
+];
+
 export default function OnboardingPage() {
   const router = useRouter();
-  const { user, profile, isLoading: isAuthLoading, refreshProfile, updateProfileState } = useAuth();
-
-  const [step, setStep] = useState<1 | 2 | 3 | 4>(1);
-  const [role, setRole] = useState<'student' | 'landlord'>('student');
-
-  // Step 2: Personal details
-  const [fullName, setFullName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [isPreFilledFromGoogle, setIsPreFilledFromGoogle] = useState(false);
-
-  // Step 3 (Student)
-  const [universitySlug, setUniversitySlug] = useState('university-of-lagos');
-  const [campusName, setCampusName] = useState('Main Campus');
-  const [department, setDepartment] = useState('');
-  const [preferredRoomType, setPreferredRoomType] = useState('self_contained');
-
-  // Step 3 (Landlord)
-  const [providerType, setProviderType] = useState<'owner' | 'authorized_representative'>('owner');
-  const [businessName, setBusinessName] = useState('');
-  const [operatingArea, setOperatingArea] = useState('');
-  const [portfolioSize, setPortfolioSize] = useState('6_to_15');
-
-  // Step 4: Agreement
-  const [confirmedAccuracy, setConfirmedAccuracy] = useState(true);
-
-  // Form handling state
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<Record<string, string[]>>({});
+  const { user, profile, updateProfileState, refreshProfile } = useAuth();
   const [isPending, startTransition] = useTransition();
 
-  // Populate user data from Google / Auth session
+  // Mode: Student onboarding (default from reference design) or Landlord fallback
+  const [roleMode, setRoleMode] = useState<'student' | 'landlord'>('student');
+
+  // Multi-step student flow: 1 (School Selection), 2 (Preferences), 3 (Permissions)
+  const [step, setStep] = useState<1 | 2 | 3>(1);
+
+  // Step 1: School Selection
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedSchoolSlug, setSelectedSchoolSlug] = useState('abia-state-university');
+
+  // Step 2: Preferences (Optional)
+  const [selectedBudget, setSelectedBudget] = useState<string | null>(null);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+
+  // Step 3: Permissions (Optional)
+  const [locationEnabled, setLocationEnabled] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [locationStatusText, setLocationStatusText] = useState('Enable location →');
+  const [notificationStatusText, setNotificationStatusText] = useState('Turn on notifications →');
+
+  // Landlord fallback states (preserving existing backend capabilities)
+  const [landlordName, setLandlordName] = useState('');
+  const [landlordPhone, setLandlordPhone] = useState('');
+  const [businessName, setBusinessName] = useState('');
+  const [operatingArea, setOperatingArea] = useState('');
+
+  // Hydrate if user already has partial profile
   useEffect(() => {
-    if (user) {
-      const meta = user.user_metadata || {};
-      const name =
-        meta.full_name ||
-        meta.name ||
-        profile?.full_name ||
-        (user.email ? user.email.split('@')[0] : '');
-
-      if (name && !fullName) {
-        setFullName(name);
-        if (meta.full_name || meta.name) {
-          setIsPreFilledFromGoogle(true);
-        }
-      }
-
-      if (profile?.phone && !phone) {
-        setPhone(profile.phone);
-      }
-
-      if (profile?.role) {
-        setRole(profile.role === 'landlord' ? 'landlord' : 'student');
-      }
+    if (profile?.role === 'landlord') {
+      setRoleMode('landlord');
     }
-  }, [user, profile, fullName, phone]);
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('lodgehere_user_university');
+      if (stored) setSelectedSchoolSlug(stored);
+    }
+  }, [profile]);
 
-  // Validation handlers for stepping forward
-  const handleNextFromStep1 = () => {
-    setErrorMessage(null);
+  // Filter universities for Step 1
+  const filteredUniversities = useMemo(() => {
+    if (!searchQuery.trim()) return [];
+    const q = searchQuery.toLowerCase().trim();
+    return NIGERIAN_UNIVERSITIES.filter(
+      (u) =>
+        u.name.toLowerCase().includes(q) ||
+        u.acronym.toLowerCase().includes(q) ||
+        u.city.toLowerCase().includes(q) ||
+        u.state.toLowerCase().includes(q)
+    ).slice(0, 15);
+  }, [searchQuery]);
+
+  // Request browser location permission optionally
+  const handleRequestLocation = () => {
+    if (typeof window === 'undefined' || !navigator.geolocation) {
+      setLocationStatusText('Not supported on this browser');
+      return;
+    }
+    setLocationStatusText('Requesting...');
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        setLocationEnabled(true);
+        setLocationStatusText('Location enabled ✓');
+        try {
+          localStorage.setItem(
+            'lodgehere_user_gps',
+            JSON.stringify({ lat: pos.coords.latitude, lng: pos.coords.longitude })
+          );
+        } catch {}
+      },
+      (err) => {
+        console.warn('Geolocation denied or unavailable:', err);
+        setLocationStatusText('Location access skipped');
+      },
+      { timeout: 8000 }
+    );
+  };
+
+  // Request browser notification permission optionally
+  const handleRequestNotifications = async () => {
+    if (typeof window === 'undefined' || !('Notification' in window)) {
+      setNotificationStatusText('Not supported on this browser');
+      return;
+    }
+    setNotificationStatusText('Requesting...');
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === 'granted') {
+        setNotificationsEnabled(true);
+        setNotificationStatusText('Notifications enabled ✓');
+      } else {
+        setNotificationStatusText('Notifications skipped');
+      }
+    } catch {
+      setNotificationStatusText('Notifications skipped');
+    }
+  };
+
+  // Step transitions
+  const handleContinueFromStep1 = () => {
+    if (!selectedSchoolSlug) return;
     setStep(2);
   };
 
-  const handleNextFromStep2 = () => {
-    setErrorMessage(null);
-    setFieldErrors({});
-
-    if (!fullName || fullName.trim().length < 2) {
-      setFieldErrors({ fullName: ['Please enter your full name (at least 2 characters)'] });
-      return;
-    }
-
-    if (phone && !/^(\+234|0)[789][01]\d{8}$/.test(phone.replace(/\s+/g, ''))) {
-      setFieldErrors({ phone: ['Please enter a valid Nigerian phone number (e.g. 08012345678)'] });
-      return;
-    }
-
+  const handleContinueFromStep2 = () => {
     setStep(3);
   };
 
-  const handleNextFromStep3 = () => {
-    setErrorMessage(null);
-    setFieldErrors({});
-
-    if (role === 'student') {
-      if (!universitySlug) {
-        setFieldErrors({ universitySlug: ['Please select your university'] });
-        return;
-      }
-    } else {
-      if (providerType === 'authorized_representative' && !businessName.trim()) {
-        setFieldErrors({ businessName: ['Please provide your agency or business name'] });
-        return;
-      }
-    }
-
-    setStep(4);
+  const handleSkipPreferences = () => {
+    setSelectedBudget(null);
+    setSelectedType(null);
+    setStep(3);
   };
 
-  const handleCompleteOnboarding = async () => {
-    setErrorMessage(null);
+  // Final submission and redirect to map-first homepage
+  const handleFinishOnboarding = () => {
+    startTransition(async () => {
+      // 1. Persist to local storage for fast client hydration
+      if (typeof window !== 'undefined') {
+        try {
+          localStorage.setItem('lodgehere_user_university', selectedSchoolSlug);
+          localStorage.setItem(
+            'lodgehere_user_preferences',
+            JSON.stringify({
+              budget: selectedBudget,
+              accommodationType: selectedType,
+              locationEnabled,
+              notificationsEnabled,
+            })
+          );
+          localStorage.setItem('lodgehere_onboarding_completed', 'true');
+        } catch {}
+      }
 
-    if (!confirmedAccuracy) {
-      setErrorMessage('Please confirm that your provided information is accurate to finish.');
-      return;
-    }
+      // 2. Persist to Supabase if authenticated
+      try {
+        const formData = new FormData();
+        formData.append('role', 'student');
+        formData.append('fullName', profile?.full_name || user?.email?.split('@')[0] || 'Student');
+        if (profile?.phone) formData.append('phone', profile.phone);
+        formData.append('universityId', selectedSchoolSlug);
+        if (selectedType) formData.append('preferredRoomType', selectedType);
 
-    const formData = new FormData();
-    formData.append('role', role);
-    formData.append('fullName', fullName.trim());
-    if (phone) formData.append('phone', phone.trim());
+        await completeOnboardingAction(formData);
 
-    if (role === 'student') {
-      formData.append('universityId', universitySlug);
-      if (campusName) formData.append('campusName', campusName.trim());
-      if (department) formData.append('department', department.trim());
-      if (preferredRoomType) formData.append('preferredRoomType', preferredRoomType);
-    } else {
-      formData.append('providerType', providerType);
-      if (businessName) formData.append('businessName', businessName.trim());
-      if (operatingArea) formData.append('operatingArea', operatingArea.trim());
-      formData.append('portfolioSize', portfolioSize);
-    }
+        updateProfileState({
+          onboarding_completed: true,
+          student_profile: {
+            university_slug: selectedSchoolSlug,
+            department: '',
+          },
+        });
+        await refreshProfile();
+      } catch (err) {
+        console.warn('Server onboarding sync note:', err);
+      }
 
+      // 3. Take student directly to the map-first discovery homepage
+      router.push('/');
+    });
+  };
+
+  // Landlord submission handler
+  const handleCompleteLandlordOnboarding = () => {
     startTransition(async () => {
       try {
-        const response = await completeOnboardingAction(formData);
+        const formData = new FormData();
+        formData.append('role', 'landlord');
+        formData.append('fullName', landlordName || 'Property Owner');
+        if (landlordPhone) formData.append('phone', landlordPhone);
+        formData.append('providerType', 'owner');
+        if (businessName) formData.append('businessName', businessName);
+        if (operatingArea) formData.append('operatingArea', operatingArea);
 
-        if (!response.success) {
-          if (response.errors) {
-            setFieldErrors(response.errors);
-          }
-          if (response.message) {
-            setErrorMessage(response.message);
-          }
-          return;
-        }
-
-        if (role === 'student') {
-          if (universitySlug && typeof window !== 'undefined') {
-            try {
-              localStorage.setItem('lodgehere_user_university', universitySlug);
-            } catch { }
-          }
-          updateProfileState({
-            full_name: fullName.trim(),
-            phone: phone.trim(),
-            role: 'student',
-            onboarding_completed: true,
-            student_profile: {
-              university_slug: universitySlug,
-              department: department.trim(),
-            },
-          });
-        } else {
-          updateProfileState({
-            full_name: fullName.trim(),
-            phone: phone.trim(),
-            role: 'landlord',
-            onboarding_completed: true,
-            landlord_profile: {
-              business_name: businessName.trim(),
-              provider_type: providerType,
-              operating_area: operatingArea.trim(),
-            },
-          });
-        }
-
-        await refreshProfile();
-
-        if (response.redirectTo) {
-          router.push(response.redirectTo);
-          router.refresh();
-        }
+        await completeOnboardingAction(formData);
+        router.push('/landlord/overview');
       } catch {
-        setErrorMessage('An unexpected error occurred while saving your profile. Please try again.');
+        router.push('/landlord/overview');
       }
     });
   };
 
-  const selectedUni = NIGERIAN_UNIVERSITIES.find((u) => u.slug === universitySlug);
-
-  if (isAuthLoading) {
-    return (
-      <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center">
-        <div className="h-8 w-8 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
-      </div>
-    );
-  }
+  // Selected school object for title display
+  const currentSelectedSchool =
+    POPULAR_SCHOOLS.find((s) => s.slug === selectedSchoolSlug) ||
+    NIGERIAN_UNIVERSITIES.find((u) => u.slug === selectedSchoolSlug) ||
+    POPULAR_SCHOOLS[0];
 
   return (
-    <div className="flex min-h-[calc(100vh-8rem)] items-center justify-center px-4 py-12 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 transition-colors">
-      <div className="w-full max-w-xl space-y-6">
-        {/* PROGRESS STEPPER HEADER */}
-        <div className="space-y-3">
-          <div className="flex items-center justify-between text-xs font-semibold text-slate-500 dark:text-slate-400">
-            <span>Step {step} of 4</span>
-            <span>
-              {step === 1 && 'Role Selection'}
-              {step === 2 && 'Personal Details'}
-              {step === 3 && (role === 'student' ? 'Academic Details' : 'Property Details')}
-              {step === 4 && 'Confirmation'}
-            </span>
+    <div className="min-h-screen bg-[#F8F8F6] text-[#24272B] flex flex-col justify-between">
+      {/* ======================================================== */}
+      {/* TOP HEADER: BRAND LOGO & SWITCHER */}
+      {/* ======================================================== */}
+      <header className="px-5 pt-6 pb-2 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          {/* LodgeHere Orange House Badge Logo */}
+          <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-[#FFF0E9] text-[#F45B2A] border border-[#F45B2A]/20 shadow-xs">
+            <Home className="h-5 w-5 fill-[#F45B2A] text-[#F45B2A]" />
           </div>
-          <div className="h-2 w-full bg-slate-200 dark:bg-slate-800 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-blue-600 transition-all duration-500 rounded-full"
-              style={{ width: `${(step / 4) * 100}%` }}
-            />
-          </div>
+          <span className="font-extrabold text-xl tracking-tight text-[#24272B]">
+            Lodge<span className="text-[#F45B2A]">Here</span>
+          </span>
         </div>
 
-        {/* ERROR NOTIFICATION */}
-        {errorMessage && (
-          <div
-            role="alert"
-            className="flex items-start gap-3 rounded-2xl bg-red-50 dark:bg-red-950/50 p-4 text-xs text-red-700 dark:text-red-300 border border-red-200/80 dark:border-red-900/60 shadow-2xs"
-          >
-            <AlertCircle className="h-4 w-4 shrink-0 text-red-500 dark:text-red-400 mt-0.5" />
-            <span className="font-medium leading-relaxed">{errorMessage}</span>
+        {/* Subtle toggle for Landlord/Student */}
+        <button
+          type="button"
+          onClick={() => setRoleMode(roleMode === 'student' ? 'landlord' : 'student')}
+          className="text-[11px] font-semibold text-slate-500 hover:text-[#24272B] underline"
+        >
+          {roleMode === 'student' ? 'Landlord Onboarding' : 'Student Mode'}
+        </button>
+      </header>
+
+      {/* ======================================================== */}
+      {/* LANDLORD ONBOARDING FALLBACK (Preserves existing stack) */}
+      {/* ======================================================== */}
+      {roleMode === 'landlord' ? (
+        <main className="flex-1 px-5 py-6 max-w-md mx-auto w-full space-y-6">
+          <div className="space-y-1">
+            <h1 className="text-2xl font-bold text-[#24272B]">Host &amp; Landlord Setup</h1>
+            <p className="text-xs text-slate-600">
+              List and manage student properties with verified direct inquiries.
+            </p>
           </div>
-        )}
-
-        {/* ============================================================== */}
-        {/* CARD 1: ROLE SELECTION */}
-        {/* ============================================================== */}
-        {step === 1 && (
-          <Card className="rounded-3xl border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl dark:shadow-2xl overflow-hidden animate-in fade-in duration-300">
-            <CardHeader className="text-center pb-2 pt-8">
-              <div className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-blue-200 dark:border-blue-800/60 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1 text-xs font-semibold text-blue-800 dark:text-blue-300 mb-3 shadow-2xs">
-                <ShieldCheck className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-                <span>Welcome to LodgeHere</span>
-              </div>
-              <CardTitle className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                How will you use LodgeHere?
-              </CardTitle>
-              <CardDescription className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1">
-                Select your role to personalize your account and dashboard experience.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-4 px-6 sm:px-8 pb-8 pt-4">
-              {/* Student Role Choice */}
-              <div
-                onClick={() => setRole('student')}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setRole('student');
-                  }
-                }}
-                className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${role === 'student'
-                    ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30 shadow-md ring-2 ring-blue-500/20'
-                    : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900'
-                  }`}
-              >
+          <div className="space-y-4 bg-white p-5 rounded-2xl border border-[#E8E8E5] shadow-xs">
+            <div>
+              <label className="block text-xs font-bold text-[#24272B] mb-1">Full Name</label>
+              <input
+                type="text"
+                value={landlordName}
+                onChange={(e) => setLandlordName(e.target.value)}
+                placeholder="Chief Adebayo Olanrewaju"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#E8E8E5] text-sm focus:outline-none focus:border-[#F45B2A]"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-[#24272B] mb-1">Phone Number</label>
+              <input
+                type="tel"
+                value={landlordPhone}
+                onChange={(e) => setLandlordPhone(e.target.value)}
+                placeholder="0803 234 5678"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#E8E8E5] text-sm focus:outline-none focus:border-[#F45B2A]"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-[#24272B] mb-1">Property / Business Name</label>
+              <input
+                type="text"
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
+                placeholder="Emerald Properties Ltd"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#E8E8E5] text-sm focus:outline-none focus:border-[#F45B2A]"
+              />
+            </div>
+            <div>
+              <label className="block text-xs font-bold text-[#24272B] mb-1">Primary Operating Campus / Area</label>
+              <input
+                type="text"
+                value={operatingArea}
+                onChange={(e) => setOperatingArea(e.target.value)}
+                placeholder="UNILAG Akoka / Yaba"
+                className="w-full px-3.5 py-2.5 rounded-xl border border-[#E8E8E5] text-sm focus:outline-none focus:border-[#F45B2A]"
+              />
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={handleCompleteLandlordOnboarding}
+            className="w-full py-3.5 px-4 rounded-xl bg-[#F45B2A] text-white font-bold text-sm shadow-md hover:bg-[#DE4C1D] transition-colors"
+          >
+            Enter Landlord Dashboard
+          </button>
+        </main>
+      ) : (
+        /* ======================================================== */
+        /* STUDENT ONBOARDING (Reference design 3 steps) */
+        /* ======================================================== */
+        <main className="flex-1 flex flex-col justify-between px-5 pt-3 pb-8 max-w-md mx-auto w-full">
+          <div>
+            {/* STEP PROGRESS BAR & STEPPER HEADER */}
+            <div className="space-y-2 mb-6">
+              <div className="flex gap-2 w-full">
                 <div
-                  className={`p-3 rounded-2xl shrink-0 ${role === 'student'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
-                    }`}
-                >
-                  <GraduationCap className="h-6 w-6" />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                      I am a Student
-                    </h4>
-                    {role === 'student' && (
-                      <CheckCircle2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    )}
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                    Looking for verified off-campus student accommodation near your Nigerian university.
-                  </p>
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                    <span className="inline-flex items-center text-[10px] font-semibold bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 px-2.5 py-0.5 rounded-full">
-                      Verified Lodges
-                    </span>
-                    <span className="inline-flex items-center text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-0.5 rounded-full">
-                      Free Inspections
-                    </span>
-                    <span className="inline-flex items-center text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-0.5 rounded-full">
-                      Zero Agent Fees
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Landlord Role Choice */}
-              <div
-                onClick={() => setRole('landlord')}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    setRole('landlord');
-                  }
-                }}
-                className={`relative flex items-start gap-4 p-5 rounded-2xl border-2 cursor-pointer transition-all ${role === 'landlord'
-                    ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30 shadow-md ring-2 ring-blue-500/20'
-                    : 'border-slate-200 dark:border-slate-800 hover:border-slate-300 dark:hover:border-slate-700 bg-white dark:bg-slate-900'
+                  className={`h-1.5 flex-1 rounded-full transition-all ${
+                    step >= 1 ? 'bg-[#F45B2A]' : 'bg-[#E8E8E5]'
                   }`}
-              >
-                <div
-                  className={`p-3 rounded-2xl shrink-0 ${role === 'landlord'
-                      ? 'bg-blue-600 text-white'
-                      : 'bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300'
-                    }`}
-                >
-                  <Building2 className="h-6 w-6" />
-                </div>
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <h4 className="text-sm font-bold text-slate-900 dark:text-white">
-                      I am an Accommodation Provider
-                    </h4>
-                    {role === 'landlord' && (
-                      <CheckCircle2 className="h-5 w-5 text-blue-600 dark:text-blue-400" />
-                    )}
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">
-                    List properties, manage room vacancies, and connect directly with verified university students.
-                  </p>
-                  <div className="flex flex-wrap gap-1.5 pt-2">
-                    <span className="inline-flex items-center text-[10px] font-semibold bg-blue-100 dark:bg-blue-900/60 text-blue-800 dark:text-blue-300 px-2.5 py-0.5 rounded-full">
-                      Direct Student Reach
-                    </span>
-                    <span className="inline-flex items-center text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-0.5 rounded-full">
-                      Inspection Alerts
-                    </span>
-                    <span className="inline-flex items-center text-[10px] font-semibold bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 px-2.5 py-0.5 rounded-full">
-                      Verified Badge
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pt-4">
-                <Button
-                  onClick={handleNextFromStep1}
-                  className="w-full h-11 rounded-2xl font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 transition-all text-xs flex items-center justify-center gap-2"
-                >
-                  <span>Continue to Personal Details</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* ============================================================== */}
-        {/* CARD 2: PERSONAL INFORMATION */}
-        {/* ============================================================== */}
-        {step === 2 && (
-          <Card className="rounded-3xl border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl dark:shadow-2xl overflow-hidden animate-in fade-in duration-300">
-            <CardHeader className="text-center pb-2 pt-8">
-              <div className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-blue-200 dark:border-blue-800/60 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1 text-xs font-semibold text-blue-800 dark:text-blue-300 mb-3 shadow-2xs">
-                <User className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-                <span>Personal Information</span>
-              </div>
-              <CardTitle className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                Tell us about yourself
-              </CardTitle>
-              <CardDescription className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1">
-                Your details help verified landlords and students communicate securely.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-5 px-6 sm:px-8 pb-8 pt-4">
-              {/* Google Autofill Badge */}
-              {isPreFilledFromGoogle && (
-                <div className="flex items-center gap-2 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-200/80 dark:border-amber-900/60 p-3 text-xs text-amber-800 dark:text-amber-300 shadow-2xs">
-                  <CheckCircle2 className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
-                  <span>
-                    Your name and email have been automatically populated from your Google account.
-                  </span>
-                </div>
-              )}
-
-              {/* Full Name */}
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="fullName"
-                  className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-                >
-                  Full Name
-                </label>
-                <div className="relative">
-                  <User className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
-                  <Input
-                    id="fullName"
-                    type="text"
-                    required
-                    placeholder="e.g. Chukwuemeka Adebayo"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className="pl-10 h-11 rounded-2xl text-xs bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-900 transition-colors"
-                  />
-                </div>
-                {fieldErrors.fullName && (
-                  <p className="text-[11px] text-red-600 dark:text-red-400 font-medium">
-                    {fieldErrors.fullName[0]}
-                  </p>
-                )}
-              </div>
-
-              {/* Email Address (Pre-filled and Verified) */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <label
-                    htmlFor="email"
-                    className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-                  >
-                    Email Address
-                  </label>
-                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-blue-600 dark:text-blue-400">
-                    <CheckCircle2 className="h-3 w-3" />
-                    <span>Verified</span>
-                  </span>
-                </div>
-                <div className="relative">
-                  <Mail className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
-                  <Input
-                    id="email"
-                    type="email"
-                    disabled
-                    value={user?.email || profile?.email || ''}
-                    className="pl-10 h-11 rounded-2xl text-xs bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 border-slate-200 dark:border-slate-700 cursor-not-allowed opacity-90"
-                  />
-                </div>
-                <p className="text-[11px] text-slate-400">
-                  Primary email used for your security and booking receipts.
-                </p>
-              </div>
-
-              {/* Phone / WhatsApp */}
-              <div className="space-y-1.5">
-                <label
-                  htmlFor="phone"
-                  className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-                >
-                  Phone / WhatsApp Number
-                </label>
-                <div className="relative">
-                  <div className="absolute left-3.5 top-3 flex items-center gap-1 text-xs font-bold text-slate-500">
-                    <span>🇳🇬</span>
-                    <span>+234</span>
-                  </div>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    placeholder="801 234 5678"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="pl-20 h-11 rounded-2xl text-xs bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700 focus:bg-white dark:focus:bg-slate-900 transition-colors"
-                  />
-                </div>
-                {fieldErrors.phone ? (
-                  <p className="text-[11px] text-red-600 dark:text-red-400 font-medium">
-                    {fieldErrors.phone[0]}
-                  </p>
-                ) : (
-                  <p className="text-[11px] text-slate-400">
-                    Used to coordinate physical inspections and WhatsApp inquiries.
-                  </p>
-                )}
-              </div>
-
-              {/* BUTTONS */}
-              <div className="flex items-center gap-3 pt-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setStep(1)}
-                  className="h-11 rounded-2xl border-slate-200 dark:border-slate-700 text-xs font-semibold"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-1.5" />
-                  <span>Back</span>
-                </Button>
-                <Button
-                  type="button"
-                  onClick={handleNextFromStep2}
-                  className="flex-1 h-11 rounded-2xl font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 transition-all text-xs flex items-center justify-center gap-2"
-                >
-                  <span>
-                    Continue to {role === 'student' ? 'Academic Details' : 'Property Details'}
-                  </span>
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* ============================================================== */}
-        {/* CARD 3: ROLE-SPECIFIC DETAILS */}
-        {/* ============================================================== */}
-        {step === 3 && (
-          <Card className="rounded-3xl border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl dark:shadow-2xl overflow-hidden animate-in fade-in duration-300">
-            <CardHeader className="text-center pb-2 pt-8">
-              <div className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-blue-200 dark:border-blue-800/60 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1 text-xs font-semibold text-blue-800 dark:text-blue-300 mb-3 shadow-2xs">
-                {role === 'student' ? (
-                  <School className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-                ) : (
-                  <Building2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-                )}
-                <span>{role === 'student' ? 'Academic Profile' : 'Property Operations'}</span>
-              </div>
-              <CardTitle className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                {role === 'student' ? 'Your University & Course' : 'Your Property Operations'}
-              </CardTitle>
-              <CardDescription className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1">
-                {role === 'student'
-                  ? 'We will match you with lodges close to your faculty and campus.'
-                  : 'Specify the scope of your accommodations and locations.'}
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-5 px-6 sm:px-8 pb-8 pt-4">
-              {/* STUDENT FIELDS */}
-              {role === 'student' && (
-                <>
-                  {/* University Selection */}
-                  <div className="space-y-1.5">
-                    <label
-                      htmlFor="universitySlug"
-                      className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-                    >
-                      Nigerian University
-                    </label>
-                    <select
-                      id="universitySlug"
-                      value={universitySlug}
-                      onChange={(e) => setUniversitySlug(e.target.value)}
-                      className="flex h-11 w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 px-3.5 py-2 text-xs text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
-                    >
-                      {NIGERIAN_UNIVERSITIES.map((uni) => (
-                        <option key={uni.slug} value={uni.slug}>
-                          {uni.name} ({uni.acronym}) — {uni.state} State
-                        </option>
-                      ))}
-                    </select>
-                    {fieldErrors.universitySlug && (
-                      <p className="text-[11px] text-red-600 dark:text-red-400 font-medium">
-                        {fieldErrors.universitySlug[0]}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Campus & Department Row */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div className="space-y-1.5">
-                      <label
-                        htmlFor="campusName"
-                        className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-                      >
-                        Campus Location
-                      </label>
-                      <div className="relative">
-                        <MapPin className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
-                        <Input
-                          id="campusName"
-                          placeholder="e.g. Main Campus / Akoka"
-                          value={campusName}
-                          onChange={(e) => setCampusName(e.target.value)}
-                          className="pl-10 h-11 rounded-2xl text-xs bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="space-y-1.5">
-                      <label
-                        htmlFor="department"
-                        className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-                      >
-                        Department / Course
-                      </label>
-                      <div className="relative">
-                        <BookOpen className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
-                        <Input
-                          id="department"
-                          placeholder="e.g. Computer Science"
-                          value={department}
-                          onChange={(e) => setDepartment(e.target.value)}
-                          className="pl-10 h-11 rounded-2xl text-xs bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Accommodation Preference */}
-                  <div className="space-y-2 pt-1">
-                    <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
-                      Preferred Accommodation Type
-                    </label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {[
-                        { id: 'self_contained', label: 'Self-Contained Room' },
-                        { id: 'single_room', label: 'Single Room' },
-                        { id: 'two_bedroom', label: 'Flat / Apartment' },
-                        { id: 'hostel', label: 'Hostel Bed Space' },
-                      ].map((item) => (
-                        <button
-                          key={item.id}
-                          type="button"
-                          onClick={() => setPreferredRoomType(item.id)}
-                          className={`flex items-center gap-2 p-3 rounded-2xl border text-xs font-semibold transition-all ${preferredRoomType === item.id
-                              ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-blue-700 dark:text-blue-300 shadow-2xs'
-                              : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-slate-300'
-                            }`}
-                        >
-                          <Home className="h-3.5 w-3.5" />
-                          <span>{item.label}</span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </>
-              )}
-
-              {/* LANDLORD FIELDS */}
-              {role === 'landlord' && (
-                <>
-                  {/* Provider Type Selection */}
-                  <div className="space-y-2">
-                    <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300">
-                      Your Authority / Relationship
-                    </label>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      <button
-                        type="button"
-                        onClick={() => setProviderType('owner')}
-                        className={`p-4 rounded-2xl border-2 text-left transition-all ${providerType === 'owner'
-                            ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30'
-                            : 'border-slate-200 dark:border-slate-800'
-                          }`}
-                      >
-                        <h5 className="text-xs font-bold text-slate-900 dark:text-white">
-                          Property Owner
-                        </h5>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                          I personally own the student lodge or hostel building.
-                        </p>
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => setProviderType('authorized_representative')}
-                        className={`p-4 rounded-2xl border-2 text-left transition-all ${providerType === 'authorized_representative'
-                            ? 'border-blue-600 bg-blue-50/50 dark:bg-blue-950/30'
-                            : 'border-slate-200 dark:border-slate-800'
-                          }`}
-                      >
-                        <h5 className="text-xs font-bold text-slate-900 dark:text-white">
-                          Property Manager / Agent
-                        </h5>
-                        <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">
-                          I manage lodges or hostels on behalf of property owners.
-                        </p>
-                      </button>
-                    </div>
-                  </div>
-
-                  {/* Business Name */}
-                  <div className="space-y-1.5">
-                    <label
-                      htmlFor="businessName"
-                      className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-                    >
-                      {providerType === 'owner' ? 'Lodge / Brand Name' : 'Agency / Company Name'}
-                    </label>
-                    <div className="relative">
-                      <Briefcase className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
-                      <Input
-                        id="businessName"
-                        placeholder="e.g. Apex Student Hostels Ltd"
-                        value={businessName}
-                        onChange={(e) => setBusinessName(e.target.value)}
-                        className="pl-10 h-11 rounded-2xl text-xs bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700"
-                      />
-                    </div>
-                    {fieldErrors.businessName && (
-                      <p className="text-[11px] text-red-600 dark:text-red-400 font-medium">
-                        {fieldErrors.businessName[0]}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Operating Location / University Area */}
-                  <div className="space-y-1.5">
-                    <label
-                      htmlFor="operatingArea"
-                      className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-                    >
-                      Primary Campus or City Served
-                    </label>
-                    <div className="relative">
-                      <MapPin className="absolute left-3.5 top-3.5 h-4 w-4 text-slate-400" />
-                      <Input
-                        id="operatingArea"
-                        placeholder="e.g. Akoka / Yaba (UNILAG area), Lagos"
-                        value={operatingArea}
-                        onChange={(e) => setOperatingArea(e.target.value)}
-                        className="pl-10 h-11 rounded-2xl text-xs bg-slate-50/50 dark:bg-slate-800/50 border-slate-200 dark:border-slate-700"
-                      />
-                    </div>
-                  </div>
-
-                  {/* Portfolio Size */}
-                  <div className="space-y-1.5">
-                    <label
-                      htmlFor="portfolioSize"
-                      className="block text-xs font-semibold text-slate-700 dark:text-slate-300"
-                    >
-                      Estimated Total Rooms Under Management
-                    </label>
-                    <select
-                      id="portfolioSize"
-                      value={portfolioSize}
-                      onChange={(e) => setPortfolioSize(e.target.value)}
-                      className="flex h-11 w-full rounded-2xl border border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 px-3.5 py-2 text-xs text-slate-900 dark:text-white focus:bg-white dark:focus:bg-slate-900 focus:outline-none focus:ring-2 focus:ring-blue-600 transition-colors"
-                    >
-                      <option value="1_to_5">1 - 5 rooms</option>
-                      <option value="6_to_15">6 - 15 rooms</option>
-                      <option value="16_to_30">16 - 30 rooms</option>
-                      <option value="30_plus">30+ rooms</option>
-                    </select>
-                  </div>
-                </>
-              )}
-
-              {/* BUTTONS */}
-              <div className="flex items-center gap-3 pt-4">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setStep(2)}
-                  className="h-11 rounded-2xl border-slate-200 dark:border-slate-700 text-xs font-semibold"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-1.5" />
-                  <span>Back</span>
-                </Button>
-                <Button
-                  type="button"
-                  onClick={handleNextFromStep3}
-                  className="flex-1 h-11 rounded-2xl font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 transition-all text-xs flex items-center justify-center gap-2"
-                >
-                  <span>Review & Complete</span>
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
-
-        {/* ============================================================== */}
-        {/* CARD 4: REVIEW & CONFIRMATION */}
-        {/* ============================================================== */}
-        {step === 4 && (
-          <Card className="rounded-3xl border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-xl dark:shadow-2xl overflow-hidden animate-in fade-in duration-300">
-            <CardHeader className="text-center pb-2 pt-8">
-              <div className="mx-auto inline-flex items-center gap-1.5 rounded-full border border-blue-200 dark:border-blue-800/60 bg-blue-50 dark:bg-blue-950/40 px-3.5 py-1 text-xs font-semibold text-blue-800 dark:text-blue-300 mb-3 shadow-2xs">
-                <CheckCircle2 className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />
-                <span>Ready to Launch</span>
-              </div>
-              <CardTitle className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-                Review your profile
-              </CardTitle>
-              <CardDescription className="text-xs text-slate-500 dark:text-slate-400 max-w-sm mx-auto mt-1">
-                Confirm your account details to access your verified dashboard.
-              </CardDescription>
-            </CardHeader>
-
-            <CardContent className="space-y-5 px-6 sm:px-8 pb-8 pt-4">
-              {/* Profile Summary Card */}
-              <div className="rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-800/40 p-5 space-y-4">
-                <div className="flex items-center justify-between border-b border-slate-200/70 dark:border-slate-700/60 pb-3">
-                  <div className="flex items-center gap-3">
-                    <div className="h-10 w-10 rounded-2xl bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
-                      {fullName ? fullName.charAt(0).toUpperCase() : 'U'}
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold text-slate-900 dark:text-white">
-                        {fullName}
-                      </h4>
-                      <p className="text-[11px] text-slate-500 dark:text-slate-400">
-                        {user?.email || profile?.email}
-                      </p>
-                    </div>
-                  </div>
-                  <span
-                    className={`inline-flex items-center px-3 py-1 rounded-full text-[10px] font-bold ${role === 'student'
-                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300'
-                        : 'bg-slate-100 text-slate-800 dark:bg-slate-800 dark:text-slate-200'
-                      }`}
-                  >
-                    {role === 'student' ? 'Student' : 'Accommodation Provider'}
-                  </span>
-                </div>
-
-                <div className="grid grid-cols-2 gap-3 text-xs">
-                  <div>
-                    <span className="block text-[10px] font-semibold text-slate-400 uppercase">
-                      Phone Number
-                    </span>
-                    <span className="font-semibold text-slate-700 dark:text-slate-200">
-                      {phone ? `+234 ${phone.replace(/^(\+234|0)/, '')}` : 'Not provided'}
-                    </span>
-                  </div>
-
-                  {role === 'student' ? (
-                    <div>
-                      <span className="block text-[10px] font-semibold text-slate-400 uppercase">
-                        University
-                      </span>
-                      <span className="font-semibold text-slate-700 dark:text-slate-200 truncate block">
-                        {selectedUni?.name || 'Selected University'}
-                      </span>
-                    </div>
-                  ) : (
-                    <div>
-                      <span className="block text-[10px] font-semibold text-slate-400 uppercase">
-                        Authority
-                      </span>
-                      <span className="font-semibold text-slate-700 dark:text-slate-200">
-                        {providerType === 'owner' ? 'Property Owner' : 'Managing Agent'}
-                      </span>
-                    </div>
-                  )}
-
-                  {role === 'student' ? (
-                    <div>
-                      <span className="block text-[10px] font-semibold text-slate-400 uppercase">
-                        Campus / Department
-                      </span>
-                      <span className="font-semibold text-slate-700 dark:text-slate-200">
-                        {campusName} {department ? `• ${department}` : ''}
-                      </span>
-                    </div>
-                  ) : (
-                    <div>
-                      <span className="block text-[10px] font-semibold text-slate-400 uppercase">
-                        Lodge / Business
-                      </span>
-                      <span className="font-semibold text-slate-700 dark:text-slate-200">
-                        {businessName || 'Independent Owner'}
-                      </span>
-                    </div>
-                  )}
-
-                  <div>
-                    <span className="block text-[10px] font-semibold text-slate-400 uppercase">
-                      Account Status
-                    </span>
-                    <span className="inline-flex items-center gap-1 font-semibold text-blue-600 dark:text-blue-400">
-                      <CheckCircle2 className="h-3 w-3" />
-                      <span>Ready for Activation</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Accuracy Checkbox */}
-              <div className="flex items-start gap-2.5 pt-1">
-                <input
-                  id="confirm-accuracy"
-                  type="checkbox"
-                  checked={confirmedAccuracy}
-                  onChange={(e) => setConfirmedAccuracy(e.target.checked)}
-                  className="mt-0.5 h-4 w-4 rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500 dark:bg-slate-800"
                 />
-                <label
-                  htmlFor="confirm-accuracy"
-                  className="text-[11px] text-slate-500 dark:text-slate-400 leading-snug cursor-pointer"
-                >
-                  I confirm that all information provided is accurate and agree to LodgeHere's safety
-                  and anti-fraud guidelines.
-                </label>
+                <div
+                  className={`h-1.5 flex-1 rounded-full transition-all ${
+                    step >= 2 ? 'bg-[#F45B2A]' : 'bg-[#E8E8E5]'
+                  }`}
+                />
+                <div
+                  className={`h-1.5 flex-1 rounded-full transition-all ${
+                    step >= 3 ? 'bg-[#F45B2A]' : 'bg-[#E8E8E5]'
+                  }`}
+                />
               </div>
 
-              {/* BUTTONS */}
-              <div className="flex items-center gap-3 pt-3">
-                <Button
-                  type="button"
-                  variant="outline"
-                  onClick={() => setStep(3)}
-                  disabled={isPending}
-                  className="h-11 rounded-2xl border-slate-200 dark:border-slate-700 text-xs font-semibold"
-                >
-                  <ArrowLeft className="h-4 w-4 mr-1.5" />
-                  <span>Back</span>
-                </Button>
-                <Button
-                  type="button"
-                  disabled={isPending}
-                  onClick={handleCompleteOnboarding}
-                  className="flex-1 h-11 rounded-2xl font-bold bg-blue-600 hover:bg-blue-700 text-white shadow-md shadow-blue-500/20 transition-all text-xs flex items-center justify-center gap-2"
-                >
-                  {isPending ? (
-                    <span>Completing onboarding...</span>
-                  ) : (
-                    <>
-                      <span>Finish Setup & Enter Dashboard</span>
-                      <ArrowRight className="h-4 w-4" />
-                    </>
+              <p className="text-[11px] font-bold tracking-wider text-slate-500 uppercase">
+                {step === 1 && "LET'S GET YOU STARTED · 1 OF 3"}
+                {step === 2 && 'A FEW QUICK PREFERENCES · 2 OF 3'}
+                {step === 3 && 'ONE LAST THING · 3 OF 3'}
+              </p>
+            </div>
+
+            {/* ======================================================== */}
+            {/* STEP 1: SCHOOL SELECTION */}
+            {/* ======================================================== */}
+            {step === 1 && (
+              <div className="space-y-6 animate-in fade-in duration-200">
+                <div className="space-y-2">
+                  <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#24272B] leading-tight">
+                    Where do you go to school?
+                  </h1>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    We&apos;ll use your school to find places to stay nearby — not where you&apos;re standing right now.
+                  </p>
+                </div>
+
+                {/* Search your school input */}
+                <div className="relative">
+                  <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search your school"
+                    className="w-full pl-10 pr-4 py-3 bg-white rounded-xl border border-[#E8E8E5] text-xs sm:text-sm text-[#24272B] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-[#F45B2A]/20 focus:border-[#F45B2A] transition-all shadow-2xs"
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery('')}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-semibold text-slate-400 hover:text-slate-600"
+                    >
+                      Clear
+                    </button>
                   )}
-                </Button>
+                </div>
+
+                {/* Search Results (if typing) */}
+                {searchQuery.trim().length > 0 ? (
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                      Search Results ({filteredUniversities.length})
+                    </p>
+                    <div className="space-y-2 max-h-72 overflow-y-auto no-scrollbar">
+                      {filteredUniversities.length === 0 ? (
+                        <div className="p-4 rounded-xl bg-white border border-[#E8E8E5] text-center text-xs text-slate-500">
+                          No universities found matching &quot;{searchQuery}&quot;
+                        </div>
+                      ) : (
+                        filteredUniversities.map((uni) => {
+                          const isSelected = selectedSchoolSlug === uni.slug;
+                          return (
+                            <button
+                              key={uni.slug}
+                              type="button"
+                              onClick={() => {
+                                setSelectedSchoolSlug(uni.slug);
+                                setSearchQuery('');
+                              }}
+                              className={`w-full flex items-center justify-between p-3.5 rounded-xl text-left border transition-all ${
+                                isSelected
+                                  ? 'border-[#F45B2A] bg-[#FFF0E9]/60 ring-2 ring-[#F45B2A]/20'
+                                  : 'border-[#E8E8E5] bg-white hover:border-slate-300'
+                              }`}
+                            >
+                              <div className="flex items-center gap-3 min-w-0">
+                                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-800 text-white font-extrabold text-[10px]">
+                                  {uni.acronym.slice(0, 4)}
+                                </div>
+                                <div className="min-w-0">
+                                  <p className="text-xs font-bold text-[#24272B] truncate">{uni.name}</p>
+                                  <p className="text-[10px] text-slate-500 truncate">
+                                    {uni.city}, {uni.state} State
+                                  </p>
+                                </div>
+                              </div>
+                              {isSelected ? (
+                                <Check className="h-4 w-4 text-[#F45B2A] shrink-0" />
+                              ) : (
+                                <ChevronRight className="h-4 w-4 text-slate-300 shrink-0" />
+                              )}
+                            </button>
+                          );
+                        })
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  /* Popular Schools from Reference Design */
+                  <div className="space-y-2">
+                    <p className="text-[11px] font-bold uppercase tracking-wider text-slate-500">
+                      POPULAR SCHOOLS
+                    </p>
+                    <div className="space-y-2.5">
+                      {POPULAR_SCHOOLS.map((school) => {
+                        const isSelected = selectedSchoolSlug === school.slug;
+                        return (
+                          <button
+                            key={school.slug}
+                            type="button"
+                            onClick={() => setSelectedSchoolSlug(school.slug)}
+                            className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left border transition-all ${
+                              isSelected
+                                ? 'border-[#F45B2A] bg-white shadow-sm ring-2 ring-[#F45B2A]/20'
+                                : 'border-[#E8E8E5] bg-white hover:border-slate-300'
+                            }`}
+                          >
+                            <div className="flex items-center gap-3.5 min-w-0">
+                              <div
+                                className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full ${school.badgeBg} ${school.badgeColor} font-black text-xs shadow-xs`}
+                              >
+                                {school.acronym}
+                              </div>
+                              <div className="min-w-0">
+                                <p className="text-xs sm:text-sm font-bold text-[#24272B] truncate">
+                                  {school.name}
+                                </p>
+                              </div>
+                            </div>
+                            {isSelected ? (
+                              <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#F45B2A] text-white">
+                                <Check className="h-3 w-3 stroke-[3]" />
+                              </div>
+                            ) : (
+                              <ChevronRight className="h-4 w-4 text-slate-400 shrink-0" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+            )}
+
+            {/* ======================================================== */}
+            {/* STEP 2: ACCOMMODATION PREFERENCES */}
+            {/* ======================================================== */}
+            {step === 2 && (
+              <div className="space-y-6 animate-in fade-in duration-200">
+                <div className="space-y-2">
+                  <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#24272B] leading-tight">
+                    Let&apos;s find a place that feels right.
+                  </h1>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    These help us sort the options. You can skip anything and change it later.
+                  </p>
+                </div>
+
+                {/* Section 1: Budget */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">🛍️</span>
+                    <span className="text-xs sm:text-sm font-bold text-[#24272B]">What&apos;s your budget?</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2.5">
+                    {BUDGET_OPTIONS.map((opt) => {
+                      const isSelected = selectedBudget === opt.id;
+                      return (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => setSelectedBudget(isSelected ? null : opt.id)}
+                          className={`py-3 px-2 rounded-xl text-center border font-bold text-xs transition-all ${
+                            isSelected
+                              ? 'border-[#F45B2A] bg-[#FFF0E9] text-[#F45B2A] shadow-xs ring-1 ring-[#F45B2A]'
+                              : 'border-[#E8E8E5] bg-white text-[#24272B] hover:border-slate-300'
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Section 2: Accommodation Type */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
+                    <span className="text-base">🏠</span>
+                    <span className="text-xs sm:text-sm font-bold text-[#24272B]">What kind of place?</span>
+                  </div>
+                  <div className="grid grid-cols-3 gap-2.5">
+                    {ACCOMMODATION_TYPES.map((type) => {
+                      const isSelected = selectedType === type.id;
+                      return (
+                        <button
+                          key={type.id}
+                          type="button"
+                          onClick={() => setSelectedType(isSelected ? null : type.id)}
+                          className={`flex flex-col text-left p-2 rounded-2xl border transition-all overflow-hidden ${
+                            isSelected
+                              ? 'border-[#F45B2A] bg-white ring-2 ring-[#F45B2A]/20 shadow-xs'
+                              : 'border-[#E8E8E5] bg-white hover:border-slate-300'
+                          }`}
+                        >
+                          <div className="relative w-full h-20 rounded-xl overflow-hidden mb-2 bg-slate-100">
+                            <Image
+                              src={type.image}
+                              alt={type.title}
+                              fill
+                              sizes="(max-width: 640px) 100px, 120px"
+                              className="object-cover"
+                            />
+                            {isSelected && (
+                              <div className="absolute top-1 right-1 flex h-4 w-4 items-center justify-center rounded-full bg-[#F45B2A] text-white">
+                                <Check className="h-2.5 w-2.5 stroke-[3]" />
+                              </div>
+                            )}
+                          </div>
+                          <span className="font-extrabold text-[11px] text-[#24272B] leading-tight line-clamp-1">
+                            {type.title}
+                          </span>
+                          <span className="text-[9px] text-slate-500 line-clamp-2 mt-0.5 leading-tight">
+                            {type.description}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* ======================================================== */}
+            {/* STEP 3: OPTIONAL PERMISSIONS */}
+            {/* ======================================================== */}
+            {step === 3 && (
+              <div className="space-y-6 animate-in fade-in duration-200">
+                <div className="space-y-2">
+                  <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#24272B] leading-tight">
+                    Make LodgeHere work better for you.
+                  </h1>
+                  <p className="text-xs sm:text-sm text-slate-600 leading-relaxed">
+                    A couple of optional settings to make finding a place easier.
+                  </p>
+                </div>
+
+                <div className="space-y-3.5">
+                  {/* Permission Card 1: Location */}
+                  <div className="p-4 rounded-2xl bg-white border border-[#E8E8E5] shadow-xs flex items-start gap-3.5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#FFF0E9] text-[#F45B2A]">
+                      <MapPin className="h-5 w-5" />
+                    </div>
+                    <div className="space-y-1 flex-1">
+                      <h3 className="text-xs sm:text-sm font-bold text-[#24272B]">Use your location</h3>
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        Find places near you when you choose to search around your current area. Your school remains your main search point.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleRequestLocation}
+                        className={`text-xs font-bold transition-colors inline-flex items-center gap-1 pt-1 ${
+                          locationEnabled ? 'text-emerald-600' : 'text-[#F45B2A] hover:underline'
+                        }`}
+                      >
+                        <span>{locationStatusText}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Permission Card 2: Notifications */}
+                  <div className="p-4 rounded-2xl bg-white border border-[#E8E8E5] shadow-xs flex items-start gap-3.5">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#FFF0E9] text-[#F45B2A]">
+                      <Bell className="h-5 w-5" />
+                    </div>
+                    <div className="space-y-1 flex-1">
+                      <h3 className="text-xs sm:text-sm font-bold text-[#24272B]">Stay in the loop</h3>
+                      <p className="text-[11px] text-slate-500 leading-relaxed">
+                        Get important updates about enquiries, saved places and booking activity.
+                      </p>
+                      <button
+                        type="button"
+                        onClick={handleRequestNotifications}
+                        className={`text-xs font-bold transition-colors inline-flex items-center gap-1 pt-1 ${
+                          notificationsEnabled ? 'text-emerald-600' : 'text-[#F45B2A] hover:underline'
+                        }`}
+                      >
+                        <span>{notificationStatusText}</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* ======================================================== */}
+          {/* BOTTOM BUTTONS & ACTIONS PER STEP */}
+          {/* ======================================================== */}
+          <div className="pt-6 space-y-3">
+            {step === 1 && (
+              <>
+                <button
+                  type="button"
+                  onClick={handleContinueFromStep1}
+                  disabled={!selectedSchoolSlug}
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#F45B2A] text-white font-bold text-sm shadow-md hover:bg-[#DE4C1D] active:scale-[0.99] transition-all disabled:opacity-50 disabled:pointer-events-none"
+                >
+                  Continue
+                </button>
+                <p className="text-center text-[11px] text-slate-500">
+                  You can change your school anytime.
+                </p>
+              </>
+            )}
+
+            {step === 2 && (
+              <>
+                <button
+                  type="button"
+                  onClick={handleContinueFromStep2}
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#F45B2A] text-white font-bold text-sm shadow-md hover:bg-[#DE4C1D] active:scale-[0.99] transition-all"
+                >
+                  Continue
+                </button>
+                <button
+                  type="button"
+                  onClick={handleSkipPreferences}
+                  className="w-full py-2.5 px-4 rounded-xl border border-transparent text-slate-500 hover:text-[#24272B] font-bold text-xs transition-colors"
+                >
+                  Skip for now
+                </button>
+              </>
+            )}
+
+            {step === 3 && (
+              <>
+                <button
+                  type="button"
+                  onClick={handleFinishOnboarding}
+                  disabled={isPending}
+                  className="w-full py-3.5 px-4 rounded-xl bg-[#F45B2A] text-white font-bold text-sm shadow-md hover:bg-[#DE4C1D] active:scale-[0.99] transition-all"
+                >
+                  {isPending ? 'Setting up your map...' : 'Start exploring'}
+                </button>
+                <div className="text-center">
+                  <button
+                    type="button"
+                    onClick={handleFinishOnboarding}
+                    className="text-[11px] text-[#F45B2A] font-semibold hover:underline"
+                  >
+                    You can do this later. Continue without enabling either.
+                  </button>
+                </div>
+              </>
+            )}
+          </div>
+        </main>
+      )}
     </div>
   );
 }

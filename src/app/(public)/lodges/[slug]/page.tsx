@@ -627,7 +627,7 @@ export default function LodgeDetailPage() {
                 <div className="pt-2 border-t border-slate-200/60 dark:border-slate-700 space-y-1.5 text-slate-600 dark:text-slate-300">
                   <a
                     href={`tel:${(lodge.landlord_phone || '+2348032345678').replace(/\s+/g, '')}`}
-                    className="flex items-center gap-2 text-blue-600 dark:text-blue-400 hover:underline font-semibold"
+                    className="flex items-center gap-2 text-[#F45B2A] hover:underline font-semibold"
                     title="Tap to call landlord"
                   >
                     <Phone className="h-3.5 w-3.5 shrink-0" />
@@ -674,7 +674,7 @@ export default function LodgeDetailPage() {
         <Button
           size="sm"
           onClick={() => setIsInspectionModalOpen(true)}
-          className="bg-slate-900 hover:bg-black dark:bg-white dark:hover:bg-slate-100 dark:text-slate-900 font-bold text-xs h-11 px-6 gap-2 shadow-sm rounded-full active:scale-95 transition-all"
+          className="bg-[#F45B2A] hover:bg-[#DE4C1D] text-white font-bold text-xs h-11 px-6 gap-2 shadow-md rounded-full active:scale-95 transition-all"
         >
           <CalendarCheck className="h-4 w-4" />
           <span>Schedule Inspection</span>

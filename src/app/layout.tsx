@@ -10,13 +10,14 @@ import { TourProvider } from '@/context/tour-context';
 import { AuthProvider } from '@/context/auth-context';
 import { GuidedTour } from '@/components/shared/guided-tour';
 import { WebsiteJsonLd, OrganizationJsonLd } from '@/components/shared/json-ld';
+import { ServiceWorkerRegister } from '@/components/shared/service-worker-register';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
-    { media: '(prefers-color-scheme: dark)', color: '#020617' },
+    { media: '(prefers-color-scheme: light)', color: '#F45B2A' },
+    { media: '(prefers-color-scheme: dark)', color: '#F45B2A' },
   ],
   width: 'device-width',
   initialScale: 1,
@@ -150,6 +151,7 @@ export default function RootLayout({
         <div className="w-full max-w-md min-h-dvh flex flex-col bg-white dark:bg-slate-900 shadow-2xl relative border-x border-slate-200/80 dark:border-slate-800/80">
           <TourProvider>
             <AuthProvider>
+              <ServiceWorkerRegister />
               <Navbar />
               <main className="flex-1 pb-20">{children}</main>
               <Footer />

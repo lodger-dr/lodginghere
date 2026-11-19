@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#F45B2A" />
+  <title>You're Offline — LodgeHere</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background-color: #F8F8F6;
+      color: #24272B;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+    .card {
+      background: #FFFFFF;
+      border: 1px solid #E8E8E5;
+      border-radius: 28px;
+      padding: 36px 24px;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    }
+    .icon-badge {
+      width: 64px;
+      height: 64px;
+      border-radius: 20px;
+      background: #FFF0E9;
+      color: #F45B2A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px auto;
+    }
+    .icon-badge svg {
+      width: 32px;
+      height: 32px;
+    }
+    h1 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #24272B;
+      margin-bottom: 8px;
+      letter-spacing: -0.02em;
+    }
+    p {
+      font-size: 13px;
+      color: #64748B;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+    .btn {
+      display: inline-block;
+      width: 100%;
+      background: #F45B2A;
+      color: #FFFFFF;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 14px 20px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(244, 91, 42, 0.3);
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .btn:active {
+      transform: scale(0.98);
+      background: #DE4C1D;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #F1F5F9;
+      color: #475569;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: 9999px;
+      margin-top: 20px;
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #EF4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon-badge">
+      <!-- Wifi Off Icon -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="1" y1="1" x2="23" y2="23"></line>
+        <path d="M16.72 11.06A10.94 10.94 0 0 1 19 12.55"></path>
+        <path d="M5 12.55a10.94 10.94 0 0 1 5.17-2.39"></path>
+        <path d="M10.71 5.05A16 16 0 0 1 22.58 9"></path>
+        <path d="M1.42 9a15.91 15.91 0 0 1 4.7-2.88"></path>
+        <path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path>
+        <line x1="12" y1="20" x2="12.01" y2="20"></line>
+      </svg>
+    </div>
+
+    <h1>You're currently offline</h1>
+    <p>
+      LodgeHere requires an active internet connection to load live accommodation vacancies, campus maps, and landlord contacts.
+    </p>
+
+    <button class="btn" onclick="window.location.reload()">
+      Retry Connection
+    </button>
+
+    <div class="status-pill">
+      <span class="status-dot"></span>
+      <span id="network-status">Waiting for connection...</span>
+    </div>
+  </div>
+
+  <script>
+    // Automatically reload when network returns
+    window.addEventListener('online', function() {
+      document.getElementById('network-status').textContent = 'Reconnected! Refreshing...';
+      setTimeout(function() {
+        window.location.reload();
+      }, 800);
+    });
+  </script>
+</body>
+</html>

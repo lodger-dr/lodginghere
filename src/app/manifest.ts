@@ -2,15 +2,15 @@ import type { MetadataRoute } from 'next';
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'LodgeHere — Verified Student Accommodation',
+    name: 'LodgeHere',
     short_name: 'LodgeHere',
     description:
-      'Find genuine student accommodation near Nigerian universities. Verified landlords, transparent pricing, zero agent fees, and physical inspections.',
+      'Map-based student accommodation discovery across Nigerian university campuses. Verified landlords, transparent pricing, zero agent fees, and direct physical inspections.',
     start_url: '/',
     display: 'standalone',
     orientation: 'portrait',
-    background_color: '#090d16',
-    theme_color: '#090d16',
+    background_color: '#F8F8F6',
+    theme_color: '#F45B2A',
     icons: [
       {
         src: '/icon-192.png',

@@ -11,25 +11,66 @@ export interface UniversityLocation extends Coordinates {
 
 // Major Nigerian University Campus Coordinates (Gate & Landmark centroids)
 export const UNIVERSITY_COORDINATES: Record<string, UniversityLocation> = {
-  'university-of-lagos': { lat: 6.5158, lng: 3.3898, campusName: 'UNILAG Akoka Gate' },
-  'university-of-ibadan': { lat: 7.4443, lng: 3.9003, campusName: 'UI Main Gate (Agbowo)' },
-  'obafemi-awolowo-university': { lat: 7.5186, lng: 4.5284, campusName: 'OAU Road 1 Main Gate' },
-  'university-of-benin': { lat: 6.3995, lng: 5.6145, campusName: 'UNIBEN Ugbowo Main Gate' },
-  'federal-university-of-technology-akure': { lat: 7.3034, lng: 5.1378, campusName: 'FUTA South Gate' },
+  'abia-state-university': { lat: 5.8288, lng: 7.5956, campusName: 'ABSU Uturu Main Gate' },
+  'absu': { lat: 5.8288, lng: 7.5956, campusName: 'ABSU Uturu Main Gate' },
+  'michael-okpara-university-of-agriculture-umudike': { lat: 5.4744, lng: 7.5463, campusName: 'MOUAU Main Gate' },
+  'michael-okpara-university': { lat: 5.4744, lng: 7.5463, campusName: 'MOUAU Main Gate' },
+  'mouau': { lat: 5.4744, lng: 7.5463, campusName: 'MOUAU Main Gate' },
+  'mou': { lat: 5.4744, lng: 7.5463, campusName: 'MOUAU Main Gate' },
   'university-of-nigeria-nsukka': { lat: 6.8667, lng: 7.4117, campusName: 'UNN Nsukka Main Gate' },
   'university-of-nigeria': { lat: 6.8667, lng: 7.4117, campusName: 'UNN Nsukka Main Gate' },
+  'unn': { lat: 6.8667, lng: 7.4117, campusName: 'UNN Nsukka Main Gate' },
+  'university-of-lagos': { lat: 6.5158, lng: 3.3898, campusName: 'UNILAG Akoka Gate' },
+  'unilag': { lat: 6.5158, lng: 3.3898, campusName: 'UNILAG Akoka Gate' },
+  'university-of-ibadan': { lat: 7.4443, lng: 3.9003, campusName: 'UI Main Gate (Agbowo)' },
+  'ui': { lat: 7.4443, lng: 3.9003, campusName: 'UI Main Gate (Agbowo)' },
+  'obafemi-awolowo-university': { lat: 7.5186, lng: 4.5284, campusName: 'OAU Road 1 Main Gate' },
+  'oau': { lat: 7.5186, lng: 4.5284, campusName: 'OAU Road 1 Main Gate' },
+  'university-of-benin': { lat: 6.3995, lng: 5.6145, campusName: 'UNIBEN Ugbowo Main Gate' },
+  'uniben': { lat: 6.3995, lng: 5.6145, campusName: 'UNIBEN Ugbowo Main Gate' },
+  'federal-university-of-technology-akure': { lat: 7.3034, lng: 5.1378, campusName: 'FUTA South Gate' },
+  'futa': { lat: 7.3034, lng: 5.1378, campusName: 'FUTA South Gate' },
   'ahmadu-bello-university': { lat: 11.1524, lng: 7.6477, campusName: 'ABU Samaru Main Gate' },
+  'abu': { lat: 11.1524, lng: 7.6477, campusName: 'ABU Samaru Main Gate' },
   'covenant-university': { lat: 6.6717, lng: 3.1581, campusName: 'Covenant Canaanland Gate' },
   'babcock-university': { lat: 6.8928, lng: 3.7229, campusName: 'Babcock Ilishan Gate' },
   'lagos-state-university': { lat: 6.4674, lng: 3.2014, campusName: 'LASU Ojo Main Gate' },
+  'lasu': { lat: 6.4674, lng: 3.2014, campusName: 'LASU Ojo Main Gate' },
   'federal-university-of-technology-minna': { lat: 9.5836, lng: 6.5463, campusName: 'FUTMINNA Gidan Kwanu' },
   'bayero-university-kano': { lat: 11.9792, lng: 8.4844, campusName: 'BUK New Campus Gate' },
   'university-of-ilorin': { lat: 8.4799, lng: 4.6715, campusName: 'UNILORIN Permanent Site Gate' },
   'university-of-jos': { lat: 9.9535, lng: 8.8885, campusName: 'UNIJOS Naraguta Campus Gate' },
   'university-of-port-harcourt': { lat: 4.9036, lng: 6.9197, campusName: 'UNIPORT Choba Gate' },
   'nnamdi-azikiwe-university': { lat: 6.2519, lng: 7.1172, campusName: 'UNIZIK Awka Main Gate' },
+  'unizik': { lat: 6.2519, lng: 7.1172, campusName: 'UNIZIK Awka Main Gate' },
   'federal-university-of-agriculture-abeokuta': { lat: 7.2281, lng: 3.4443, campusName: 'FUNAAB Alabata Gate' },
 };
+
+// Calculate Haversine distance in miles between two geographical coordinates
+export function calculateDistanceMiles(lat1: number, lng1: number, lat2: number, lng2: number): number {
+  const R = 3958.8; // Radius of Earth in miles
+  const dLat = ((lat2 - lat1) * Math.PI) / 180;
+  const dLng = ((lng2 - lng1) * Math.PI) / 180;
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos((lat1 * Math.PI) / 180) *
+      Math.cos((lat2 * Math.PI) / 180) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return Number((R * c).toFixed(1));
+}
+
+export function isWithinRadius(
+  centerLat: number,
+  centerLng: number,
+  pointLat: number,
+  pointLng: number,
+  radiusMiles: number
+): boolean {
+  const distance = calculateDistanceMiles(centerLat, centerLng, pointLat, pointLng);
+  return distance <= radiusMiles;
+}
 
 export const DEFAULT_NIGERIA_CENTER: Coordinates = {
   lat: 9.0820,

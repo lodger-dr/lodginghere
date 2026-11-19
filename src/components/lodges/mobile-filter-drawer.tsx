@@ -151,7 +151,7 @@ export function MobileFilterDrawer({
               className="w-full rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 p-3 text-xs font-semibold text-slate-800 dark:text-white focus:outline-none"
             >
               <option value="">All Nigerian Campuses</option>
-              {NIGERIAN_UNIVERSITIES.slice(0, 30).map((u) => (
+              {NIGERIAN_UNIVERSITIES.map((u) => (
                 <option key={u.slug} value={u.slug}>
                   {u.name} ({u.acronym})
                 </option>

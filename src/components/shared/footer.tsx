@@ -10,10 +10,12 @@ import { openCookiePreferencesModal } from './cookie-consent-banner';
 export function Footer() {
   const pathname = usePathname();
 
-  // The footer appears on public views, excluded from student/landlord/admin dashboard views
+  // The footer appears on public static pages (e.g. terms, privacy), excluded from app views
   const isDashboard = Boolean(
     pathname &&
-    (pathname.startsWith('/student') ||
+    (pathname === '/' ||
+      pathname.startsWith('/onboarding') ||
+      pathname.startsWith('/student') ||
       pathname.startsWith('/landlord') ||
       pathname.startsWith('/admin') ||
       pathname.startsWith('/lodges/'))

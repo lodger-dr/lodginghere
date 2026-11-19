@@ -84,9 +84,13 @@ export function Navbar() {
     return 'LodgeHere';
   };
 
+  if (pathname && (pathname === '/onboarding' || pathname.startsWith('/onboarding'))) {
+    return null;
+  }
+
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/95 dark:bg-slate-900/95 dark:border-slate-800/80 backdrop-blur-xl transition-colors">
+      <header className="sticky top-0 z-40 w-full border-b border-[#E8E8E5] bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl transition-colors">
         <div className="flex h-14 items-center justify-between px-3 sm:px-4">
           {/* Left: Back button (if subpage) or Brand Logo */}
           <div className="flex items-center gap-1.5 shrink-0">

@@ -75,7 +75,7 @@ export function HeroSearch() {
               <option value="" className="text-slate-800 dark:text-slate-200 dark:bg-slate-900">
                 All Nigerian Universities
               </option>
-              {NIGERIAN_UNIVERSITIES.slice(0, 30).map((uni) => (
+              {NIGERIAN_UNIVERSITIES.map((uni) => (
                 <option key={uni.slug} value={uni.slug} className="text-slate-800 dark:text-slate-200 dark:bg-slate-900">
                   {uni.name} ({uni.acronym})
                 </option>
