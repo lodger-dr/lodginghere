@@ -93,7 +93,7 @@ export function LeafletMapView({
 
       mapInstanceRef.current = map;
 
-      // TomTom Orbis Display Raster Tiles (512x512)
+      // Primary: Direct TomTom Orbis Display Raster Tiles (512x512)
       const tomtomApiKey =
         process.env.NEXT_PUBLIC_TOMTOM_API_KEY ||
         process.env.TOM_TOM_API_KEY ||
@@ -113,15 +113,12 @@ export function LeafletMapView({
           }
         ).addTo(map);
       } else {
-        // Fallback: CartoDB Voyager / OpenStreetMap Tile Layer
-        L.tileLayer(
-          'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-          {
-            maxZoom: 19,
-            subdomains: 'abcd',
-            attribution: '&copy; OpenStreetMap contributors',
-          }
-        ).addTo(map);
+        // Fallback 1: Internal Next.js proxy route (reads server TOM_TOM_API_KEY from .env)
+        // Fallback 2: Direct OpenStreetMap standard tiles (never watermarks "API KEY REQUIRED")
+        L.tileLayer('/api/map/tile/{z}/{x}/{y}', {
+          maxZoom: 19,
+          attribution: '&copy; <a href="https://www.tomtom.com">TomTom</a> / &copy; OpenStreetMap',
+        }).addTo(map);
       }
 
       const markersLayer = L.layerGroup().addTo(map);
