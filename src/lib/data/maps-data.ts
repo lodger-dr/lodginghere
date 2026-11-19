@@ -54,9 +54,9 @@ export function calculateDistanceMiles(lat1: number, lng1: number, lat2: number,
   const a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +
     Math.cos((lat1 * Math.PI) / 180) *
-      Math.cos((lat2 * Math.PI) / 180) *
-      Math.sin(dLng / 2) *
-      Math.sin(dLng / 2);
+    Math.cos((lat2 * Math.PI) / 180) *
+    Math.sin(dLng / 2) *
+    Math.sin(dLng / 2);
   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return Number((R * c).toFixed(1));
 }
@@ -167,7 +167,42 @@ export async function verifyAddressOnMaps(
     };
   }
 
-  // Attempt live geocoding verification via OpenStreetMap / Nominatim
+  const tomtomApiKey =
+    process.env.NEXT_PUBLIC_TOMTOM_API_KEY ||
+    process.env.TOM_TOM_API_KEY ||
+    process.env.NEXT_PUBLIC_TOM_TOM_API_KEY ||
+    '';
+
+  // 1. Attempt live geocoding via TomTom Search API when API key is available
+  if (tomtomApiKey) {
+    try {
+      const tomtomRes = await fetch(
+        `https://api.tomtom.com/search/2/geocode/${encodeURIComponent(trimmed)}.json?key=${tomtomApiKey}&countrySet=NG&limit=1`,
+        {
+          headers: { Accept: 'application/json' },
+          signal: AbortSignal.timeout(4000),
+        }
+      );
+      if (tomtomRes.ok) {
+        const tomtomData = await tomtomRes.json();
+        const topResult = tomtomData.results?.[0];
+        if (topResult?.position?.lat && topResult?.position?.lon) {
+          return {
+            verified: true,
+            status: 'verified_on_maps',
+            formattedAddress: topResult.address?.freeformAddress || trimmed,
+            lat: Number(parseFloat(topResult.position.lat).toFixed(6)),
+            lng: Number(parseFloat(topResult.position.lon).toFixed(6)),
+            googleMapsUrl,
+          };
+        }
+      }
+    } catch {
+      // Fall through to Nominatim
+    }
+  }
+
+  // 2. Attempt live geocoding verification via OpenStreetMap / Nominatim
   try {
     const query = `${trimmed}, Nigeria`;
     const res = await fetch(
@@ -177,6 +212,7 @@ export async function verifyAddressOnMaps(
           'Accept-Language': 'en',
           'User-Agent': 'LodgeHere-StudentAccommodation/1.0',
         },
+        signal: AbortSignal.timeout(4000),
       }
     );
 

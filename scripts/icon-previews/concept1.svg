@@ -1,0 +1,84 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF7539" />
+      <stop offset="50%" stop-color="#F45B2A" />
+      <stop offset="100%" stop-color="#CC370C" />
+    </linearGradient>
+    <radialGradient id="sunGlow1" cx="30%" cy="15%" r="65%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="whiteGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" />
+      <stop offset="100%" stop-color="#FFF0E9" />
+    </linearGradient>
+    <linearGradient id="innerOrange1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B30" />
+      <stop offset="100%" stop-color="#DE4212" />
+    </linearGradient>
+    <filter id="shadow1" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="18" flood-color="#7A1800" flood-opacity="0.32" />
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#7A1800" flood-opacity="0.18" />
+    </filter>
+  </defs>
+
+  <!-- Full canvas fill for maskable safe zone -->
+  <rect width="512" height="512" fill="url(#bgGrad1)" />
+  <rect width="512" height="512" fill="url(#sunGlow1)" />
+  <rect x="1.5" y="1.5" width="509" height="509" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-opacity="0.18" />
+
+  <!-- Main Glyph Group: 280x280 centered in 512x512 -->
+  <g filter="url(#shadow1)">
+    <!-- Architectural Lodge Shell -->
+    <!-- Gable roof + modern angled dormer + clean structural walls -->
+    <path d="
+      M 256 122
+      C 263 122, 271 126, 277 132
+      L 383 234
+      C 391 242, 392 254, 386 263
+      C 380 272, 368 276, 356 276
+      L 344 276
+      L 344 346
+      C 344 362, 332 374, 316 374
+      L 196 374
+      C 180 374, 168 362, 168 346
+      L 168 276
+      L 156 276
+      C 144 276, 132 272, 126 263
+      C 120 254, 121 242, 129 234
+      L 235 132
+      C 241 126, 249 122, 256 122
+      Z
+    " fill="url(#whiteGrad1)" />
+
+    <!-- Negative Space: The Map Pin & Welcoming Archway -->
+    <!-- Upper loop of map pin with open archway base -->
+    <path d="
+      M 256 198
+      C 284 198, 304 218, 304 246
+      C 304 272, 286 298, 286 318
+      L 286 374
+      L 226 374
+      L 226 318
+      C 226 298, 208 272, 208 246
+      C 208 218, 228 198, 256 198
+      Z
+    " fill="url(#innerOrange1)" />
+
+    <!-- Center Radiant Location Core (The 'Here' Beacon) -->
+    <circle cx="256" cy="246" r="18" fill="#FFFFFF" />
+    <circle cx="256" cy="246" r="8.5" fill="#F45B2A" />
+
+    <!-- Stylized Modern Geometric Window / Dormer Accent (Top Right) -->
+    <path d="
+      M 304 162
+      L 304 140
+      C 304 136, 308 132, 312 132
+      L 326 132
+      C 330 132, 334 136, 334 140
+      L 334 190
+      Z
+    " fill="url(#whiteGrad1)" opacity="0.9" />
+  </g>
+</svg>

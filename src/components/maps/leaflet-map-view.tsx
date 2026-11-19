@@ -93,11 +93,36 @@ export function LeafletMapView({
 
       mapInstanceRef.current = map;
 
-      // Subtle OpenStreetMap / CartoDB Voyager Tile Layer with sage green tint
-      L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-        maxZoom: 19,
-        subdomains: 'abcd',
-      }).addTo(map);
+      // TomTom Orbis Display Raster Tiles (512x512)
+      const tomtomApiKey =
+        process.env.NEXT_PUBLIC_TOMTOM_API_KEY ||
+        process.env.TOM_TOM_API_KEY ||
+        process.env.NEXT_PUBLIC_TOM_TOM_API_KEY ||
+        '';
+
+      if (tomtomApiKey) {
+        L.tileLayer(
+          `https://api.tomtom.com/maps/orbis/display/raster/tile/{z}/{x}/{y}?apiVersion=2&tileSize=512&key=${tomtomApiKey}`,
+          {
+            maxZoom: 22,
+            minZoom: 1,
+            tileSize: 512,
+            zoomOffset: -1,
+            attribution:
+              '&copy; <a href="https://www.tomtom.com" target="_blank" rel="noopener noreferrer">TomTom</a>',
+          }
+        ).addTo(map);
+      } else {
+        // Fallback: CartoDB Voyager / OpenStreetMap Tile Layer
+        L.tileLayer(
+          'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
+          {
+            maxZoom: 19,
+            subdomains: 'abcd',
+            attribution: '&copy; OpenStreetMap contributors',
+          }
+        ).addTo(map);
+      }
 
       const markersLayer = L.layerGroup().addTo(map);
       markersLayerRef.current = markersLayer;
@@ -187,19 +212,16 @@ export function LeafletMapView({
           const lodgeIcon = L.divIcon({
             className: `lodge-marker-${lodge.id}`,
             html: `
-              <div class="group relative flex flex-col items-center transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-transform duration-200 active:scale-95 ${
-                isSelected ? 'scale-115 z-50' : 'hover:scale-110 z-20'
+              <div class="group relative flex flex-col items-center transform -translate-x-1/2 -translate-y-1/2 cursor-pointer transition-transform duration-200 active:scale-95 ${isSelected ? 'scale-115 z-50' : 'hover:scale-110 z-20'
               }">
-                <div class="flex h-8 w-8 items-center justify-center rounded-full ${
-                  isSelected ? 'bg-[#24272B] ring-4 ring-[#F45B2A]' : 'bg-[#F45B2A]'
-                } text-white shadow-lg border-2 border-white">
+                <div class="flex h-8 w-8 items-center justify-center rounded-full ${isSelected ? 'bg-[#24272B] ring-4 ring-[#F45B2A]' : 'bg-[#F45B2A]'
+              } text-white shadow-lg border-2 border-white">
                   <svg class="h-4 w-4 fill-white" viewBox="0 0 20 20">
                     <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
                   </svg>
                 </div>
-                <div class="mt-1 px-1.5 py-0.5 rounded-full ${
-                  isSelected ? 'bg-[#24272B] text-white ring-1 ring-[#F45B2A]' : 'bg-white/95 text-[#24272B] border border-[#E8E8E5]'
-                } shadow-xs text-[10px] font-black tracking-tight whitespace-nowrap">
+                <div class="mt-1 px-1.5 py-0.5 rounded-full ${isSelected ? 'bg-[#24272B] text-white ring-1 ring-[#F45B2A]' : 'bg-white/95 text-[#24272B] border border-[#E8E8E5]'
+              } shadow-xs text-[10px] font-black tracking-tight whitespace-nowrap">
                   ${priceShort}
                 </div>
               </div>
@@ -257,9 +279,8 @@ export function LeafletMapView({
           <button
             type="button"
             onClick={onGpsClick}
-            className={`flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-xl border border-[#E8E8E5] transition-transform active:scale-90 ${
-              isGpsActive ? 'text-[#F45B2A] ring-2 ring-[#F45B2A]' : 'text-[#24272B] hover:text-[#F45B2A]'
-            }`}
+            className={`flex h-11 w-11 items-center justify-center rounded-full bg-white shadow-xl border border-[#E8E8E5] transition-transform active:scale-90 ${isGpsActive ? 'text-[#F45B2A] ring-2 ring-[#F45B2A]' : 'text-[#24272B] hover:text-[#F45B2A]'
+              }`}
             aria-label="Center on my location"
             title={isGpsActive ? 'Showing places near your current location' : 'Use your current location'}
           >

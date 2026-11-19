@@ -6,6 +6,13 @@ if (typeof dns.setDefaultResultOrder === "function") {
 }
 
 const nextConfig: NextConfig = {
+  env: {
+    NEXT_PUBLIC_TOMTOM_API_KEY:
+      process.env.NEXT_PUBLIC_TOMTOM_API_KEY ||
+      process.env.TOM_TOM_API_KEY ||
+      process.env.NEXT_PUBLIC_TOM_TOM_API_KEY ||
+      "",
+  },
   turbopack: {
     rules: {
       "*.css": {
